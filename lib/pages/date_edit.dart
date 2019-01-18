@@ -15,9 +15,10 @@ class DateEdit extends StatefulWidget {
 
 class _DateEditState extends State<DateEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<Widget> _listOfTextInputs = List();
+  List<Widget> _listOfTextInputs = [];
   List<String> _listOfTextStrings = List();
   int count = 0;
+  int index;
   final TextEditingController _textController = TextEditingController();
 
   @override
@@ -57,9 +58,42 @@ class _DateEditState extends State<DateEdit> {
   }
 
   Widget _buildTextField() {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
-      child: Text(_listOfTextStrings[count]),
+    final Key _key = Key(_listOfTextStrings[count]);
+    String title = _listOfTextStrings[count].toString();
+    return Dismissible(
+      key: _key,
+      background: Container(
+        color: Colors.red,
+      ),
+      onDismissed: (DismissDirection direction) {
+        if (direction == DismissDirection.endToStart ||
+            direction == DismissDirection.startToEnd) {
+          count--;
+          String foundValue = _key.toString().split("'")[1];
+          _listOfTextStrings.remove(foundValue);
+          setState(() {});
+        }
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(children: <Widget>[
+          ListTile(
+            title: Center(child: Text(title)),
+          ),
+          ButtonTheme.bar(
+            child: ButtonBar(children: [
+              FlatButton(
+                child: Icon(Icons.delete),
+                onPressed: () {
+                  print(_listOfTextInputs[0]);
+                  _listOfTextStrings.remove(title);
+                  setState(() {});
+                },
+              ),
+            ]),
+          )
+        ]),
+      ),
     );
   }
 
@@ -67,13 +101,19 @@ class _DateEditState extends State<DateEdit> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        FloatingActionButton(
-          heroTag: 'Submit',
-          mini: true,
-          child: Icon(Icons.save),
-          onPressed: () {
-            print(_listOfTextStrings);
-          },
+        Container(
+          height: 70.0,
+          width: 56.0,
+          alignment: FractionalOffset.topCenter,
+          child: FloatingActionButton(
+            heroTag: 'Submit',
+            mini: true,
+            child: Icon(Icons.save),
+            onPressed: () {
+              print(_listOfTextInputs.length);
+              print(_listOfTextStrings);
+            },
+          ),
         ),
         FloatingActionButton(
           heroTag: 'Add More',
@@ -90,44 +130,61 @@ class _DateEditState extends State<DateEdit> {
   Future<Null> _showInput() async {
     await showDialog(
       context: context,
-      child: SimpleDialog(
-        contentPadding: EdgeInsets.all(10.0),
-        title: Text('Date Idea?'),
-        children: <Widget>[
-          TextField(
-            controller: _textController,
-            autofocus: true,
-            decoration: InputDecoration(hintText: 'eg. Bowling?'),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () {
-                  _listOfTextStrings.add(_textController.text);
-                  _listOfTextInputs.add(_buildTextField());
-                  _textController.text = '';
-                  count++;
-                  Navigator.pop(context);
-                  setState(() {});
+      child: GestureDetector(
+        // If the user taps outside form boxes then the keyboard is minimized
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: SimpleDialog(
+          contentPadding: EdgeInsets.all(10.0),
+          title: Text('Date Idea?'),
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                maxLines: 2,
+                controller: _textController,
+                autofocus: true,
+                decoration: InputDecoration(hintText: 'eg. Bowling?'),
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'No';
+                  }
                 },
-                child: Text('Add Idea'),
               ),
-              SizedBox(
-                width: 10.0,
-              ),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Cancel'),
-              )
-            ],
-          )
-        ],
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    if (_textController.text.isNotEmpty) {
+                      _listOfTextStrings.add(_textController.text);
+                      _listOfTextInputs.add(_buildTextField());
+                      _textController.text = '';
+                      count++;
+                      Navigator.pop(context);
+                      setState(() {});
+                    }
+                  },
+                  child: Text('Add Idea'),
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel'),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
