@@ -91,9 +91,6 @@ class _SelectionButtonState extends State<SelectionButton> {
         MaterialPageRoute(builder: (BuildContext context) {
       return PersonOneDateEdit();
     }));
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('Ideas Successfully Added')));
   }
 
   _navigateToEditPersonTwo(BuildContext context) async {
@@ -101,8 +98,5 @@ class _SelectionButtonState extends State<SelectionButton> {
         MaterialPageRoute(builder: (BuildContext context) {
       return PersonOneDateEdit();
     }));
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('Ideas Successfully Added')));
   }
 }

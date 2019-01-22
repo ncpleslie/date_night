@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../widgets/selection_button.dart';
 import '../scoped-models/ideas_model.dart';
+import '../pages/results.dart';
 
 class DateEdit extends StatefulWidget {
   @override
@@ -45,8 +46,14 @@ class _DateEditState extends State<DateEdit> {
   }
 
   _buildSnackBar(returningValue) {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return Results(returningValue);
+    }));
+
     Scaffold.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(returningValue)));
+      ..showSnackBar(SnackBar(
+          content: Text(
+              '${returningValue[0].toUpperCase()}${returningValue.substring(1)}')));
   }
 }

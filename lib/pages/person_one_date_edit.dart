@@ -41,7 +41,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-              height: MediaQuery.of(context).size.height - 350.0,
+              height: MediaQuery.of(context).size.height - 160.0,
               margin: EdgeInsets.all(10.0),
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
@@ -116,8 +116,8 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
             Container(
               alignment: FractionalOffset.topCenter,
               child: RaisedButton(
-                child: Text('Next Person'),
-                padding: EdgeInsets.symmetric(horizontal: 140.0),
+                child: Text('Finished?'),
+                padding: EdgeInsets.symmetric(horizontal: 150.0),
                 onPressed: () {
                   if (_listOfTextStrings.length != 0) {
                     if (model.personOneIdeas.length == 0) {
