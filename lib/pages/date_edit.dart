@@ -20,7 +20,9 @@ class _DateEditState extends State<DateEdit> {
           body: Center(
             child: SelectionButton(),
           ),
-          floatingActionButton: _buildFABandCompare(model),
+          floatingActionButton: model.chosenDateIdeas.length != 0
+              ? _buildFABandCompare(model)
+              : _buildTextInstructions(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
         );
@@ -32,8 +34,19 @@ class _DateEditState extends State<DateEdit> {
     return RaisedButton(
       child: Text('DONE?'),
       onPressed: () {
-        model.compareAllIdeas();
+        String returningValue = model.compareAllIdeas();
+        _buildSnackBar(returningValue);
       },
     );
+  }
+
+  _buildTextInstructions() {
+    return Text('Add Some Ideas');
+  }
+
+  _buildSnackBar(returningValue) {
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(returningValue)));
   }
 }

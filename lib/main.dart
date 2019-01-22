@@ -43,6 +43,5 @@ class _MyAppState extends State<MyApp> {
                 builder: (BuildContext context) => HomePage());
           },
         ));
-    ;
   }
 }
