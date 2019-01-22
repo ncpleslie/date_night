@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import './pages/home_page.dart';
+import './scoped-models/ideas_model.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,21 +25,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Date Night',
-      theme: _iOSThemeData,
-      routes: {
-        '/': (BuildContext context) => HomePage(),
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => HomePage());
-      },
-      // Fallback route if unable to find correct route (Will go to main page)
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => HomePage());
-      },
-    );
+    return ScopedModel<IdeasModel>(
+        model: IdeasModel(),
+        child: MaterialApp(
+          title: 'Date Night',
+          theme: _iOSThemeData,
+          routes: {
+            '/': (BuildContext context) => HomePage(),
+          },
+          onGenerateRoute: (RouteSettings settings) {
+            return MaterialPageRoute<bool>(
+                builder: (BuildContext context) => HomePage());
+          },
+          // Fallback route if unable to find correct route (Will go to main page)
+          onUnknownRoute: (RouteSettings settings) {
+            return MaterialPageRoute(
+                builder: (BuildContext context) => HomePage());
+          },
+        ));
+    ;
   }
 }

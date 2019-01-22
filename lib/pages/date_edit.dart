@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import './person_one_date_edit.dart';
+import '../widgets/selection_button.dart';
+import '../scoped-models/ideas_model.dart';
 
 class DateEdit extends StatefulWidget {
   @override
@@ -12,117 +14,26 @@ class DateEdit extends StatefulWidget {
 class _DateEditState extends State<DateEdit> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SelectionButton(),
-      ),
-    );
-  }
-}
-
-class SelectionButton extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _SelectionButtonState();
-  }
-}
-
-class _SelectionButtonState extends State<SelectionButton> {
-  List resultPersonOne = [];
-  List resultPersonTwo = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 150.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _buildPersonOneButton(),
-          SizedBox(
-            width: 30.0,
+    return ScopedModelDescendant<IdeasModel>(
+      builder: (BuildContext context, Widget widget, IdeasModel model) {
+        return Scaffold(
+          body: Center(
+            child: SelectionButton(),
           ),
-          _buildPersonTwoButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPersonOneButton() {
-    return OutlineButton(
-      padding: EdgeInsets.all(50.0),
-      borderSide: BorderSide(
-        color: resultPersonOne.length == 0
-            ? Colors.red
-            : Theme.of(context).accentColor,
-      ),
-      textColor: resultPersonOne.length == 0
-          ? Colors.red
-          : Theme.of(context).accentColor,
-      color: resultPersonOne.length == 0
-          ? Colors.red
-          : Theme.of(context).accentColor,
-      onPressed: () {
-        _navigateToEditPersonOne(context);
+          floatingActionButton: _buildFABandCompare(model),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+        );
       },
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            resultPersonOne.length == 0
-                ? Icon(Icons.person_add)
-                : Icon(Icons.person),
-            Text('Person One')
-          ]),
     );
   }
 
-  Widget _buildPersonTwoButton() {
-    return OutlineButton(
-      padding: EdgeInsets.all(50.0),
-      borderSide: BorderSide(
-        color: resultPersonTwo.length == 0
-            ? Colors.red
-            : Theme.of(context).accentColor,
-      ),
-      textColor: resultPersonTwo.length == 0
-          ? Colors.red
-          : Theme.of(context).accentColor,
-      color: resultPersonTwo.length == 0
-          ? Colors.red
-          : Theme.of(context).accentColor,
+  _buildFABandCompare(model) {
+    return RaisedButton(
+      child: Text('DONE?'),
       onPressed: () {
-        _navigateToEditPersonTwo(context);
+        model.compareAllIdeas();
       },
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            resultPersonTwo.length == 0
-                ? Icon(Icons.person_add)
-                : Icon(Icons.person),
-            Text('Person Two')
-          ]),
     );
-  }
-
-  _navigateToEditPersonOne(BuildContext context) async {
-    resultPersonOne = await Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return PersonOneDateEdit();
-    }));
-
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$resultPersonOne')));
-  }
-
-  _navigateToEditPersonTwo(BuildContext context) async {
-    resultPersonTwo = await Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return PersonOneDateEdit();
-    }));
-
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$resultPersonTwo')));
   }
 }

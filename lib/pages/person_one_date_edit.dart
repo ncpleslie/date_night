@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'dart:async';
+
+import '../scoped-models/ideas_model.dart';
 
 class PersonOneDateEdit extends StatefulWidget {
   @override
@@ -26,31 +29,36 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
         ? oddBreakPoint
         : deviceWidth * percentageMark;
     final double targetPadding = deviceWidth - targetWidth;
-  /*  if (count == 0) {
+    /*  if (count == 0) {
       Future.delayed(Duration.zero, () => _showInput());
     } */
-    return Scaffold(
-      
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
-          height: MediaQuery.of(context).size.height - 350.0,
-          margin: EdgeInsets.all(10.0),
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-            itemCount: _listOfTextInputs.length,
-            itemBuilder: (BuildContext context, int index) {
-              Widget widget = _buildPageContent(context, index);
-
-              return widget;
+    return ScopedModelDescendant<IdeasModel>(
+      builder: (BuildContext context, Widget widget, IdeasModel model) {
+        return Scaffold(
+          resizeToAvoidBottomPadding: false,
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
             },
+            child: Container(
+              height: MediaQuery.of(context).size.height - 350.0,
+              margin: EdgeInsets.all(10.0),
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+                itemCount: _listOfTextInputs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Widget widget = _buildPageContent(context, index);
+
+                  return widget;
+                },
+              ),
+            ),
           ),
-        ),
-      ),
-      floatingActionButton: _buildFAB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: _buildFAB(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+        );
+      },
     );
   }
 
@@ -100,30 +108,47 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   }
 
   Widget _buildFAB() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          alignment: FractionalOffset.topCenter,
-          child: RaisedButton(
-            child: Text('Next Person'),
-            padding: EdgeInsets.symmetric(horizontal: 140.0),
-            onPressed: () {
-              Navigator.pop(context, _listOfTextStrings);
-            },
-          ),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-        RaisedButton(
-          child: Icon(Icons.add),
-          padding: EdgeInsets.symmetric(horizontal: 170.0, vertical: 20.0),
-          onPressed: () {
-            _showInput();
-          },
-        )
-      ],
+    return ScopedModelDescendant<IdeasModel>(
+      builder: (BuildContext context, Widget child, IdeasModel model) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              alignment: FractionalOffset.topCenter,
+              child: RaisedButton(
+                child: Text('Next Person'),
+                padding: EdgeInsets.symmetric(horizontal: 140.0),
+                onPressed: () {
+                  if (_listOfTextStrings.length != 0) {
+                    if (model.personOneIdeas.length == 0) {
+                      model.addPersonOneIdeas(_listOfTextStrings);
+                    } else {
+                      model.addPersonTwoIdeas(_listOfTextStrings);
+                    }
+                    Navigator.pop(context, _listOfTextStrings);
+                  } else {
+                    // If user doesn't enter anything
+                    Scaffold.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(
+                          SnackBar(content: Text('Please Enter Some Ideas')));
+                  }
+                },
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              child: Icon(Icons.add),
+              padding: EdgeInsets.symmetric(horizontal: 170.0, vertical: 20.0),
+              onPressed: () {
+                _showInput();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -154,7 +179,8 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 RaisedButton(
                   onPressed: () {
                     if (_textController.text.isNotEmpty) {
-                      _listOfTextStrings.add(_textController.text);
+                      String ideas = (_textController.text).toLowerCase();
+                      _listOfTextStrings.add(ideas);
                       _listOfTextInputs.add(_buildTextField());
                       _textController.text = '';
                       count++;
