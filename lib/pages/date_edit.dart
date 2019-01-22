@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'dart:async';
+import './person_one_date_edit.dart';
 
 class DateEdit extends StatefulWidget {
-  final Color color;
-
-  DateEdit(this.color);
-
   @override
   State<StatefulWidget> createState() {
     return _DateEditState();
@@ -14,178 +10,119 @@ class DateEdit extends StatefulWidget {
 }
 
 class _DateEditState extends State<DateEdit> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<Widget> _listOfTextInputs = [];
-  List<String> _listOfTextStrings = List();
-  int count = 0;
-  int index;
-  final TextEditingController _textController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SelectionButton(),
+      ),
+    );
+  }
+}
+
+class SelectionButton extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _SelectionButtonState();
+  }
+}
+
+class _SelectionButtonState extends State<SelectionButton> {
+  List resultPersonOne = [];
+  List resultPersonTwo = [];
 
   @override
   Widget build(BuildContext context) {
-    final double commonBreakPoint = 550.0;
-    final double oddBreakPoint = 500.0;
-    final double percentageMark = 0.95;
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > commonBreakPoint
-        ? oddBreakPoint
-        : deviceWidth * percentageMark;
-    final double targetPadding = deviceWidth - targetWidth;
-
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
-          margin: EdgeInsets.all(10.0),
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-            itemCount: _listOfTextInputs.length,
-            itemBuilder: (BuildContext context, int index) {
-              Widget widget = _buildPageContent(context, index);
-              return widget;
-            },
+    return Container(
+      height: 150.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _buildPersonOneButton(),
+          SizedBox(
+            width: 30.0,
           ),
-        ),
+          _buildPersonTwoButton(),
+        ],
       ),
-      floatingActionButton: _buildFAB(),
     );
   }
 
-  Widget _buildPageContent(BuildContext context, int index) {
-    return _listOfTextInputs.elementAt(index);
-  }
-
-  Widget _buildTextField() {
-    final Key _key = Key(_listOfTextStrings[count]);
-    String title = _listOfTextStrings[count].toString();
-    return Dismissible(
-      key: _key,
-      background: Container(
-        color: Colors.red,
+  Widget _buildPersonOneButton() {
+    return OutlineButton(
+      padding: EdgeInsets.all(50.0),
+      borderSide: BorderSide(
+        color: resultPersonOne.length == 0
+            ? Colors.red
+            : Theme.of(context).accentColor,
       ),
-      onDismissed: (DismissDirection direction) {
-        if (direction == DismissDirection.endToStart ||
-            direction == DismissDirection.startToEnd) {
-          count--;
-          String foundValue = _key.toString().split("'")[1];
-          _listOfTextStrings.remove(foundValue);
-          setState(() {});
-        }
+      textColor: resultPersonOne.length == 0
+          ? Colors.red
+          : Theme.of(context).accentColor,
+      color: resultPersonOne.length == 0
+          ? Colors.red
+          : Theme.of(context).accentColor,
+      onPressed: () {
+        _navigateToEditPersonOne(context);
       },
-      child: Card(
-        margin: EdgeInsets.symmetric(vertical: 10.0),
-        child: Column(children: <Widget>[
-          ListTile(
-            title: Center(child: Text(title)),
-          ),
-          ButtonTheme.bar(
-            child: ButtonBar(children: [
-              FlatButton(
-                child: Icon(Icons.delete),
-                onPressed: () {
-                  print(_listOfTextInputs[0]);
-                  _listOfTextStrings.remove(title);
-                  setState(() {});
-                },
-              ),
-            ]),
-          )
-        ]),
-      ),
-    );
-  }
-
-  Widget _buildFAB() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          height: 70.0,
-          width: 56.0,
-          alignment: FractionalOffset.topCenter,
-          child: FloatingActionButton(
-            heroTag: 'Submit',
-            mini: true,
-            child: Icon(Icons.save),
-            onPressed: () {
-              print(_listOfTextInputs.length);
-              print(_listOfTextStrings);
-            },
-          ),
-        ),
-        FloatingActionButton(
-          heroTag: 'Add More',
-          child: Icon(Icons.add),
-          onPressed: () {
-            _showInput();
-            setState(() {});
-          },
-        )
-      ],
-    );
-  }
-
-  Future<Null> _showInput() async {
-    await showDialog(
-      context: context,
-      child: GestureDetector(
-        // If the user taps outside form boxes then the keyboard is minimized
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: SimpleDialog(
-          contentPadding: EdgeInsets.all(10.0),
-          title: Text('Date Idea?'),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                maxLines: 2,
-                controller: _textController,
-                autofocus: true,
-                decoration: InputDecoration(hintText: 'eg. Bowling?'),
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'No';
-                  }
-                },
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: () {
-                    if (_textController.text.isNotEmpty) {
-                      _listOfTextStrings.add(_textController.text);
-                      _listOfTextInputs.add(_buildTextField());
-                      _textController.text = '';
-                      count++;
-                      Navigator.pop(context);
-                      setState(() {});
-                    }
-                  },
-                  child: Text('Add Idea'),
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Cancel'),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
+            resultPersonOne.length == 0
+                ? Icon(Icons.person_add)
+                : Icon(Icons.person),
+            Text('Person One')
+          ]),
     );
+  }
+
+  Widget _buildPersonTwoButton() {
+    return OutlineButton(
+      padding: EdgeInsets.all(50.0),
+      borderSide: BorderSide(
+        color: resultPersonTwo.length == 0
+            ? Colors.red
+            : Theme.of(context).accentColor,
+      ),
+      textColor: resultPersonTwo.length == 0
+          ? Colors.red
+          : Theme.of(context).accentColor,
+      color: resultPersonTwo.length == 0
+          ? Colors.red
+          : Theme.of(context).accentColor,
+      onPressed: () {
+        _navigateToEditPersonTwo(context);
+      },
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            resultPersonTwo.length == 0
+                ? Icon(Icons.person_add)
+                : Icon(Icons.person),
+            Text('Person Two')
+          ]),
+    );
+  }
+
+  _navigateToEditPersonOne(BuildContext context) async {
+    resultPersonOne = await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return PersonOneDateEdit();
+    }));
+
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$resultPersonOne')));
+  }
+
+  _navigateToEditPersonTwo(BuildContext context) async {
+    resultPersonTwo = await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return PersonOneDateEdit();
+    }));
+
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$resultPersonTwo')));
   }
 }
