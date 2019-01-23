@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import './pages/home_page.dart';
@@ -20,7 +21,7 @@ class _MyAppState extends State<MyApp> {
     brightness: Brightness.light,
     primarySwatch: Colors.grey,
     accentColor: Colors.blue,
-    buttonColor: Colors.blue,
+    buttonColor: CupertinoColors.activeBlue,
   );
 
   @override
@@ -34,12 +35,12 @@ class _MyAppState extends State<MyApp> {
             '/': (BuildContext context) => HomePage(),
           },
           onGenerateRoute: (RouteSettings settings) {
-            return MaterialPageRoute<bool>(
+            return CupertinoPageRoute<bool>(
                 builder: (BuildContext context) => HomePage());
           },
           // Fallback route if unable to find correct route (Will go to main page)
           onUnknownRoute: (RouteSettings settings) {
-            return MaterialPageRoute(
+            return CupertinoPageRoute(
                 builder: (BuildContext context) => HomePage());
           },
         ));

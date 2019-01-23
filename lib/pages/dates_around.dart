@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class DatesAround extends StatefulWidget {
-  final Color color;
-
-  DatesAround(this.color);
 
   @override
     State<StatefulWidget> createState() {
@@ -14,6 +12,14 @@ class DatesAround extends StatefulWidget {
 class _DatesAroundState extends State<DatesAround> {
   @override
     Widget build(BuildContext context) {
-      return Container(color: widget.color);
+      return CupertinoPageScaffold(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            CupertinoSliverNavigationBar(
+              largeTitle: Text('Dates Around You'),
+            )
+          ],
+        ),
+      );
     }
 }

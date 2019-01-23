@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../widgets/selection_button.dart';
@@ -17,22 +18,29 @@ class _DateEditState extends State<DateEdit> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
-        return Scaffold(
-          body: Center(
-            child: SelectionButton(),
+        return CupertinoPageScaffold(
+          navigationBar: CupertinoNavigationBar(
+            middle: Text('Add Some Date Ideas'),
           ),
-          floatingActionButton: model.chosenDateIdeas.length != 0
-              ? _buildFABandCompare(model)
-              : _buildTextInstructions(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              SelectionButton(),
+              SizedBox(height: 20.0,),
+              model.chosenDateIdeas.length != 0
+                  ? _buildFABandCompare(model)
+                  : Container(),
+            ]),
+          ),
         );
       },
     );
   }
 
   _buildFABandCompare(model) {
-    return RaisedButton(
+    return CupertinoButton(
+      color: Theme.of(context).buttonColor,
       child: Text('DONE?'),
       onPressed: () {
         String returningValue = model.compareAllIdeas();
