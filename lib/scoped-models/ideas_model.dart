@@ -1,6 +1,10 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:collection/collection.dart';
+
 import "dart:math";
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../models/date_ideas.dart';
 
 class IdeasModel extends Model {
   List chosenDateIdeas = [];
@@ -10,6 +14,9 @@ class IdeasModel extends Model {
   // From Selection_Button.dart
   List resultPersonOne = [];
   List resultPersonTwo = [];
+
+  // For Final Selection
+  String chosenIdea;
 
   void addPersonOneIdeas(List personOneIdea) {
     personOneIdeas = personOneIdea;
@@ -29,14 +36,18 @@ class IdeasModel extends Model {
     notifyListeners();
   }
 
+  // From Fetching ideas
+  List dateIdeasList = [];
+
+  List get displayedIdeas {
+   return List.from(dateIdeasList);
+  }
+
   String compareAllIdeas() {
     // If person one and person two enter same idea
     // return similar idea
     // else
     // return a random idea
-
-    String chosenIdea = null;
-
     //compare shortest list against longest list
 
     if (personOneIdeas.length >= personTwoIdeas.length) {
@@ -64,6 +75,64 @@ class IdeasModel extends Model {
           chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
     }
 
+    //Once all done
+    // Upload data
+    uploadDateIdeas();
+
     return chosenIdea;
+  }
+
+  Future<Null> uploadDateIdeas() async {
+    final Map<String, dynamic> dateIdeas = {
+      'chosenDate' : chosenIdea,
+      'otherIdeas': chosenDateIdeas
+    };
+
+    try {
+      final http.Response response = await http.post(
+          'https://date-night-ios.firebaseio.com/dateideas.json',
+          body: json.encode(dateIdeas));
+
+      // Network error-handling
+      if (response.statusCode != 200 && response.statusCode != 201) {
+       // return _errorHandling();
+       print(response.statusCode);
+      }}
+      catch (error) {
+        print('error');
+      }
+  }
+
+  Future<Null> fetchDateIdeas() {
+    return http.get('https://date-night-ios.firebaseio.com/dateideas.json').then<Null>((http.Response response) {
+      // Network error-handling
+      if (response.statusCode != 200 && response.statusCode != 201) {
+       // return _errorHandling();
+       print(response.statusCode);
+       return null;
+      }
+
+      final List fetchedDateIdeas = [];
+      final Map dateIdeasListData = json.decode(response.body);
+
+      if (dateIdeasListData == null) {
+        return null;
+      }
+
+      DateIdeas dateIdeas;
+
+      dateIdeasListData.forEach((dateId, dateData) {
+        dateData.forEach((chosenDate, listOfDates) {
+          dateIdeas = DateIdeas(
+            id: dateId,
+            chosenDate: chosenDate,
+            otherDates: listOfDates
+          );
+        });
+        
+        fetchedDateIdeas.add(dateIdeas);
+      });
+      dateIdeasList = fetchedDateIdeas;
+    });
   }
 }
