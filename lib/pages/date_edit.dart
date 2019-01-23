@@ -29,7 +29,7 @@ class _DateEditState extends State<DateEdit> {
               SelectionButton(),
               SizedBox(height: 20.0,),
               model.chosenDateIdeas.length != 0
-                  ? _buildFABandCompare(model)
+                  ? Column(children: <Widget>[_buildResultsButton(model), SizedBox(height: 30.0,), _buildClearResultsButton(model)])
                   : Container(),
             ]),
           ),
@@ -38,30 +38,31 @@ class _DateEditState extends State<DateEdit> {
     );
   }
 
-  _buildFABandCompare(model) {
+ Widget _buildResultsButton(model) {
     return CupertinoButton(
       color: Theme.of(context).buttonColor,
       child: Text('DONE?'),
       onPressed: () {
         String returningValue = model.compareAllIdeas();
-        _buildSnackBar(returningValue);
+        _showResults(returningValue);
       },
     );
   }
 
-  _buildTextInstructions() {
-    return Text('Add Some Ideas');
+  Widget _buildClearResultsButton(model) {
+    return CupertinoButton(
+    child: Icon(CupertinoIcons.delete),
+    onPressed: () {
+      model.clearAllLists();
+      setState(() {
+              
+            });
+    },);
   }
 
-  _buildSnackBar(returningValue) {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+  _showResults(returningValue) {
+    Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) {
       return Results(returningValue);
     }));
-
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-          content: Text(
-              '${returningValue[0].toUpperCase()}${returningValue.substring(1)}')));
   }
 }

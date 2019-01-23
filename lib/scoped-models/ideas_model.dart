@@ -7,6 +7,10 @@ class IdeasModel extends Model {
   List personOneIdeas = [];
   List personTwoIdeas = [];
 
+  // From Selection_Button.dart
+  List resultPersonOne = [];
+  List resultPersonTwo = [];
+
   void addPersonOneIdeas(List personOneIdea) {
     personOneIdeas = personOneIdea;
   }
@@ -14,6 +18,15 @@ class IdeasModel extends Model {
   void addPersonTwoIdeas(List personTwoIdea) {
     personTwoIdeas = personTwoIdea;
     chosenDateIdeas = List.from(personOneIdeas)..addAll(personTwoIdeas);
+  }
+
+  void clearAllLists() {
+    chosenDateIdeas = [];
+    personOneIdeas = [];
+    personTwoIdeas = [];
+    resultPersonOne = [];
+    resultPersonTwo = [];
+    notifyListeners();
   }
 
   String compareAllIdeas() {
@@ -27,16 +40,16 @@ class IdeasModel extends Model {
     //compare shortest list against longest list
 
     if (personOneIdeas.length >= personTwoIdeas.length) {
-      for (int i = 0; i <= personOneIdeas.length-1; i++) {
-        for (int j = 0; j <= personTwoIdeas.length-1; j++) {
+      for (int i = 0; i <= personOneIdeas.length - 1; i++) {
+        for (int j = 0; j <= personTwoIdeas.length - 1; j++) {
           if (personOneIdeas[i] == personTwoIdeas[j]) {
             chosenIdea = personOneIdeas[i];
           }
         }
       }
     } else {
-      for (int i = 0; i <= personTwoIdeas.length-1; i++) {
-        for (int j = 0; j <= personOneIdeas.length-1; j++) {
+      for (int i = 0; i <= personTwoIdeas.length - 1; i++) {
+        for (int j = 0; j <= personOneIdeas.length - 1; j++) {
           if (personTwoIdeas[i] == personOneIdeas[j]) {
             chosenIdea = personTwoIdeas[i];
           }
@@ -45,9 +58,10 @@ class IdeasModel extends Model {
     }
 
     final random = new Random();
-    
+
     if (chosenIdea == null) {
-      chosenIdea = chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
+      chosenIdea =
+          chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
     }
 
     return chosenIdea;

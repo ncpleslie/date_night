@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+
 import '../pages/date_add.dart';
+import '../scoped-models/ideas_model.dart';
 
 class SelectionButton extends StatefulWidget {
   @override
@@ -11,47 +14,46 @@ class SelectionButton extends StatefulWidget {
 }
 
 class _SelectionButtonState extends State<SelectionButton> {
-  List resultPersonOne;
-  List resultPersonTwo;
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _buildPersonOneButton(),
-          SizedBox(
-            width: 30.0,
+    return ScopedModelDescendant(
+      builder: (BuildContext context, Widget widget, IdeasModel model) {
+        return Container(
+          height: 150.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildPersonOneButton(model),
+              SizedBox(
+                width: 30.0,
+              ),
+              _buildPersonTwoButton(model),
+            ],
           ),
-          _buildPersonTwoButton(),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildPersonOneButton() {
+  Widget _buildPersonOneButton(model) {
     return OutlineButton(
       padding: EdgeInsets.all(50.0),
       borderSide: BorderSide(
-        color: resultPersonOne == null
+        color: model.resultPersonOne.isEmpty
             ? Colors.red
             : Theme.of(context).accentColor,
       ),
-      textColor: resultPersonOne == null
-          ? Colors.red
-          : Theme.of(context).accentColor,
-      color: resultPersonOne == null
-          ? Colors.red
-          : Theme.of(context).accentColor,
+      textColor:
+          model.resultPersonOne.isEmpty ? Colors.red : Theme.of(context).accentColor,
+      color:
+          model.resultPersonOne.isEmpty ? Colors.red : Theme.of(context).accentColor,
       onPressed: () {
-        _navigateToEditPersonOne(context);
+        _navigateToEditPersonOne(context, model);
       },
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            resultPersonOne == null
+            model.resultPersonOne.isEmpty
                 ? Icon(Icons.person_add)
                 : Icon(Icons.person),
             Text('Person One')
@@ -59,27 +61,25 @@ class _SelectionButtonState extends State<SelectionButton> {
     );
   }
 
-  Widget _buildPersonTwoButton() {
+  Widget _buildPersonTwoButton(model) {
     return OutlineButton(
       padding: EdgeInsets.all(50.0),
       borderSide: BorderSide(
-        color: resultPersonTwo == null
+        color: model.resultPersonTwo.isEmpty
             ? Colors.red
             : Theme.of(context).accentColor,
       ),
-      textColor: resultPersonTwo == null
-          ? Colors.red
-          : Theme.of(context).accentColor,
-      color: resultPersonTwo == null
-          ? Colors.red
-          : Theme.of(context).accentColor,
+      textColor:
+          model.resultPersonTwo.isEmpty ? Colors.red : Theme.of(context).accentColor,
+      color:
+          model.resultPersonTwo.isEmpty? Colors.red : Theme.of(context).accentColor,
       onPressed: () {
-        _navigateToEditPersonTwo(context);
+        _navigateToEditPersonTwo(context, model);
       },
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            resultPersonTwo == null
+            model.resultPersonTwo.isEmpty
                 ? Icon(Icons.person_add)
                 : Icon(Icons.person),
             Text('Person Two')
@@ -87,15 +87,15 @@ class _SelectionButtonState extends State<SelectionButton> {
     );
   }
 
-  _navigateToEditPersonOne(BuildContext context) async {
-    resultPersonOne = await Navigator.push(context,
+  _navigateToEditPersonOne(BuildContext context, IdeasModel model) async {
+    model.resultPersonOne = await Navigator.push(context,
         CupertinoPageRoute(builder: (BuildContext context) {
       return PersonOneDateEdit();
     }));
   }
 
-  _navigateToEditPersonTwo(BuildContext context) async {
-    resultPersonTwo = await Navigator.push(context,
+  _navigateToEditPersonTwo(BuildContext context, IdeasModel model) async {
+    model.resultPersonTwo = await Navigator.push(context,
         CupertinoPageRoute(builder: (BuildContext context) {
       return PersonOneDateEdit();
     }));
