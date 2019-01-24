@@ -6,17 +6,17 @@ import './pages/home_page.dart';
 import './scoped-models/ideas_model.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(DateNight());
 }
 
-class MyApp extends StatefulWidget {
+class DateNight extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _MyAppState();
+    return _DateNightState();
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _DateNightState extends State<DateNight> {
   final ThemeData _iOSThemeData = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.grey,

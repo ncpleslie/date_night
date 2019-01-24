@@ -1,16 +1,29 @@
-# date_night
+# Date Night
 
-A new Flutter project.
+Date Night is a flutter based cross-platform mobile app designed to make your relationship easier.
 
-## Getting Started
+Can't decide what to have for dinner? 
+Can't choose a movie to watch?
+What you want to do with the last hour before bed?
 
-This project is a starting point for a Flutter application.
+Date Night is there to help
 
-A few resources to get you started if this is your first Flutter project:
+# Key Features:
+  - See dates happening around you
+  - Enter in your date ideas, and Date Night will pick the right one for you
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+# New Features!
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+  - Automatically uploads ideas to Firebase so other couples can get help deciding
+
+### Tech
+
+Dillinger uses a number of open source projects to work properly:
+
+* [Dart] - A language optimized for client-side development for web and mobile.
+* [Flutter] - Google's mobile UI framework for crafting high-quality native experiences on iOS and Android 
+* [Firebase] - Google's mobile platform that helps you quickly develop high-quality apps 
+
+   [Dart]: <https://www.dartlang.org/>
+   [Flutter]: <https://flutter.io/>
+   [Firebase]: <https://firebase.google.com/>
