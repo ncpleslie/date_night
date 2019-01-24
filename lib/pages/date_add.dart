@@ -194,7 +194,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     isDefaultAction: true,
                     onPressed: () {
                       if (_textController.text.isNotEmpty) {
-                        String ideas = (_textController.text).toLowerCase();
+                        String ideas = (_textController.text);
                         _listOfTextStrings.add(ideas);
                         _listOfTextInputs.add(_buildDateIdeaCard());
                         _textController.text = '';

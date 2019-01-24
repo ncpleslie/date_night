@@ -18,6 +18,20 @@ class IdeasModel extends Model {
   // For Final Selection
   String chosenIdea;
 
+  // Loading Indicators
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  // Error Handling
+  bool _errorHandling() {
+    _isLoading = false;
+    notifyListeners();
+    return false;
+  }
+
   void addPersonOneIdeas(List personOneIdea) {
     personOneIdeas = personOneIdea;
   }
@@ -95,8 +109,7 @@ class IdeasModel extends Model {
 
       // Network error-handling
       if (response.statusCode != 200 && response.statusCode != 201) {
-       // return _errorHandling();
-       print(response.statusCode);
+       return _errorHandling();
       }}
       catch (error) {
         print('error');
@@ -104,35 +117,39 @@ class IdeasModel extends Model {
   }
 
   Future<Null> fetchDateIdeas() {
+    _isLoading = true;
+
     return http.get('https://date-night-ios.firebaseio.com/dateideas.json').then<Null>((http.Response response) {
       // Network error-handling
       if (response.statusCode != 200 && response.statusCode != 201) {
-       // return _errorHandling();
-       print(response.statusCode);
-       return null;
+       _errorHandling();
       }
 
       final List fetchedDateIdeas = [];
-      final Map dateIdeasListData = json.decode(response.body);
+      final Map<String, dynamic> dateIdeasListData = json.decode(response.body);
 
       if (dateIdeasListData == null) {
+        _errorHandling();
         return null;
       }
 
-      DateIdeas dateIdeas;
-
-      dateIdeasListData.forEach((dateId, dateData) {
-        dateData.forEach((chosenDate, listOfDates) {
-          dateIdeas = DateIdeas(
+      dateIdeasListData.forEach((String dateId, dynamic dateData) {
+         final DateIdeas dateIdeas = DateIdeas(
             id: dateId,
-            chosenDate: chosenDate,
-            otherDates: listOfDates
-          );
-        });
+            chosenDate: dateData['chosenDate'],
+            otherDates: dateData['otherIdeas']
+        );
         
         fetchedDateIdeas.add(dateIdeas);
       });
       dateIdeasList = fetchedDateIdeas;
+      _isLoading = false;
+      notifyListeners();
+    }).catchError((error){
+      _errorHandling();
+      return;
     });
   }
+
+
 }

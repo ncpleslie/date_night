@@ -1,7 +1,7 @@
 class DateIdeas {
   final String id;
   final String chosenDate;
-  final otherDates;
+  final List otherDates;
 
   DateIdeas({this.id, this.chosenDate, this.otherDates});
 }
