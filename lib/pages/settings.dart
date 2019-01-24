@@ -5,22 +5,21 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Settings'),
-      ),
-      child: Container(
-          child: Column(
-        children: <Widget>[
-          SizedBox(height: 100.0,),
-          CupertinoButton(
-            color: CupertinoColors.activeBlue,
-            child: Text('Change Theme'),
-            onPressed: () {
-              ;
-            },
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Settings'),
+        ),
+        child: Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Created By Nick Leslie'),
+                Text('All Rights Reserved'),
+                Text('©')
+              ],
+            ),
           ),
-        ],
-      )),
-    );
+        ));
   }
 }

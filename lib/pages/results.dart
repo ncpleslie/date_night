@@ -7,16 +7,16 @@ class Results extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Opacity(
-      opacity: 0.85,
-      child: CupertinoAlertDialog(
-        content: Container(
-          height: MediaQuery.of(context).size.height * 0.50,
-          width: MediaQuery.of(context).size.width * 0.70,
+    return Material(
+      type: MaterialType.transparency,
+      child: CupertinoPopupSurface(
+        isSurfacePainted: false,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.70,
+          width: MediaQuery.of(context).size.width * 0.80,
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
                   result.toUpperCase(),
@@ -25,8 +25,21 @@ class Results extends StatelessWidget {
                 SizedBox(
                   height: 50.0,
                 ),
-                Text('Sounds Like A Good Idea To Me',
-                    style: TextStyle(fontSize: 24.0))
+                Text(
+                  'Sounds Like A Good Idea To Me',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                  ),
+                  softWrap: true,
+                ),
+                CupertinoDialogAction(
+                  child: Text('Woo! Let\'s Do This'),
+                  isDefaultAction: true,
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop("Continue");
+                  },
+                )
               ],
             ),
           ),

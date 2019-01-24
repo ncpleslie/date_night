@@ -71,12 +71,10 @@ class _DateEditState extends State<DateEdit> {
         context: context,
         builder: (BuildContext context) {
           return Center(
+            widthFactor: MediaQuery.of(context).size.width * 0.90,
+            heightFactor: MediaQuery.of(context).size.height * 0.90,
             child: Results(returningValue),
           );
         });
-    /* Navigator.push(context, CupertinoPageRoute(
-      builder: (BuildContext context) {
-      return Results(returningValue);
-    })); */
   }
 }
