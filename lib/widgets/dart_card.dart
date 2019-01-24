@@ -9,24 +9,46 @@ class DateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String otherDates = dateIdeas.otherDates.join(', ');
     return Card(
+      margin: EdgeInsets.all(10.0),
       child: SizedBox(
-        height: 100.0,
+        height: 70.0,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Winning Idea: ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Row(
+              children: <Widget>[
+                Text(
+                  'Winning Idea: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Flexible(
+                    child: Text(
+                  dateIdeas.chosenDate,
+                  softWrap: true,
+                  maxLines: 2,
+                )),
+              ],
             ),
-            Text(dateIdeas.chosenDate),
             SizedBox(
               height: 10.0,
             ),
-            Text(
-              'Other Ideas: ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Row(
+              children: <Widget>[
+                Text(
+                  'Other Ideas: ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Flexible(
+                    child: Text(
+                  otherDates,
+                  softWrap: true,
+                  maxLines: 1,
+                )),
+              ],
             ),
-            Text(otherDates),
           ],
         ),
       ),

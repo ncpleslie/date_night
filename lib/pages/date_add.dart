@@ -124,45 +124,46 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Column(
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              alignment: FractionalOffset.topCenter,
-              child: count == 0
-                  ? Container()
-                  : CupertinoButton(
-                      color: Theme.of(context).buttonColor,
-                      child: Text('Finished?'),
-                      padding: EdgeInsets.symmetric(horizontal: 150.0),
-                      onPressed: () {
-                        if (_listOfTextStrings.length != 0) {
-                          if (model.personOneIdeas.length == 0) {
-                            model.addPersonOneIdeas(_listOfTextStrings);
-                          } else {
-                            model.addPersonTwoIdeas(_listOfTextStrings);
-                          }
-                          Navigator.pop(context, _listOfTextStrings);
-                        } else {
-                          // If user doesn't enter anything
-                          Scaffold.of(context)
-                            ..removeCurrentSnackBar()
-                            ..showSnackBar(SnackBar(
-                                content: Text('Please Enter Some Ideas')));
-                        }
-                      },
-                    ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            FloatingActionButton(
-              backgroundColor: Theme.of(context).buttonColor,
-              elevation: 0,
-              child: Icon(Icons.add),
-              onPressed: () {
-                _showInput();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: <Widget>[
+                Padding(padding: EdgeInsets.all(10.0),),
+                Container(
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).buttonColor,
+                    elevation: 0,
+                    child: Icon(Icons.add, size: 30),
+                    onPressed: () {
+                      _showInput();
+                    },
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10.0),),
+                // Move On Button
+                Container(
+                  child: count == 0
+                      ? Container()
+                      : FloatingActionButton(
+                          backgroundColor: Theme.of(context).buttonColor,
+                          elevation: 0,
+                          child: Icon(CupertinoIcons.check_mark, size: 50,),
+                          onPressed: () {
+                            if (_listOfTextStrings.length != 0) {
+                              if (model.personOneIdeas.length == 0) {
+                                model.addPersonOneIdeas(_listOfTextStrings);
+                              } else {
+                                model.addPersonTwoIdeas(_listOfTextStrings);
+                              }
+                              Navigator.pop(context, _listOfTextStrings);
+                            }
+                          },
+                        ),
+                ),
+              ],
             )
+            // Add More Ideas Button
           ],
         );
       },
@@ -222,7 +223,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
 
 // Bug fix for AlertDialogs being covered with Software Keyboard
 // https://stackoverflow.com/questions/46841637/show-a-text-field-dialog-without-being-covered-by-keyboard
-// 
+//
 class _SystemPadding extends StatelessWidget {
   final Widget child;
 

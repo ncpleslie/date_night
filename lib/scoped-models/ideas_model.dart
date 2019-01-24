@@ -54,7 +54,7 @@ class IdeasModel extends Model {
   List dateIdeasList = [];
 
   List get displayedIdeas {
-   return List.from(dateIdeasList);
+    return List.from(dateIdeasList);
   }
 
   String compareAllIdeas() {
@@ -89,6 +89,15 @@ class IdeasModel extends Model {
           chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
     }
 
+    // Remove Dupes
+    // Called twice because it could be in there twice
+    if (chosenDateIdeas.contains(chosenIdea)) {
+      chosenDateIdeas.remove(chosenIdea);
+      if (chosenDateIdeas.contains(chosenIdea)) {
+        chosenDateIdeas.remove(chosenIdea);
+      }
+    }
+
     //Once all done
     // Upload data
     uploadDateIdeas();
@@ -98,7 +107,7 @@ class IdeasModel extends Model {
 
   Future<Null> uploadDateIdeas() async {
     final Map<String, dynamic> dateIdeas = {
-      'chosenDate' : chosenIdea,
+      'chosenDate': chosenIdea,
       'otherIdeas': chosenDateIdeas
     };
 
@@ -109,20 +118,22 @@ class IdeasModel extends Model {
 
       // Network error-handling
       if (response.statusCode != 200 && response.statusCode != 201) {
-       return _errorHandling();
-      }}
-      catch (error) {
-        print('error');
+        return _errorHandling();
       }
+    } catch (error) {
+      print('error');
+    }
   }
 
   Future<Null> fetchDateIdeas() {
     _isLoading = true;
 
-    return http.get('https://date-night-ios.firebaseio.com/dateideas.json').then<Null>((http.Response response) {
+    return http
+        .get('https://date-night-ios.firebaseio.com/dateideas.json')
+        .then<Null>((http.Response response) {
       // Network error-handling
       if (response.statusCode != 200 && response.statusCode != 201) {
-       _errorHandling();
+        _errorHandling();
       }
 
       final List fetchedDateIdeas = [];
@@ -134,22 +145,19 @@ class IdeasModel extends Model {
       }
 
       dateIdeasListData.forEach((String dateId, dynamic dateData) {
-         final DateIdeas dateIdeas = DateIdeas(
+        final DateIdeas dateIdeas = DateIdeas(
             id: dateId,
             chosenDate: dateData['chosenDate'],
-            otherDates: dateData['otherIdeas']
-        );
-        
+            otherDates: dateData['otherIdeas']);
+
         fetchedDateIdeas.add(dateIdeas);
       });
       dateIdeasList = fetchedDateIdeas;
       _isLoading = false;
       notifyListeners();
-    }).catchError((error){
+    }).catchError((error) {
       _errorHandling();
       return;
     });
   }
-
-
 }
