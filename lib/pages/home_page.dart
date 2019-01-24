@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import './dates_around.dart';
 import './date_edit.dart';
+import './settings.dart';
 import '../scoped-models/ideas_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               return DateEdit();
               break;
               case 2:
-              return DatesAroundPage(model);
+              return Settings();
               break;
               default:
               return Container();

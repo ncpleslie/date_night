@@ -21,48 +21,62 @@ class _DateEditState extends State<DateEdit> {
         return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
             middle: Text('Add Some Date Ideas'),
+            trailing: _buildDeleteDataIcon(model),
           ),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-              SelectionButton(),
-              SizedBox(height: 20.0,),
-              model.chosenDateIdeas.length != 0
-                  ? Column(children: <Widget>[_buildResultsButton(model), SizedBox(height: 30.0,), _buildClearResultsButton(model)])
-                  : Container(),
-            ]),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SelectionButton(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  model.chosenDateIdeas.length != 0
+                      ? _buildResultsButton(model)
+                      : Container(),
+                ]),
           ),
         );
       },
     );
   }
 
- Widget _buildResultsButton(model) {
+  Widget _buildDeleteDataIcon(model) {
+    return model.chosenDateIdeas.length != 0
+        ? IconButton(
+            icon: Icon(CupertinoIcons.delete),
+            tooltip: 'Delete',
+            onPressed: () {
+              model.clearAllLists();
+              setState(() {});
+            },
+          )
+        : null;
+  }
+
+  Widget _buildResultsButton(model) {
     return CupertinoButton(
       color: Theme.of(context).buttonColor,
       child: Text('DONE?'),
       onPressed: () {
         String returningValue = model.compareAllIdeas();
         _showResults(returningValue);
+        model.clearAllLists();
       },
     );
   }
 
-  Widget _buildClearResultsButton(model) {
-    return CupertinoButton(
-    child: Icon(CupertinoIcons.delete),
-    onPressed: () {
-      model.clearAllLists();
-      setState(() {
-              
-            });
-    },);
-  }
-
-  _showResults(returningValue) {
-    Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) {
+  Future<Null> _showResults(returningValue) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: Results(returningValue),
+          );
+        });
+    /* Navigator.push(context, CupertinoPageRoute(
+      builder: (BuildContext context) {
       return Results(returningValue);
-    }));
+    })); */
   }
 }

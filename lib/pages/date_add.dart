@@ -132,6 +132,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 Padding(padding: EdgeInsets.all(10.0),),
                 Container(
                   child: FloatingActionButton(
+                    heroTag: 'Add More',
                     backgroundColor: Theme.of(context).buttonColor,
                     elevation: 0,
                     child: Icon(Icons.add, size: 30),
@@ -146,6 +147,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                   child: count == 0
                       ? Container()
                       : FloatingActionButton(
+                        heroTag: 'Continue',
                           backgroundColor: Theme.of(context).buttonColor,
                           elevation: 0,
                           child: Icon(CupertinoIcons.check_mark, size: 50,),

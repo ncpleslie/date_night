@@ -34,15 +34,19 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              trailing: IconButton(icon: Icon(CupertinoIcons.refresh), tooltip: 'Refresh', onPressed: () {
-                _refreshIndicatorKey.currentState.show();
-                model.fetchDateIdeas();
-              },),
+              trailing: _refreshPage(model),
               middle: Text('Dates Around You'),
             ),
             child: _buildDateIdeasList());
       },
     );
+  }
+
+  Widget _refreshPage(model) {
+   return IconButton(icon: Icon(CupertinoIcons.refresh), tooltip: 'Refresh', onPressed: () {
+                _refreshIndicatorKey.currentState.show();
+                model.fetchDateIdeas();
+              },);
   }
 
   Widget _buildDateIdeasList() {

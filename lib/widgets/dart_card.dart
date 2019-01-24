@@ -9,7 +9,7 @@ class DateCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String otherDates = dateIdeas.otherDates.join(', ');
     return Card(
-      margin: EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(20.0),
       child: SizedBox(
         height: 70.0,
         child: Column(
@@ -18,6 +18,8 @@ class DateCard extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
+                SizedBox(width: 10.0),
+                Text('🎉 '),
                 Text(
                   'Winning Idea: ',
                   style: TextStyle(
@@ -37,6 +39,8 @@ class DateCard extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
+                SizedBox(width: 10.0),
+                Text('💔 '),
                 Text(
                   'Other Ideas: ',
                   style: TextStyle(fontWeight: FontWeight.bold),
