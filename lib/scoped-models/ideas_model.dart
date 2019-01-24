@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/date_ideas.dart';
+import '../globals/globals.dart';
 
 class IdeasModel extends Model {
   List chosenDateIdeas = [];
@@ -113,7 +114,7 @@ class IdeasModel extends Model {
 
     try {
       final http.Response response = await http.post(
-          'https://date-night-ios.firebaseio.com/dateideas.json',
+          uploadURi,
           body: json.encode(dateIdeas));
 
       // Network error-handling
@@ -129,7 +130,7 @@ class IdeasModel extends Model {
     _isLoading = true;
 
     return http
-        .get('https://date-night-ios.firebaseio.com/dateideas.json')
+        .get(fetchURi)
         .then<Null>((http.Response response) {
       // Network error-handling
       if (response.statusCode != 200 && response.statusCode != 201) {
