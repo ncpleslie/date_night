@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import "dart:math";
 
 import 'package:giffy_dialog/giffy_dialog.dart';
 
 class Results extends StatelessWidget {
   final String result;
   Results(this.result);
+  final _random = new Random();
+  final List<String> _gifURL =["https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif", "https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif"];
 
   @override
   Widget build(BuildContext context) {
     return Material(
         type: MaterialType.transparency,
         child: NetworkGiffyDialog(
-          imageUrl:
-              "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif",
+          imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
           title: Text(result.toUpperCase(),
               textAlign: TextAlign.center,
               softWrap: true,

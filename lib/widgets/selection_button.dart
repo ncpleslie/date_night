@@ -44,9 +44,7 @@ class _SelectionButtonState extends State<SelectionButton> {
       height: MediaQuery.of(context).size.height * 0.41,
       minWidth: double.infinity,
       textColor: _isPersonOneListFull ? Colors.white : Colors.white,
-      color: _isPersonOneListFull
-          ? Colors.red[700]
-          : Colors.greenAccent[700],
+      color: _isPersonOneListFull ? Colors.red : Colors.greenAccent[700],
       onPressed: () => _isPersonOneListFull
           ? _navigateToEditPersonOne(context, model)
           : null,
@@ -64,7 +62,7 @@ class _SelectionButtonState extends State<SelectionButton> {
       height: MediaQuery.of(context).size.height * 0.41,
       minWidth: double.infinity,
       textColor: _isPersonTwoListFull ? Colors.white : Colors.white,
-      color: _isPersonTwoListFull ? Colors.red[700] : Colors.greenAccent[700],
+      color: _isPersonTwoListFull ? Colors.red : Colors.greenAccent[700],
       onPressed: () => _isPersonTwoListFull
           ? _navigateToEditPersonTwo(context, model)
           : null,

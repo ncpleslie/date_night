@@ -46,7 +46,7 @@ class _DateEditState extends State<DateEdit> {
   Widget _buildAppBar(model) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.deepPurple,
       toolbarOpacity: 0.7,
       actions: <Widget>[
         _buildDeleteDataIcon(model),

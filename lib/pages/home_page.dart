@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           currentPage = position;
         });
       },
+      barBackgroundColor: Colors.deepPurple,
     );
   }
 

@@ -24,7 +24,7 @@ class Settings extends StatelessWidget {
 
   _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.deepPurple,
       toolbarOpacity: 0.7,
       elevation: 0,
     );

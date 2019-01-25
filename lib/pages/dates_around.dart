@@ -18,30 +18,46 @@ class DatesAroundPage extends StatefulWidget {
 }
 
 class _DatesAroundPageState extends State<DatesAroundPage> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
     super.initState();
     widget.model.fetchDateIdeas();
     WidgetsBinding.instance
-      .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
+        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        return Scaffold(
-            appBar: _buildAppBar(model),
-            body: _buildDateIdeasList());
+        return Scaffold(appBar: _buildAppBar(model), body: _buildBackground());
       },
     );
   }
 
-  Widget _buildAppBar(model){
+  Widget _buildBackground() {
+    Color gradientStart = Colors.deepPurple[700];
+    Color gradientEnd = Colors.purple[500];
+
+    return Container(
+      child: _buildDateIdeasList(),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: FractionalOffset(0.0, 0.5),
+            end: FractionalOffset(0.5, 0.0),
+            stops: [0.0, 1.0],
+            colors: [gradientStart, gradientEnd],
+            tileMode: TileMode.clamp),
+      ),
+    );
+  }
+
+  Widget _buildAppBar(model) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.deepPurple,
       toolbarOpacity: 0.7,
       elevation: 0,
       actions: <Widget>[
@@ -51,10 +67,14 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   }
 
   Widget _refreshPage(model) {
-   return IconButton(icon: Icon(CupertinoIcons.refresh), tooltip: 'Refresh', onPressed: () {
-                _refreshIndicatorKey.currentState.show();
-                model.fetchDateIdeas();
-              },);
+    return IconButton(
+      icon: Icon(CupertinoIcons.refresh),
+      tooltip: 'Refresh',
+      onPressed: () {
+        _refreshIndicatorKey.currentState.show();
+        model.fetchDateIdeas();
+      },
+    );
   }
 
   Widget _buildDateIdeasList() {

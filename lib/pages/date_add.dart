@@ -33,35 +33,54 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
-          body:  Column(
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.70,
-                  child: count == 0
-                      ? _forEmptyList()
-                      : ListView.builder(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: targetPadding / 2),
-                          itemCount: _listOfTextInputs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            Widget widget = _buildPageContent(context, index);
-
-                            return widget;
-                          },
-                        ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  child: _buildFAB(),
-                )
-              ],
-            ),
-          
+          body: _buildBackground(targetPadding),
         );
       },
+    );
+  }
+
+  Widget _buildPage(targetPadding) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.05,
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.70,
+          child: count == 0
+              ? _forEmptyList()
+              : ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+                  itemCount: _listOfTextInputs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Widget widget = _buildPageContent(context, index);
+
+                    return widget;
+                  },
+                ),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.20,
+          child: _buildFAB(),
+        )
+      ],
+    );
+  }
+
+  Widget _buildBackground(targetPadding) {
+    Color gradientStart = Colors.deepPurple[700];
+    Color gradientEnd = Colors.purple[500];
+
+    return Container(
+      child: _buildPage(targetPadding),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: FractionalOffset(0.0, 0.5),
+            end: FractionalOffset(0.5, 0.0),
+            stops: [0.0, 1.0],
+            colors: [gradientStart, gradientEnd],
+            tileMode: TileMode.clamp),
+      ),
     );
   }
 
@@ -130,7 +149,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: count != 0 ? EdgeInsets.symmetric(horizontal: 10.0) : EdgeInsets.symmetric(horizontal: 0),
+                  margin: count != 0
+                      ? EdgeInsets.symmetric(horizontal: 10.0)
+                      : EdgeInsets.symmetric(horizontal: 0),
                   child: FloatingActionButton(
                     heroTag: 'Add More',
                     backgroundColor: Theme.of(context).buttonColor,
@@ -176,52 +197,58 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
 
   Future<Null> _showInput() async {
     await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return GestureDetector(
-            // If the user taps outside form boxes then the keyboard is minimized
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: _SystemPadding(
-              child: CupertinoAlertDialog(
-                title: Text('Date Idea?'),
-                content: CupertinoTextField(
-                  textCapitalization: TextCapitalization.sentences,
-                  autocorrect: true,
-                  maxLines: 4,
-                  controller: _textController,
-                  autofocus: true,
-                ),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: Text('Add Idea'),
-                    isDefaultAction: true,
-                    onPressed: () {
-                      if (_textController.text.isNotEmpty) {
-                        String ideas = _textController.text.replaceFirst(RegExp(r"^\s+"), "").replaceFirst(RegExp(r"\s+$"), "");
-                        _listOfTextStrings.add(ideas);
-                        _listOfTextInputs.add(_buildDateIdeaCard());
-                        _textController.text = '';
-                        count++;
-                        Navigator.of(context, rootNavigator: true)
-                            .pop("Continue");
-                        setState(() {});
-                      }
-                    },
-                  ),
-                  CupertinoDialogAction(
-                    child: Text('Discard'),
-                    isDestructiveAction: true,
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop("Discard");
-                    },
-                  )
-                ],
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          // If the user taps outside form boxes then the keyboard is minimized
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _SystemPadding(
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
+              title: Text('Date Idea?'),
+              content: TextField(
+                textCapitalization: TextCapitalization.sentences,
+                autocorrect: true,
+                maxLines: 4,
+                controller: _textController,
+                autofocus: true,
               ),
+              actions: <Widget>[
+                FlatButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                  color: Theme.of(context).primaryColor,
+                  child: Text('Add Idea'),
+                  onPressed: () {
+                    if (_textController.text.isNotEmpty) {
+                      String ideas = _textController.text
+                          .replaceFirst(RegExp(r"^\s+"), "")
+                          .replaceFirst(RegExp(r"\s+$"), "");
+                      _listOfTextStrings.add(ideas);
+                      _listOfTextInputs.add(_buildDateIdeaCard());
+                      _textController.text = '';
+                      count++;
+                      Navigator.of(context, rootNavigator: true)
+                          .pop("Continue");
+                      setState(() {});
+                    }
+                  },
+                ),
+                FlatButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                  color: Theme.of(context).primaryColor,
+                  child: Text('Discard'),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop("Discard");
+                  },
+                )
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
