@@ -33,7 +33,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
-          body: _buildBackground(targetPadding),
+          body:_buildBackground(targetPadding),
         );
       },
     );
@@ -42,11 +42,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   Widget _buildPage(targetPadding) {
     return Column(
       children: <Widget>[
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.05,
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.70,
+        SizedBox(height: 40.0,),
+        Expanded(
+          flex: 6,
           child: count == 0
               ? _forEmptyList()
               : ListView.builder(
@@ -59,8 +57,8 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                   },
                 ),
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.20,
+        Flexible(
+          flex: 1,
           child: _buildFAB(),
         )
       ],
@@ -204,47 +202,47 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: _SystemPadding(
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
-              title: Text('Date Idea?'),
-              content: TextField(
-                textCapitalization: TextCapitalization.sentences,
-                autocorrect: true,
-                maxLines: 4,
-                controller: _textController,
-                autofocus: true,
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                  color: Theme.of(context).primaryColor,
-                  child: Text('Add Idea'),
-                  onPressed: () {
-                    if (_textController.text.isNotEmpty) {
-                      String ideas = _textController.text
-                          .replaceFirst(RegExp(r"^\s+"), "")
-                          .replaceFirst(RegExp(r"\s+$"), "");
-                      _listOfTextStrings.add(ideas);
-                      _listOfTextInputs.add(_buildDateIdeaCard());
-                      _textController.text = '';
-                      count++;
-                      Navigator.of(context, rootNavigator: true)
-                          .pop("Continue");
-                      setState(() {});
-                    }
-                  },
-                ),
-                FlatButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                  color: Theme.of(context).primaryColor,
-                  child: Text('Discard'),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop("Discard");
-                  },
-                )
-              ],
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            title: Text('Date Idea?'),
+            content: TextField(
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              maxLines: 3,
+              controller: _textController,
+              autofocus: true,
             ),
+            actions: <Widget>[
+              FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                color: Theme.of(context).primaryColor,
+                child: Text('Add Idea'),
+                onPressed: () {
+                  if (_textController.text.isNotEmpty) {
+                    String ideas = _textController.text
+                        .replaceFirst(RegExp(r"^\s+"), "")
+                        .replaceFirst(RegExp(r"\s+$"), "");
+                    _listOfTextStrings.add(ideas);
+                    _listOfTextInputs.add(_buildDateIdeaCard());
+                    _textController.text = '';
+                    count++;
+                    Navigator.of(context, rootNavigator: true).pop("Continue");
+                    setState(() {});
+                  }
+                },
+              ),
+              FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                color: Theme.of(context).primaryColor,
+                child: Text('Discard'),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop("Discard");
+                },
+              )
+            ],
           ),
         );
       },

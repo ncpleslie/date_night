@@ -41,7 +41,7 @@ class _SelectionButtonState extends State<SelectionButton> {
 
   Widget _buildPersonOneButton(model, _isPersonOneListFull) {
     return MaterialButton(
-      height: MediaQuery.of(context).size.height * 0.41,
+      height: MediaQuery.of(context).size.height * 0.413,
       minWidth: double.infinity,
       textColor: _isPersonOneListFull ? Colors.white : Colors.white,
       color: _isPersonOneListFull ? Colors.red : Colors.greenAccent[700],
@@ -59,7 +59,7 @@ class _SelectionButtonState extends State<SelectionButton> {
 
   Widget _buildPersonTwoButton(model, _isPersonTwoListFull) {
     return MaterialButton(
-      height: MediaQuery.of(context).size.height * 0.41,
+      height: MediaQuery.of(context).size.height * 0.4,
       minWidth: double.infinity,
       textColor: _isPersonTwoListFull ? Colors.white : Colors.white,
       color: _isPersonTwoListFull ? Colors.red : Colors.greenAccent[700],
