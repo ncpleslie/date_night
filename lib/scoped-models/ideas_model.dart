@@ -69,7 +69,7 @@ class IdeasModel extends Model {
     if (personOneIdeas.length >= personTwoIdeas.length) {
       for (int i = 0; i <= personOneIdeas.length - 1; i++) {
         for (int j = 0; j <= personTwoIdeas.length - 1; j++) {
-          if (personOneIdeas[i] == personTwoIdeas[j]) {
+          if (personOneIdeas[i].toLowerCase() == personTwoIdeas[j].toLowerCase()) {
             chosenIdea = personOneIdeas[i];
           }
         }
@@ -77,7 +77,7 @@ class IdeasModel extends Model {
     } else {
       for (int i = 0; i <= personTwoIdeas.length - 1; i++) {
         for (int j = 0; j <= personOneIdeas.length - 1; j++) {
-          if (personTwoIdeas[i] == personOneIdeas[j]) {
+          if (personTwoIdeas[i].toLowerCase() == personOneIdeas[j].toLowerCase()) {
             chosenIdea = personTwoIdeas[i];
           }
         }
