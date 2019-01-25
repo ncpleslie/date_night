@@ -16,9 +16,10 @@ class DatesAround extends StatelessWidget {
 
     Widget _buildDateList(List<dynamic> dateIdeas) {
       Widget dateCards;
+      List<dynamic> dateIdeasReverse = dateIdeas.reversed.toList();
       if (dateIdeas.length > 0) {
         dateCards = ListView.builder(
-          itemBuilder: (BuildContext context, int index) => DateCard(dateIdeas[index]),
+          itemBuilder: (BuildContext context, int index) => DateCard(dateIdeasReverse[index]),
           itemCount: dateIdeas.length,
         );
 
