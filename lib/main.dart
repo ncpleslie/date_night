@@ -20,7 +20,7 @@ class DateNight extends StatefulWidget {
 class _DateNightState extends State<DateNight> {
   final ThemeData _iOSThemeData = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.grey,
+    primarySwatch: Colors.white,
     accentColor: Colors.blue,
     buttonColor: CupertinoColors.activeBlue,
   );

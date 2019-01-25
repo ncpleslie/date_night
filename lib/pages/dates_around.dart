@@ -32,13 +32,19 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        return CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              trailing: _refreshPage(model),
-              middle: Text('Dates Around You'),
-            ),
-            child: _buildDateIdeasList());
+        return Scaffold(
+            appBar: _buildAppBar(model),
+            body: _buildDateIdeasList());
       },
+    );
+  }
+
+  Widget _buildAppBar(model){
+    return AppBar(
+      elevation: 0,
+      actions: <Widget>[
+        _refreshPage(model),
+      ],
     );
   }
 

@@ -40,6 +40,7 @@ class IdeasModel extends Model {
   void addPersonTwoIdeas(List personTwoIdea) {
     personTwoIdeas = personTwoIdea;
     chosenDateIdeas = List.from(personOneIdeas)..addAll(personTwoIdeas);
+    chosenDateIdeas.shuffle();
   }
 
   void clearAllLists() {
@@ -92,6 +93,7 @@ class IdeasModel extends Model {
 
     // Remove Dupes
     // Called twice because it could be in there twice
+  
     if (chosenDateIdeas.contains(chosenIdea)) {
       chosenDateIdeas.remove(chosenIdea);
       if (chosenDateIdeas.contains(chosenIdea)) {
@@ -144,7 +146,6 @@ class IdeasModel extends Model {
         _errorHandling();
         return null;
       }
-
       dateIdeasListData.forEach((String dateId, dynamic dateData) {
         final DateIdeas dateIdeas = DateIdeas(
             id: dateId,

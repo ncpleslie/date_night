@@ -32,33 +32,34 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     final double targetPadding = deviceWidth - targetWidth;
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
-        return CupertinoPopupSurface(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.70,
-                child: count == 0
-                    ? _forEmptyList()
-                    : ListView.builder(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: targetPadding / 2),
-                        itemCount: _listOfTextInputs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Widget widget = _buildPageContent(context, index);
+        return Scaffold(
+          body:  Column(
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.70,
+                  child: count == 0
+                      ? _forEmptyList()
+                      : ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: targetPadding / 2),
+                          itemCount: _listOfTextInputs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Widget widget = _buildPageContent(context, index);
 
-                          return widget;
-                        },
-                      ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.20,
-                child: _buildFAB(),
-              )
-            ],
-          ),
+                            return widget;
+                          },
+                        ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  child: _buildFAB(),
+                )
+              ],
+            ),
+          
         );
       },
     );
@@ -127,10 +128,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: <Widget>[
-                Padding(padding: EdgeInsets.all(10.0),),
                 Container(
+                  margin: count != 0 ? EdgeInsets.symmetric(horizontal: 10.0) : EdgeInsets.symmetric(horizontal: 0),
                   child: FloatingActionButton(
                     heroTag: 'Add More',
                     backgroundColor: Theme.of(context).buttonColor,
@@ -141,16 +141,18 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     },
                   ),
                 ),
-                Padding(padding: EdgeInsets.all(10.0),),
                 // Move On Button
                 Container(
                   child: count == 0
                       ? Container()
                       : FloatingActionButton(
-                        heroTag: 'Continue',
+                          heroTag: 'Continue',
                           backgroundColor: Theme.of(context).buttonColor,
                           elevation: 0,
-                          child: Icon(CupertinoIcons.check_mark, size: 50,),
+                          child: Icon(
+                            CupertinoIcons.check_mark,
+                            size: 50,
+                          ),
                           onPressed: () {
                             if (_listOfTextStrings.length != 0) {
                               if (model.personOneIdeas.length == 0) {

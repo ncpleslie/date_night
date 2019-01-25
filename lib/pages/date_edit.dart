@@ -18,31 +18,45 @@ class _DateEditState extends State<DateEdit> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
-        return CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(
-            middle: Text('Add Some Date Ideas'),
-            trailing: _buildDeleteDataIcon(model),
-          ),
-          child: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SelectionButton(),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  model.chosenDateIdeas.length != 0
-                      ? _buildResultsButton(model)
-                      : Container(),
-                ]),
-          ),
+        return Scaffold(
+          appBar: _buildAppBar(model),
+          body: _buildSelectionButtons(model),
+          floatingActionButton: _buildFAB(model),
         );
       },
     );
   }
 
-  Widget _buildDeleteDataIcon(model) {
+  Widget _buildSelectionButtons(model) {
+    return Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SelectionButton(),
+          ]),
+    );
+  }
+
+  Widget _buildFAB(model) {
     return model.chosenDateIdeas.length != 0
+        ? _buildResultsButton(model)
+        : Container();
+  }
+
+  Widget _buildAppBar(model) {
+    return AppBar(
+      elevation: 0,
+      actions: <Widget>[
+        _buildDeleteDataIcon(model),
+      ],
+    );
+  }
+
+  Widget _buildDeleteDataIcon(model) {
+    bool areListsEmpty = model.chosenDateIdeas.isEmpty ||
+        model.resultPersonOne.isEmpty ||
+        model.resultPersonTwo.isEmpty;
+    return areListsEmpty
         ? IconButton(
             icon: Icon(CupertinoIcons.delete),
             tooltip: 'Delete',
@@ -51,13 +65,15 @@ class _DateEditState extends State<DateEdit> {
               setState(() {});
             },
           )
-        : null;
+        : Container();
   }
 
   Widget _buildResultsButton(model) {
-    return CupertinoButton(
-      color: Theme.of(context).buttonColor,
-      child: Text('DONE?'),
+    return FloatingActionButton(
+      child: Icon(
+        CupertinoIcons.right_chevron,
+        size: 40,
+      ),
       onPressed: () {
         String returningValue = model.compareAllIdeas();
         _showResults(returningValue);
