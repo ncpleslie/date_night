@@ -7,7 +7,8 @@ class DateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String otherDates = dateIdeas.otherDates.join(', ');
+    String otherDates =
+        dateIdeas.otherDates != null ? dateIdeas.otherDates.join(', ') : null;
     return Card(
       margin: EdgeInsets.all(20.0),
       child: SizedBox(
@@ -34,25 +35,29 @@ class DateCard extends StatelessWidget {
                 )),
               ],
             ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              children: <Widget>[
-                SizedBox(width: 10.0),
-                Text('💔 '),
-                Text(
-                  'Other Ideas: ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Flexible(
-                    child: Text(
-                  otherDates,
-                  softWrap: true,
-                  maxLines: 1,
-                )),
-              ],
-            ),
+            otherDates != null
+                ? SizedBox(
+                    height: 10.0,
+                  )
+                : Container(),
+            otherDates != null
+                ? Row(
+                    children: <Widget>[
+                      SizedBox(width: 10.0),
+                      Text('💔 '),
+                      Text(
+                        'Other Ideas: ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Flexible(
+                          child: Text(
+                        otherDates,
+                        softWrap: true,
+                        maxLines: 1,
+                      )),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),

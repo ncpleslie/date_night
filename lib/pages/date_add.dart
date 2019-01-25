@@ -199,7 +199,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     isDefaultAction: true,
                     onPressed: () {
                       if (_textController.text.isNotEmpty) {
-                        String ideas = (_textController.text);
+                        String ideas = _textController.text.replaceFirst(RegExp(r"^\s+"), "").replaceFirst(RegExp(r"\s+$"), "");
                         _listOfTextStrings.add(ideas);
                         _listOfTextInputs.add(_buildDateIdeaCard());
                         _textController.text = '';

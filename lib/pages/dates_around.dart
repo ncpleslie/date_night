@@ -41,6 +41,8 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
 
   Widget _buildAppBar(model){
     return AppBar(
+      backgroundColor: Colors.white,
+      toolbarOpacity: 0.7,
       elevation: 0,
       actions: <Widget>[
         _refreshPage(model),

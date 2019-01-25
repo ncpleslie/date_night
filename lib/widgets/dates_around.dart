@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../models/date_ideas.dart';
 import '../scoped-models/ideas_model.dart';
-import './dart_card.dart';
+import './date_card.dart';
 
 class DatesAround extends StatelessWidget {
   @override
