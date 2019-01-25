@@ -15,6 +15,10 @@ Date Night is there to help
 # New Features!
 
   - Automatically uploads ideas to Firebase so other couples can get help deciding
+  
+# To Do
+  
+  - The ability to 'Star' your favorite idea
 
 ### Tech
 
