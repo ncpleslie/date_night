@@ -33,7 +33,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
-          body:_buildBackground(targetPadding),
+          body: _buildBackground(targetPadding),
         );
       },
     );
@@ -42,7 +42,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   Widget _buildPage(targetPadding) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 40.0,),
+        SizedBox(
+          height: 40.0,
+        ),
         Expanded(
           flex: 6,
           child: count == 0
@@ -100,6 +102,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   Widget _buildDateIdeaCard() {
     final Key _key = Key(_listOfTextStrings[count]);
     String title = _listOfTextStrings[count].toString();
+    bool buttonPress = false;
     return Dismissible(
       key: _key,
       background: Container(
@@ -108,12 +111,13 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
       onDismissed: (DismissDirection direction) {
         if (direction == DismissDirection.endToStart ||
             direction == DismissDirection.startToEnd) {
-          count--;
           String foundValue = _key.toString().split("'")[1];
-
+          print(_listOfTextInputs);
           setState(() {
+            _listOfTextInputs.removeAt(count);
             _listOfTextStrings.remove(foundValue);
           });
+          count--;
         }
       },
       child: Card(
@@ -125,10 +129,22 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           ),
           ButtonTheme.bar(
             child: ButtonBar(children: [
-              FlatButton(
-                child: Icon(Icons.delete),
+              IconButton(
                 onPressed: () {
+                  buttonPress ? buttonPress = false : buttonPress = true;
                   setState(() {});
+                },
+                icon: Icon(buttonPress ? Icons.star_border : Icons.star),
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  String foundValue = _key.toString().split("'")[1];
+                  setState(() {
+                    _listOfTextInputs.removeAt(count);
+                    _listOfTextStrings.remove(foundValue);
+                  });
+                  count--;
                 },
               ),
             ]),
