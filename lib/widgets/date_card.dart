@@ -8,19 +8,22 @@ class DateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final random = new Random();
+    final random = Random();
     final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
 
     String _otherDates =
-        dateIdeas.otherDates != null ? dateIdeas.otherDates.join(', ') : null;
+        dateIdeas.otherIdeas != null ? dateIdeas.otherIdeas.join(', ') : null;
+
     return Container(
         height: 200,
         child: Stack(
           children: <Widget>[
+            // Words in card
             Positioned(
               left: 20.0,
               child: _cardWithWords(_otherDates, context),
             ),
+            // Emoji over the top
             Positioned(
               top: 15.0,
               left: 30.0,
@@ -52,7 +55,7 @@ class DateCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    dateIdeas.chosenDate.toUpperCase(),
+                    dateIdeas.chosenDate.toString().toUpperCase(),
                     softWrap: true,
                     maxLines: 2,
                     textAlign: TextAlign.center,
@@ -82,6 +85,7 @@ class DateCard extends StatelessWidget {
                             ]),
                         Text(
                           otherDates,
+                          overflow: TextOverflow.ellipsis,
                           softWrap: false,
                           maxLines: 1,
                         ),

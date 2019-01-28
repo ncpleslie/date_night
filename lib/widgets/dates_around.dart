@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
@@ -18,14 +19,19 @@ class DatesAround extends StatelessWidget {
 
   Widget _buildDateList(List<dynamic> dateIdeas) {
     Widget dateCards = Container();
-    List<dynamic> dateIdeasReverse = dateIdeas.reversed.toList();
     if (dateIdeas.length > 0) {
-      dateCards = ListView.builder(
-        itemBuilder: (BuildContext context, int index) =>
-            DateCard(dateIdeasReverse[index]),
-        itemCount: dateIdeas.length,
-      );
+      dateCards = _buildListView(dateIdeas);
     }
     return dateCards;
+  }
+
+  _buildListView(dateIdeas) {
+    List<dynamic> dateIdeasReverse = dateIdeas.reversed.toList();
+    return
+     ListView.builder(
+      itemBuilder: (BuildContext context, int index) =>
+          DateCard(dateIdeasReverse[index]),
+      itemCount: dateIdeas.length,
+    );
   }
 }

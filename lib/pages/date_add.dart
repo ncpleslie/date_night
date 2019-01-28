@@ -112,9 +112,8 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
         if (direction == DismissDirection.endToStart ||
             direction == DismissDirection.startToEnd) {
           String foundValue = _key.toString().split("'")[1];
-          print(_listOfTextInputs);
           setState(() {
-            _listOfTextInputs.removeAt(count);
+            _listOfTextInputs.removeAt(count - 1);
             _listOfTextStrings.remove(foundValue);
           });
           count--;
@@ -134,14 +133,14 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                   buttonPress ? buttonPress = false : buttonPress = true;
                   setState(() {});
                 },
-                icon: Icon(buttonPress ? Icons.star_border : Icons.star),
+                icon: buttonPress ? Icon(Icons.star_border) : Icon(Icons.star),
               ),
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   String foundValue = _key.toString().split("'")[1];
                   setState(() {
-                    _listOfTextInputs.removeAt(count);
+                    _listOfTextInputs.removeAt(count - 1);
                     _listOfTextStrings.remove(foundValue);
                   });
                   count--;
@@ -160,12 +159,10 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
         return Column(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: count != 0 ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
               children: <Widget>[
+                // Add more ideas button
                 Container(
-                  margin: count != 0
-                      ? EdgeInsets.symmetric(horizontal: 10.0)
-                      : EdgeInsets.symmetric(horizontal: 0),
                   child: FloatingActionButton(
                     heroTag: 'Add More',
                     backgroundColor: Theme.of(context).buttonColor,

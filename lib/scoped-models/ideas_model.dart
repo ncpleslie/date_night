@@ -1,4 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import "dart:math";
@@ -70,7 +71,8 @@ class IdeasModel extends Model {
     if (personOneIdeas.length >= personTwoIdeas.length) {
       for (int i = 0; i <= personOneIdeas.length - 1; i++) {
         for (int j = 0; j <= personTwoIdeas.length - 1; j++) {
-          if (personOneIdeas[i].toLowerCase() == personTwoIdeas[j].toLowerCase()) {
+          if (personOneIdeas[i].toLowerCase() ==
+              personTwoIdeas[j].toLowerCase()) {
             chosenIdea = personOneIdeas[i];
           }
         }
@@ -78,7 +80,8 @@ class IdeasModel extends Model {
     } else {
       for (int i = 0; i <= personTwoIdeas.length - 1; i++) {
         for (int j = 0; j <= personOneIdeas.length - 1; j++) {
-          if (personTwoIdeas[i].toLowerCase() == personOneIdeas[j].toLowerCase()) {
+          if (personTwoIdeas[i].toLowerCase() ==
+              personOneIdeas[j].toLowerCase()) {
             chosenIdea = personTwoIdeas[i];
           }
         }
@@ -94,7 +97,7 @@ class IdeasModel extends Model {
 
     // Remove Dupes
     // Called twice because it could be in there twice
-  
+
     if (chosenDateIdeas.contains(chosenIdea)) {
       chosenDateIdeas.remove(chosenIdea);
       if (chosenDateIdeas.contains(chosenIdea)) {
@@ -110,57 +113,48 @@ class IdeasModel extends Model {
   }
 
   Future<Null> uploadDateIdeas() async {
+    
     final Map<String, dynamic> dateIdeas = {
       'chosenDate': chosenIdea,
-      'otherIdeas': chosenDateIdeas
+      'otherIdeas': chosenDateIdeas,
+      'uploadTime': DateTime.now()
     };
 
-    try {
-      final http.Response response = await http.post(
-          uploadURi,
-          body: json.encode(dateIdeas));
-
-      // Network error-handling
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        return _errorHandling();
-      }
-    } catch (error) {
-      print('error');
-    }
+    Firestore.instance.runTransaction(
+      (Transaction transaction) async {
+        CollectionReference collectionRef =
+            Firestore.instance.collection('date_ideas');
+        await collectionRef.document().setData(dateIdeas);
+      },
+    );
   }
 
-  Future<Null> fetchDateIdeas() {
+  Future<Null> fetchDateIdeas() async {
     _isLoading = true;
-
-    return http
-        .get(fetchURi)
-        .then<Null>((http.Response response) {
-      // Network error-handling
-      if (response.statusCode != 200 && response.statusCode != 201) {
+    try {
+      CollectionReference collectionRef =
+          Firestore.instance.collection('date_ideas');
+      final snapshot = await collectionRef.getDocuments();
+      if (snapshot.documents.isNotEmpty) {
         _errorHandling();
       }
 
       final List fetchedDateIdeas = [];
-      final Map<String, dynamic> dateIdeasListData = json.decode(response.body);
 
-      if (dateIdeasListData == null) {
-        _errorHandling();
-        return null;
-      }
-      dateIdeasListData.forEach((String dateId, dynamic dateData) {
-        final DateIdeas dateIdeas = DateIdeas(
-            id: dateId,
-            chosenDate: dateData['chosenDate'],
-            otherDates: dateData['otherIdeas']);
+      snapshot.documents.forEach(
+        (dynamic dateData) {
+          final DateIdeas dateIdeas = DateIdeas(
+              chosenDate: dateData['chosenDate'],
+              otherIdeas: dateData['otherIdeas']);
 
-        fetchedDateIdeas.add(dateIdeas);
-      });
+          fetchedDateIdeas.add(dateIdeas);
+        },
+      );
       dateIdeasList = fetchedDateIdeas;
       _isLoading = false;
       notifyListeners();
-    }).catchError((error) {
+    } catch (error) {
       _errorHandling();
-      return;
-    });
+    }
   }
 }
