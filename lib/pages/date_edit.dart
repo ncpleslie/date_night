@@ -20,21 +20,15 @@ class _DateEditState extends State<DateEdit> {
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
           appBar: _buildAppBar(model),
-          body: _buildSelectionButtons(model),
+          body: _buildSelectionButtons(),
           floatingActionButton: _buildFAB(model),
         );
       },
     );
   }
 
-  Widget _buildSelectionButtons(model) {
-    return Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SelectionButton(),
-          ]),
-    );
+  Widget _buildSelectionButtons() {
+    return SelectionButton();
   }
 
   Widget _buildFAB(model) {

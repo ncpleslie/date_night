@@ -12,8 +12,12 @@ class Results extends StatelessWidget {
     "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif",
     "https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif"
   ];
-final List<String> _listOfAltText = ['Sounds Good To Me', 'Excellent Idea', 'Great Thinking, Team!', 'Ooooooh Yeah! I Love How You Think'];
-
+  final List<String> _listOfAltText = [
+    'Sounds Good To Me',
+    'Excellent Idea',
+    'Great Thinking, Team!',
+    'Ooooooh Yeah! I Love How You Think'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +26,33 @@ final List<String> _listOfAltText = ['Sounds Good To Me', 'Excellent Idea', 'Gre
       type: MaterialType.transparency,
       child: NetworkGiffyDialog(
           imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
-          title: Text(result.toUpperCase(),
-              textAlign: TextAlign.center,
-              softWrap: true,
-              style: TextStyle(
-                  fontSize: _fontSizeBasedOnTextLength,
-                  fontWeight: FontWeight.w600)),
-                  description: Text(_listOfAltText[_random.nextInt(_listOfAltText.length)], softWrap: true, style: TextStyle(fontSize: _fontSizeBasedOnTextLength / 2),),
+          title: Text(
+            result.toUpperCase(),
+            textAlign: TextAlign.center,
+            softWrap: true,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: _fontSizeBasedOnTextLength,
+                fontWeight: FontWeight.w600),
+          ),
+          description: Text(
+            _listOfAltText[_random.nextInt(_listOfAltText.length)],
+            softWrap: true,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: _fontSizeBasedOnTextLength / 2,
+            ),
+          ),
           buttonOkColor: Theme.of(context).primaryColor,
-          buttonOkText: Text('Go Do It'),
-          onOkButtonPressed: () => Navigator.of(context, rootNavigator: true).pop("Continue")),
+          buttonOkText: Text(
+            'Go Do It',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          onOkButtonPressed: () =>
+              Navigator.of(context, rootNavigator: true).pop("Continue")),
     );
   }
 }

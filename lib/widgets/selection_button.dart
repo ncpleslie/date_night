@@ -22,56 +22,67 @@ class _SelectionButtonState extends State<SelectionButton> {
             model.resultPersonOne == null || model.resultPersonOne.isEmpty;
         bool _isPersonTwoListFull =
             model.resultPersonTwo == null || model.resultPersonTwo.isEmpty;
-        return Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildPersonOneButton(model, _isPersonOneListFull),
-              SizedBox(
-                height: 1.0,
-              ),
-              _buildPersonTwoButton(model, _isPersonTwoListFull),
-            ],
-          ),
+
+        return Column(
+          //        mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _buildPersonOneButton(model, _isPersonOneListFull),
+            SizedBox(
+              height: 1.0,
+            ),
+             _buildPersonTwoButton(model, _isPersonTwoListFull),
+          ],
         );
       },
     );
   }
 
   Widget _buildPersonOneButton(model, _isPersonOneListFull) {
-    return MaterialButton(
-      height: MediaQuery.of(context).size.height * 0.413,
-      minWidth: double.infinity,
-      textColor: _isPersonOneListFull ? Colors.white : Colors.white,
-      color: _isPersonOneListFull ? Colors.red : Colors.greenAccent[700],
-      onPressed: () => _isPersonOneListFull
-          ? _navigateToEditPersonOne(context, model)
-          : null,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _isPersonOneListFull ? Icon(Icons.person_add) : Icon(Icons.person),
-            Text('Person One')
-          ]),
+    return Expanded(
+      child: Material(
+        textStyle: TextStyle(color: _isPersonOneListFull ? Colors.white : Colors.white,),
+        color: _isPersonOneListFull ? Colors.red : Colors.greenAccent[700],
+        child: InkWell(
+          onTap: () => _isPersonOneListFull
+              ? _navigateToEditPersonOne(context, model)
+              : null,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _isPersonOneListFull
+                    ? Icon(Icons.person_add, color: Colors.white,)
+                    : Icon(Icons.person, color: Colors.white,),
+                Text('Person One')
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildPersonTwoButton(model, _isPersonTwoListFull) {
-    return MaterialButton(
-      height: MediaQuery.of(context).size.height * 0.4,
-      minWidth: double.infinity,
-      textColor: _isPersonTwoListFull ? Colors.white : Colors.white,
-      color: _isPersonTwoListFull ? Colors.red : Colors.greenAccent[700],
-      onPressed: () => _isPersonTwoListFull
-          ? _navigateToEditPersonTwo(context, model)
-          : null,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _isPersonTwoListFull ? Icon(Icons.person_add) : Icon(Icons.person),
-            Text('Person Two')
-          ]),
+    return Expanded(
+      child: Material(
+        textStyle: TextStyle(color: Colors.white,),
+        color: _isPersonTwoListFull ? Colors.red : Colors.greenAccent[700],
+        child: InkWell(
+          onTap: () => _isPersonTwoListFull
+              ? _navigateToEditPersonTwo(context, model)
+              : null,
+          child: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _isPersonTwoListFull
+                      ? Icon(Icons.person_add, color: Colors.white,)
+                      : Icon(Icons.person, color: Colors.white,),
+                  Text('Person Two')
+                ]),
+          ),
+        ),
+      ),
     );
   }
 
