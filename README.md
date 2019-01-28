@@ -22,7 +22,7 @@ Date Night is there to help
 
 ### Tech
 
-Dillinger uses a number of open source projects to work properly:
+Date Night uses a number of open source projects to work properly:
 
 * [Dart] - A language optimized for client-side development for web and mobile.
 * [Flutter] - Google's mobile UI framework for crafting high-quality native experiences on iOS and Android 
