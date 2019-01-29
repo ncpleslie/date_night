@@ -82,7 +82,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   Widget _buildDateIdeasList() {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        Widget content = Center(child: Text('No Other Dates Found'));
+        Widget content = _noItemsLoaded();
         if (model.displayedIdeas.length > 0 && !model.isLoading) {
           content = DatesAround(model, dateList);
         } else if (model.isLoading) {
@@ -93,11 +93,29 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
           key: _refreshIndicatorKey,
           onRefresh: () async {
             _refreshIndicatorKey.currentState.show();
-
             await widget.model.fetchDateIdeas();
           },
         );
       },
+    );
+  }
+
+  Widget _noItemsLoaded() {
+    return Container(
+      alignment: Alignment.center,
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Center(
+            child: Column(
+              children: <Widget>[
+                Icon(CupertinoIcons.search),
+                Text('No Dates Found'),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
