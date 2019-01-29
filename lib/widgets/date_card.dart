@@ -1,42 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import "dart:math";
 
-class DateCard extends StatelessWidget {
-  final dateIdeas;
+import '../scoped-models/ideas_model.dart';
 
-  DateCard(this.dateIdeas);
+class DateCard extends StatelessWidget {
+  final index;
+  DateCard(this.index);
+
+  final random = Random();
+  final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
 
   @override
   Widget build(BuildContext context) {
-    final random = Random();
-    final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
+    return ScopedModelDescendant(
+      builder: (BuildContext context, Widget child, IdeasModel model) {
 
-    String _otherDates =
-        dateIdeas.otherIdeas != null ? dateIdeas.otherIdeas.join(', ') : null;
-
-    return Container(
-        height: 200,
-        child: Stack(
-          children: <Widget>[
-            // Words in card
-            Positioned(
-              left: 20.0,
-              child: _cardWithWords(_otherDates, context),
-            ),
-            // Emoji over the top
-            Positioned(
-              top: 15.0,
-              left: 30.0,
-              child: Text(
-                _emojiList[random.nextInt(_emojiList.length)],
-                style: TextStyle(fontSize: 90.0),
-              ),
-            )
-          ],
-        ));
+        final _dateData = model.displayedIdeas[index];
+        String _otherDates = _dateData.otherIdeas != null
+            ? _dateData.otherIdeas.join(', ')
+            : null;
+        return _buildStackOfCards(_dateData, _otherDates, context);
+      },
+    );
   }
 
-  Widget _cardWithWords(otherDates, context) {
+  Widget _buildStackOfCards(dateData, otherDates, context) {
+    return Container(
+      height: 200,
+      child: Stack(
+        children: <Widget>[
+          // Words in card
+          Positioned(
+            left: 20.0,
+            child: _cardWithWords(dateData, otherDates, context),
+          ),
+          // Emoji over the top
+          Positioned(
+            top: 15.0,
+            left: 30.0,
+            child: Text(
+              _emojiList[random.nextInt(_emojiList.length)],
+              style: TextStyle(fontSize: 90.0),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _cardWithWords(dateData, otherDates, context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       height: 200.0,
@@ -55,7 +68,7 @@ class DateCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    dateIdeas.chosenDate.toString().toUpperCase(),
+                    dateData.chosenDate.toString().toUpperCase(),
                     softWrap: true,
                     maxLines: 2,
                     textAlign: TextAlign.center,
@@ -65,12 +78,12 @@ class DateCard extends StatelessWidget {
                   ),
                 ],
               ),
-              otherDates != null
+              otherDates.length != 0
                   ? SizedBox(
                       height: 10.0,
                     )
                   : Container(),
-              otherDates != null
+              otherDates.length != 0
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

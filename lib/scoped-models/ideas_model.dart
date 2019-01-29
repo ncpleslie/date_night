@@ -1,13 +1,10 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import "dart:math";
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import '../models/date_ideas.dart';
-import '../globals/globals.dart';
+
 
 class IdeasModel extends Model {
   List chosenDateIdeas = [];
@@ -113,7 +110,6 @@ class IdeasModel extends Model {
   }
 
   Future<Null> uploadDateIdeas() async {
-    
     final Map<String, dynamic> dateIdeas = {
       'chosenDate': chosenIdea,
       'otherIdeas': chosenDateIdeas,
@@ -129,32 +125,32 @@ class IdeasModel extends Model {
     );
   }
 
-  Future<Null> fetchDateIdeas() async {
+  Future fetchDateIdeas() async {
     _isLoading = true;
-    try {
-      CollectionReference collectionRef =
-          Firestore.instance.collection('date_ideas');
-      final snapshot = await collectionRef.getDocuments();
-      if (snapshot.documents.isNotEmpty) {
-        _errorHandling();
-      }
 
-      final List fetchedDateIdeas = [];
+    CollectionReference collectionRef =
+        Firestore.instance.collection('date_ideas');
+    QuerySnapshot snapshot = await collectionRef.getDocuments();
 
-      snapshot.documents.forEach(
-        (dynamic dateData) {
-          final DateIdeas dateIdeas = DateIdeas(
-              chosenDate: dateData['chosenDate'],
-              otherIdeas: dateData['otherIdeas']);
-
-          fetchedDateIdeas.add(dateIdeas);
-        },
-      );
-      dateIdeasList = fetchedDateIdeas;
-      _isLoading = false;
-      notifyListeners();
-    } catch (error) {
+    if (snapshot.documents.isNotEmpty) {
       _errorHandling();
     }
+
+    final List fetchedDateIdeas = [];
+
+    snapshot.documents.forEach(
+      (dynamic dateData) {
+        final DateIdeas dateIdeas = DateIdeas(
+            chosenDate: dateData['chosenDate'],
+            otherIdeas: dateData['otherIdeas']);
+
+        fetchedDateIdeas.add(dateIdeas);
+      },
+    );
+    dateIdeasList = fetchedDateIdeas;
+    _isLoading = false;
+    notifyListeners();
+
+    return snapshot.documents;
   }
 }

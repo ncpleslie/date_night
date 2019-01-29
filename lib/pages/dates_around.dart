@@ -20,11 +20,12 @@ class DatesAroundPage extends StatefulWidget {
 class _DatesAroundPageState extends State<DatesAroundPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+  Future dateList;
 
   @override
   void initState() {
     super.initState();
-    widget.model.fetchDateIdeas();
+    dateList = widget.model.fetchDateIdeas();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
@@ -33,7 +34,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        return Scaffold(appBar: _buildAppBar(model), body: _buildBackground());
+        return Scaffold(appBar: _buildAppBar(), body: _buildBackground());
       },
     );
   }
@@ -55,24 +56,23 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
     );
   }
 
-  Widget _buildAppBar(model) {
+  Widget _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.deepPurple,
       toolbarOpacity: 0.7,
       elevation: 0,
       actions: <Widget>[
-        _refreshPage(model),
+        _refreshPage(),
       ],
     );
   }
 
-  Widget _refreshPage(model) {
+  Widget _refreshPage() {
     return IconButton(
       icon: Icon(CupertinoIcons.refresh),
       tooltip: 'Refresh',
       onPressed: () {
         _refreshIndicatorKey.currentState.show();
-        model.fetchDateIdeas();
       },
     );
   }
@@ -82,16 +82,14 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
       builder: (BuildContext context, Widget child, IdeasModel model) {
         Widget content = Center(child: Text('No Other Dates Found'));
         if (model.displayedIdeas.length > 0 && !model.isLoading) {
-          content = DatesAround();
+          content = DatesAround(model, dateList);
         } else if (model.isLoading) {
-          content = Center(
-            child: CupertinoActivityIndicator(),
-          );
+          content = Container();
         }
-        return RefreshIndicator(
-          key: _refreshIndicatorKey,
-          child: content,
-          onRefresh: model.fetchDateIdeas,
+        return  RefreshIndicator(
+            child: content,
+            key: _refreshIndicatorKey,
+            onRefresh: widget.model.fetchDateIdeas,
         );
       },
     );

@@ -262,21 +262,3 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 }
-
-// Bug fix for AlertDialogs being covered with Software Keyboard
-// https://stackoverflow.com/questions/46841637/show-a-text-field-dialog-without-being-covered-by-keyboard
-//
-class _SystemPadding extends StatelessWidget {
-  final Widget child;
-
-  _SystemPadding({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return new AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
-        child: child);
-  }
-}

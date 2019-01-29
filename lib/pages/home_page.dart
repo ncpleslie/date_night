@@ -18,18 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentPage = 0;
-  GlobalKey bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Scaffold(
-          body: Container(
-            child: Center(
-              child: _getPage(currentPage, model),
-            ),
-          ),
+          body: _getPage(model),
           resizeToAvoidBottomPadding: false,
           bottomNavigationBar: _buildTabBar(),
         );
@@ -40,21 +35,13 @@ class _HomePageState extends State<HomePage> {
   Widget _buildTabBar() {
     return FancyBottomNavigation(
       tabs: <TabData>[
-        TabData(
-            iconData: Icons.location_city,
-            title: 'Dates Around You',
-            onclick: () {
-              final FancyBottomNavigationState fState =
-                  bottomNavigationKey.currentState;
-              fState.setPage(2);
-            }),
+        TabData(iconData: Icons.location_city, title: 'Dates Around You'),
         TabData(iconData: Icons.people, title: 'Plan A Date'),
         TabData(iconData: Icons.settings, title: 'Settings'),
       ],
       circleColor: Theme.of(context).accentColor,
       inactiveIconColor: Theme.of(context).accentColor,
       initialSelection: 0,
-      key: bottomNavigationKey,
       onTabChangedListener: (position) {
         setState(() {
           currentPage = position;
@@ -64,19 +51,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _getPage(int page, model) {
-    switch (page) {
-      case 0:
-        return DatesAroundPage(model);
-        break;
-      case 1:
-        return DateEdit();
-        break;
-      case 2:
-        return Settings();
-        break;
-      default:
-        return Container();
-    }
+  _getPage(model) {
+    return Stack(
+      children: [
+        Offstage(
+          offstage: currentPage != 0,
+          child: TickerMode(
+            enabled: currentPage == 0,
+            child: MaterialApp(
+              home: DatesAroundPage(model),
+            ),
+          ),
+        ),
+        Offstage(
+          offstage: currentPage != 1,
+          child: TickerMode(
+            enabled: currentPage == 1,
+            child: MaterialApp(
+              home: DateEdit(),
+            ),
+          ),
+        ),
+        Offstage(
+          offstage: currentPage != 2,
+          child: TickerMode(
+            enabled: currentPage == 2,
+            child: MaterialApp(
+              home: Settings(),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

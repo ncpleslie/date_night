@@ -14,6 +14,7 @@ class DateEdit extends StatefulWidget {
 }
 
 class _DateEditState extends State<DateEdit> {
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<IdeasModel>(
