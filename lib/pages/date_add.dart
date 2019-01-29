@@ -165,7 +165,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 Container(
                   child: FloatingActionButton(
                     heroTag: 'Add More',
-                    backgroundColor: Theme.of(context).buttonColor,
+                    backgroundColor: CupertinoColors.activeBlue,
                     elevation: 0,
                     child: Icon(Icons.add, size: 30),
                     onPressed: () {
@@ -179,7 +179,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                       ? Container()
                       : FloatingActionButton(
                           heroTag: 'Continue',
-                          backgroundColor: Theme.of(context).buttonColor,
+                          backgroundColor: CupertinoColors.activeBlue,
                           elevation: 0,
                           child: Icon(
                             CupertinoIcons.check_mark,

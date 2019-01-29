@@ -13,14 +13,11 @@ class DatesAround extends StatefulWidget {
   }
 }
 
-class _DatesAroundState extends State<DatesAround>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _DatesAroundState extends State<DatesAround> {
+
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return _buildListView();
   }
 

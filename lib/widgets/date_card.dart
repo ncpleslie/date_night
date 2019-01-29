@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import "dart:math";
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../scoped-models/ideas_model.dart';
 
@@ -8,8 +8,7 @@ class DateCard extends StatelessWidget {
   final index;
   DateCard(this.index);
 
-  final random = Random();
-  final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class DateCard extends StatelessWidget {
         String _otherDates = _dateData.otherIdeas != null
             ? _dateData.otherIdeas.join(', ')
             : null;
-        return IgnorePointer(child:_buildStackOfCards(_dateData, _otherDates, context));
+        return AbsorbPointer(child:_buildStackOfCards(_dateData, _otherDates, context));
       },
     );
   }
@@ -40,7 +39,7 @@ class DateCard extends StatelessWidget {
             top: 15.0,
             left: 30.0,
             child: Text(
-              _emojiList[random.nextInt(_emojiList.length)],
+              dateData.randomEmoji,
               style: TextStyle(fontSize: 90.0),
             ),
           )
@@ -67,7 +66,7 @@ class DateCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
+                  AutoSizeText(
                     dateData.chosenDate.toString().toUpperCase(),
                     softWrap: true,
                     maxLines: 2,
@@ -96,7 +95,7 @@ class DateCard extends StatelessWidget {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ]),
-                        Text(
+                        AutoSizeText(
                           otherDates,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,

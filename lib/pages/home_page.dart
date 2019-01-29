@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
       circleColor: Theme.of(context).accentColor,
       inactiveIconColor: Theme.of(context).accentColor,
       initialSelection: 0,
+      textColor: Colors.white,
       onTabChangedListener: (position) {
         setState(() {
           currentPage = position;

@@ -5,7 +5,6 @@ import "dart:math";
 
 import '../models/date_ideas.dart';
 
-
 class IdeasModel extends Model {
   List chosenDateIdeas = [];
   List personOneIdeas = [];
@@ -85,7 +84,7 @@ class IdeasModel extends Model {
       }
     }
 
-    final random = new Random();
+    final random = Random();
 
     if (chosenIdea == null) {
       chosenIdea =
@@ -110,9 +109,13 @@ class IdeasModel extends Model {
   }
 
   Future<Null> uploadDateIdeas() async {
+    final random = Random();
+    final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
+
     final Map<String, dynamic> dateIdeas = {
       'chosenDate': chosenIdea,
       'otherIdeas': chosenDateIdeas,
+      'randomEmoji': _emojiList[random.nextInt(_emojiList.length)],
       'uploadTime': DateTime.now()
     };
 
@@ -142,7 +145,8 @@ class IdeasModel extends Model {
       (dynamic dateData) {
         final DateIdeas dateIdeas = DateIdeas(
             chosenDate: dateData['chosenDate'],
-            otherIdeas: dateData['otherIdeas']);
+            otherIdeas: dateData['otherIdeas'],
+            randomEmoji: dateData['randomEmoji']);
 
         fetchedDateIdeas.add(dateIdeas);
       },

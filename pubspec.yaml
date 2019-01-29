@@ -24,6 +24,7 @@ dependencies:
   giffy_dialog: ^1.0.1
   fancy_bottom_navigation: ^0.3.2
   cloud_firestore: ^0.8.2+1
+  auto_size_text: ^0.3.0
 
 dev_dependencies:
   flutter_test:
