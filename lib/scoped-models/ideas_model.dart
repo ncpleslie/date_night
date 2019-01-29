@@ -155,7 +155,7 @@ class IdeasModel extends Model {
           .startAfter([_lastVisible['uploadTime']])
           .limit(5)
           .getDocuments();
-    }
+    } 
 
     if (snapshot != null && snapshot.documents.length > 0) {
       _lastVisible = snapshot.documents[snapshot.documents.length - 1];
@@ -171,9 +171,9 @@ class IdeasModel extends Model {
         },
       );
       dateIdeasList = fetchedDateIdeas;
-
     } 
-    if (snapshot.documents.isNotEmpty) {
+
+    if (snapshot.documents.isEmpty) {
       _errorHandling();
     }
     _isLoading = false;

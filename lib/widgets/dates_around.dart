@@ -24,10 +24,7 @@ class _DatesAroundState extends State<DatesAround> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      _buildListView(),
-      widget.model.isLoading ? LinearProgressIndicator(backgroundColor: Colors.deepPurple[300], valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple)) : Container()
-    ]);
+    return _buildListView();
   }
 
   _buildListView() {
