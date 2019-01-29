@@ -93,6 +93,9 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
           key: _refreshIndicatorKey,
           onRefresh: () async {
             _refreshIndicatorKey.currentState.show();
+            widget.model.dateIdeasList.clear();
+            widget.model.clearLastVisible();
+            widget.model.clearAllLists();
             await widget.model.fetchDateIdeas();
           },
         );

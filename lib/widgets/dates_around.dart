@@ -28,6 +28,7 @@ class _DatesAroundState extends State<DatesAround> {
   }
 
   _buildListView() {
+    print('called');
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         return DateCard(index);
