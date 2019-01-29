@@ -20,6 +20,7 @@ class DatesAroundPage extends StatefulWidget {
 class _DatesAroundPageState extends State<DatesAroundPage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   Future dateList;
 
   @override
@@ -34,7 +35,8 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        return Scaffold(appBar: _buildAppBar(), body: _buildBackground());
+        return Scaffold(
+            key: scaffoldKey, appBar: _buildAppBar(), body: _buildBackground());
       },
     );
   }
@@ -89,7 +91,11 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         return RefreshIndicator(
           child: content,
           key: _refreshIndicatorKey,
-          onRefresh: widget.model.fetchDateIdeas,
+          onRefresh: () async {
+            _refreshIndicatorKey.currentState.show();
+
+            await widget.model.fetchDateIdeas();
+          },
         );
       },
     );

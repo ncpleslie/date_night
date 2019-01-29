@@ -14,11 +14,20 @@ class DatesAround extends StatefulWidget {
 }
 
 class _DatesAroundState extends State<DatesAround> {
+  ScrollController _controller;
 
+  @override
+  void initState() {
+    _controller = new ScrollController()..addListener(_scrollListener);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildListView();
+    return Stack(children: [
+      _buildListView(),
+      widget.model.isLoading ? LinearProgressIndicator(backgroundColor: Colors.deepPurple[300], valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple)) : Container()
+    ]);
   }
 
   _buildListView() {
@@ -26,7 +35,23 @@ class _DatesAroundState extends State<DatesAround> {
       itemBuilder: (BuildContext context, int index) {
         return DateCard(index);
       },
+      controller: _controller,
       itemCount: widget.model.displayedIdeas.length,
+      physics: AlwaysScrollableScrollPhysics(),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+      setState(() {
+        widget.model.fetchDateIdeas();
+      });
+    }
   }
 }

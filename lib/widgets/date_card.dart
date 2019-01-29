@@ -8,18 +8,15 @@ class DateCard extends StatelessWidget {
   final index;
   DateCard(this.index);
 
-
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-
         final _dateData = model.displayedIdeas[index];
         String _otherDates = _dateData.otherIdeas != null
             ? _dateData.otherIdeas.join(', ')
             : null;
-        return AbsorbPointer(child:_buildStackOfCards(_dateData, _otherDates, context));
+        return _buildStackOfCards(_dateData, _otherDates, context);
       },
     );
   }

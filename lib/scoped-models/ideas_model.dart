@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -42,6 +43,7 @@ class IdeasModel extends Model {
   }
 
   void clearAllLists() {
+    chosenIdea = null;
     chosenDateIdeas = [];
     personOneIdeas = [];
     personTwoIdeas = [];
@@ -128,33 +130,55 @@ class IdeasModel extends Model {
     );
   }
 
+  void clearLastVisible() {
+    _lastVisible = null;
+  }
+
+  DocumentSnapshot _lastVisible;
+  List fetchedDateIdeas = [];
+
   Future fetchDateIdeas() async {
     _isLoading = true;
 
-    CollectionReference collectionRef =
-        Firestore.instance.collection('date_ideas');
-    QuerySnapshot snapshot = await collectionRef.getDocuments();
+    QuerySnapshot snapshot;
+    DateIdeas dateIdeas;
 
+    if (_lastVisible == null) {
+      snapshot = await Firestore.instance
+          .collection('date_ideas')
+          .orderBy('uploadTime', descending: true)
+          .limit(5)
+          .getDocuments();
+    } else {
+      snapshot = await Firestore.instance
+          .collection('date_ideas')
+          .orderBy('uploadTime', descending: true)
+          .startAfter([_lastVisible['uploadTime']])
+          .limit(5)
+          .getDocuments();
+    }
+
+    if (snapshot != null && snapshot.documents.length > 0) {
+      _lastVisible = snapshot.documents[snapshot.documents.length - 1];
+
+      snapshot.documents.forEach(
+        (dynamic dateData) {
+          dateIdeas = DateIdeas(
+              chosenDate: dateData['chosenDate'],
+              otherIdeas: dateData['otherIdeas'],
+              randomEmoji: dateData['randomEmoji']);
+
+          fetchedDateIdeas.add(dateIdeas);
+        },
+      );
+      dateIdeasList = fetchedDateIdeas;
+
+    } 
     if (snapshot.documents.isNotEmpty) {
       _errorHandling();
     }
-
-    final List fetchedDateIdeas = [];
-
-    snapshot.documents.forEach(
-      (dynamic dateData) {
-        final DateIdeas dateIdeas = DateIdeas(
-            chosenDate: dateData['chosenDate'],
-            otherIdeas: dateData['otherIdeas'],
-            randomEmoji: dateData['randomEmoji']);
-
-        fetchedDateIdeas.add(dateIdeas);
-      },
-    );
-    dateIdeasList = fetchedDateIdeas;
     _isLoading = false;
     notifyListeners();
-
     return snapshot.documents;
   }
 }

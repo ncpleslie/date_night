@@ -8,7 +8,7 @@ import 'package:giffy_dialog/giffy_dialog.dart';
 class Results extends StatelessWidget {
   final String result;
   Results(this.result);
-  final _random = new Random();
+  final _random = Random();
   final List<String> _gifURL = [
     "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif",
     "https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif"

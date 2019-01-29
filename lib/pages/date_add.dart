@@ -33,6 +33,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
+          resizeToAvoidBottomPadding: false,
           body: _buildBackground(targetPadding),
         );
       },
@@ -46,7 +47,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           height: 40.0,
         ),
         Expanded(
-          flex: 6,
+          flex: 7,
           child: count == 0
               ? _forEmptyList()
               : ListView.builder(
@@ -60,7 +61,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 ),
         ),
         Flexible(
-          flex: 1,
+          flex: 2,
           child: _buildFAB(),
         )
       ],
@@ -159,7 +160,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
         return Column(
           children: <Widget>[
             Row(
-              mainAxisAlignment: count != 0 ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+              mainAxisAlignment: count != 0
+                  ? MainAxisAlignment.spaceAround
+                  : MainAxisAlignment.center,
               children: <Widget>[
                 // Add more ideas button
                 Container(
@@ -176,7 +179,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 // Move On Button
                 Container(
                   child: count == 0
-                      ? Container()
+                      ? Container(width: 0.0, height: 0.0,)
                       : FloatingActionButton(
                           heroTag: 'Continue',
                           backgroundColor: CupertinoColors.activeBlue,
@@ -199,7 +202,6 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 ),
               ],
             )
-            // Add More Ideas Button
           ],
         );
       },
