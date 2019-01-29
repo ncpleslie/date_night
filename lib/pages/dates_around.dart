@@ -86,10 +86,10 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         } else if (model.isLoading) {
           content = Container();
         }
-        return  RefreshIndicator(
-            child: content,
-            key: _refreshIndicatorKey,
-            onRefresh: widget.model.fetchDateIdeas,
+        return RefreshIndicator(
+          child: content,
+          key: _refreshIndicatorKey,
+          onRefresh: widget.model.fetchDateIdeas,
         );
       },
     );

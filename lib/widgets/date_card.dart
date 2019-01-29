@@ -20,7 +20,7 @@ class DateCard extends StatelessWidget {
         String _otherDates = _dateData.otherIdeas != null
             ? _dateData.otherIdeas.join(', ')
             : null;
-        return _buildStackOfCards(_dateData, _otherDates, context);
+        return IgnorePointer(child:_buildStackOfCards(_dateData, _otherDates, context));
       },
     );
   }
