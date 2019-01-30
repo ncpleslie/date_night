@@ -35,9 +35,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildTabBar() {
     return FancyBottomNavigation(
       tabs: <TabData>[
-        TabData(iconData: Icons.location_city, title: 'Dates Around You'),
-        TabData(iconData: Icons.people, title: 'Plan A Date'),
-        TabData(iconData: Icons.settings, title: 'Settings'),
+        TabData(iconData: Icons.location_city, title: ''),
+        TabData(iconData: Icons.people, title: ''),
+        TabData(iconData: Icons.settings, title: ''),
       ],
       circleColor: Theme.of(context).accentColor,
       inactiveIconColor: Theme.of(context).accentColor,

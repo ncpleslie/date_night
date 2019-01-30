@@ -27,7 +27,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: Row(
-              mainAxisAlignment: model.listOfIdeaCards.isEmpty
+              mainAxisAlignment: model.listOfDateStrings.isEmpty
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.spaceAround,
               children: <Widget>[_buildAddIdeaFAB(), _buildFinishFAB(model)]),
@@ -58,29 +58,67 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
 
   Widget _buildPage(model) {
     return Center(
-      child: model.listOfIdeaCards.isEmpty
+      child: model.listOfDateStrings.isEmpty
           ? _forEmptyList()
           : ListView.builder(
-              itemCount: model.listOfIdeaCards.length,
+              itemCount: model.listOfDateStrings.length,
               itemBuilder: (BuildContext context, int index) {
-                return Dismissible(
-                  key: Key(model.listOfDateStrings[index]),
-                  background: Container(
-                    color: Colors.red,
-                  ),
-                  onDismissed: (DismissDirection direction) {
-                    if (direction == DismissDirection.endToStart) {
-                      model.listOfDateStrings.removeAt(index);
-                      model.listOfIdeaCards.removeAt(index);
-                      setState(() {
-                        
-                      });
-                    }
-                  },
-                  child: model.listOfIdeaCards[index],
-                );
+                return _makeCards(model, index);
               },
             ),
+    );
+  }
+
+  Widget _makeCards(IdeasModel model, int index) {
+    return Dismissible(
+      key: Key(model.listOfDateStrings[index]),
+      background: Container(
+        color: Colors.red,
+      ),
+      onDismissed: (DismissDirection direction) {
+        if (direction == DismissDirection.endToStart) {
+          model.listOfDateStrings.removeAt(index);
+          setState(() {});
+        }
+      },
+      child: _buildCardContent(model, index),
+    );
+  }
+
+  Widget _buildCardContent(IdeasModel model, int index) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      child: Column(children: <Widget>[
+        ListTile(
+          title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AutoSizeText(
+                  model.listOfDateStrings[index],
+                  minFontSize: 20.0,
+                  maxLines: 3,
+                )
+              ]),
+        ),
+        ButtonTheme.bar(
+          child: ButtonBar(children: [
+            IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: Icon(Icons.star_border),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                model.listOfDateStrings.removeAt(index);
+                setState(() {});
+              },
+            ),
+          ]),
+        )
+      ]),
     );
   }
 
@@ -108,7 +146,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        model.listOfIdeaCards.isEmpty
+        model.listOfDateStrings.isEmpty
             ? Container(
                 width: 0.0,
                 height: 0.0,
@@ -135,58 +173,16 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
       if (model.isPersonOneEditing) {
         model.addPersonOneIdeas(model.listOfDateStrings);
         model.listOfDateStrings.clear();
-        model.listOfIdeaCards.clear();
         model.isPersonOneEditing = false;
         setState(() {});
       } else if (model.isPersonTwoEditing) {
         model.addPersonTwoIdeas(model.listOfDateStrings);
         model.listOfDateStrings.clear();
-        model.listOfIdeaCards.clear();
         model.isPersonTwoEditing = false;
         setState(() {});
       }
       Navigator.pop(context);
     }
-  }
-
-  Widget _cardCreator(idea) {
-    return ScopedModelDescendant(
-      builder: (BuildContext context, Widget child, IdeasModel model) {
-        return Card(
-          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          child: Column(children: <Widget>[
-            ListTile(
-              title: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AutoSizeText(
-                      idea,
-                      minFontSize: 20.0,
-                      maxLines: 3,
-                    )
-                  ]),
-            ),
-            ButtonTheme.bar(
-              child: ButtonBar(children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {});
-                  },
-                  icon: Icon(Icons.star_border),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    setState(() {});
-                  },
-                ),
-              ]),
-            )
-          ]),
-        );
-      },
-    );
   }
 
   Future<Null> _showInput() async {
@@ -220,10 +216,8 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     onPressed: () {
                       if (_textController.text.isNotEmpty) {
                         String ideas = _textController.text
-                            .replaceFirst(RegExp(r"^\s+"), "")
-                            .replaceFirst(RegExp(r"\s+$"), "");
-                        final Widget card = _cardCreator(ideas);
-                        model.dateIdeaEntries(card, ideas);
+                            .replaceFirst(RegExp(r"^\s+"), "");
+                        model.dateIdeaEntries(ideas);
                         _textController.text = '';
                         Navigator.of(context, rootNavigator: true)
                             .pop("Continue");

@@ -11,10 +11,14 @@ class Settings extends StatelessWidget {
   }
 
   Widget _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.deepPurple,
-      toolbarOpacity: 0.7,
-      elevation: 0,
+    return PreferredSize(
+      preferredSize: Size.fromHeight(40.0),
+      child: AppBar(
+        title: Text('Settings'),
+        backgroundColor: Colors.deepPurple,
+        toolbarOpacity: 0.7,
+        elevation: 0,
+      ),
     );
   }
 

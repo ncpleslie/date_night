@@ -46,15 +46,9 @@ class IdeasModel extends Model {
   }
 
   // For adding ideas 
- final List/*<Widget>*/ listOfIdeaCards = [];
  final List<String> listOfDateStrings = [];
 
-  List get ideaCards {
-    return List.from(listOfIdeaCards);
-  }
-
-  void dateIdeaEntries(card, string) {
-    listOfIdeaCards.add(card);
+  void dateIdeaEntries(string) {
     listOfDateStrings.add(string);
   }
 

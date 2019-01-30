@@ -38,13 +38,17 @@ class _DateEditState extends State<DateEdit> {
   }
 
   Widget _buildAppBar(model) {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.deepPurple,
-      toolbarOpacity: 0.7,
-      actions: <Widget>[
-        _buildDeleteDataIcon(model),
-      ],
+    return PreferredSize(
+      preferredSize: Size.fromHeight(40.0),
+      child: AppBar(
+        title: Text('Plan A Date'),
+        elevation: 0,
+        backgroundColor: Colors.deepPurple,
+        toolbarOpacity: 0.7,
+        actions: <Widget>[
+          _buildDeleteDataIcon(model),
+        ],
+      ),
     );
   }
 
