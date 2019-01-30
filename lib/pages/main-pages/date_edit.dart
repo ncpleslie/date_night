@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../widgets/selection_button.dart';
-import '../scoped-models/ideas_model.dart';
-import '../pages/results.dart';
+import '../../widgets/selection_button.dart';
+import '../../scoped-models/ideas_model.dart';
+import '../../pages/secondary-pages/results.dart';
 
 class DateEdit extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class DateEdit extends StatefulWidget {
 }
 
 class _DateEditState extends State<DateEdit> {
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<IdeasModel>(
@@ -33,9 +32,9 @@ class _DateEditState extends State<DateEdit> {
   }
 
   Widget _buildFAB(model) {
-    return model.chosenDateIdeas.length != 0
-        ? _buildResultsButton(model)
-        : Container();
+    bool areListsEmpty =
+        model.personOneIdeas.isEmpty || model.personTwoIdeas.isEmpty;
+    return !areListsEmpty ? _buildResultsButton(model) : Container();
   }
 
   Widget _buildAppBar(model) {
@@ -50,10 +49,9 @@ class _DateEditState extends State<DateEdit> {
   }
 
   Widget _buildDeleteDataIcon(model) {
-    bool areListsEmpty = model.chosenDateIdeas.isEmpty ||
-        model.resultPersonOne.isEmpty ||
-        model.resultPersonTwo.isEmpty;
-    return areListsEmpty
+    bool areListsNotEmpty =
+        model.personOneIdeas.isNotEmpty || model.personTwoIdeas.isNotEmpty;
+    return areListsNotEmpty
         ? IconButton(
             icon: Icon(CupertinoIcons.delete),
             tooltip: 'Delete',

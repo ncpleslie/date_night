@@ -7,7 +7,7 @@ import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import './dates_around.dart';
 import './date_edit.dart';
 import './settings.dart';
-import '../scoped-models/ideas_model.dart';
+import '../../scoped-models/ideas_model.dart';
 
 class HomePage extends StatefulWidget {
   @override

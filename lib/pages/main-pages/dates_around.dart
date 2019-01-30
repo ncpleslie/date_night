@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../scoped-models/ideas_model.dart';
+import '../../scoped-models/ideas_model.dart';
 
-import '../widgets/dates_around.dart';
+import '../../widgets/dates_around.dart';
 
 class DatesAroundPage extends StatefulWidget {
   final IdeasModel model;
@@ -18,17 +18,12 @@ class DatesAroundPage extends StatefulWidget {
 }
 
 class _DatesAroundPageState extends State<DatesAroundPage> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   Future dateList;
 
   @override
   void initState() {
     super.initState();
     dateList = widget.model.fetchDateIdeas();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
   @override
@@ -36,15 +31,16 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Scaffold(
-            key: scaffoldKey, appBar: _buildAppBar(), body: _buildBackground());
+          appBar: _buildAppBar(),
+          body: _buildBackgroundWithBody(),
+        );
       },
     );
   }
 
-  Widget _buildBackground() {
+  Widget _buildBackgroundWithBody() {
     Color gradientStart = Colors.deepPurple[700];
     Color gradientEnd = Colors.purple[500];
-
     return Container(
       child: _buildDateIdeasList(),
       decoration: BoxDecoration(
@@ -73,8 +69,17 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
     return IconButton(
       icon: Icon(CupertinoIcons.refresh),
       tooltip: 'Refresh',
-      onPressed: () {
-        _refreshIndicatorKey.currentState.show();
+      onPressed: () async {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CircularProgressIndicator();
+            });
+        widget.model.dateIdeasList.clear();
+        widget.model.clearLastVisible();
+        widget.model.clearAllLists();
+        await widget.model.fetchDateIdeas();
+        Navigator.pop(context);
       },
     );
   }
@@ -90,9 +95,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         }
         return RefreshIndicator(
           child: content,
-          key: _refreshIndicatorKey,
           onRefresh: () async {
-            _refreshIndicatorKey.currentState.show();
             widget.model.dateIdeasList.clear();
             widget.model.clearLastVisible();
             widget.model.clearAllLists();

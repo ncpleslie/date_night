@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,9 +11,9 @@ class IdeasModel extends Model {
   List personOneIdeas = [];
   List personTwoIdeas = [];
 
-  // From Selection_Button.dart
-  List resultPersonOne = [];
-  List resultPersonTwo = [];
+  // Knowing who is editing
+  bool isPersonOneEditing = false;
+  bool isPersonTwoEditing = false;
 
   // For Final Selection
   String chosenIdea;
@@ -32,11 +33,14 @@ class IdeasModel extends Model {
   }
 
   void addPersonOneIdeas(List personOneIdea) {
-    personOneIdeas = personOneIdea;
+    personOneIdeas.addAll(personOneIdea);
   }
 
   void addPersonTwoIdeas(List personTwoIdea) {
-    personTwoIdeas = personTwoIdea;
+    personTwoIdeas.addAll(personTwoIdea);
+  }
+
+  void combineLists() {
     chosenDateIdeas = List.from(personOneIdeas)..addAll(personTwoIdeas);
     chosenDateIdeas.shuffle();
   }
@@ -46,8 +50,6 @@ class IdeasModel extends Model {
     chosenDateIdeas = [];
     personOneIdeas = [];
     personTwoIdeas = [];
-    resultPersonOne = [];
-    resultPersonTwo = [];
     notifyListeners();
   }
 
@@ -58,12 +60,28 @@ class IdeasModel extends Model {
     return List.from(dateIdeasList);
   }
 
+  // For adding ideas 
+ final List<Widget> listOfIdeaCards = [];
+ final List<String> listOfDateStrings = [];
+
+  List get ideaCards {
+    return List.from(listOfIdeaCards);
+  }
+
+  void dateIdeaEntries(card, string) {
+    listOfIdeaCards.add(card);
+    listOfDateStrings.add(string);
+  }
+
+
+
   String compareAllIdeas() {
     // If person one and person two enter same idea
     // return similar idea
     // else
     // return a random idea
     //compare shortest list against longest list
+    
 
     if (personOneIdeas.length >= personTwoIdeas.length) {
       for (int i = 0; i <= personOneIdeas.length - 1; i++) {
@@ -85,6 +103,7 @@ class IdeasModel extends Model {
       }
     }
 
+    combineLists();
     final random = Random();
 
     if (chosenIdea == null) {

@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
-import './pages/home_page.dart';
+import './pages/main-pages/home_page.dart';
 import './scoped-models/ideas_model.dart';
+import './globals/globals.dart' as global;
 
 void main() {
   runApp(DateNight());
@@ -19,14 +20,7 @@ class DateNight extends StatefulWidget {
 
 class _DateNightState extends State<DateNight> {
 
-  final ThemeData _iOSThemeData = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.deepPurple,
-    primaryColor: Colors.deepPurple,
-    accentColor: Colors.deepPurple[300],
-    buttonColor: CupertinoColors.activeBlue,
-    dialogBackgroundColor: Colors.deepPurple[300],
-  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +28,7 @@ class _DateNightState extends State<DateNight> {
         model: IdeasModel(),
         child: MaterialApp(
           title: 'Date Night',
-          theme: _iOSThemeData,
+          theme: global.iOSThemeData,
           routes: {
             '/': (BuildContext context) => HomePage(),
           },
