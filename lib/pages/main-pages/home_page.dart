@@ -35,9 +35,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildTabBar() {
     return FancyBottomNavigation(
       tabs: <TabData>[
-        TabData(iconData: Icons.location_city, title: ''),
-        TabData(iconData: Icons.people, title: ''),
-        TabData(iconData: Icons.settings, title: ''),
+        TabData(iconData: Icons.location_city, title: 'Dates Around You'),
+        TabData(iconData: Icons.people, title: 'Plan A Date'),
       ],
       circleColor: Theme.of(context).accentColor,
       inactiveIconColor: Theme.of(context).accentColor,
@@ -73,15 +72,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Offstage(
-          offstage: currentPage != 2,
-          child: TickerMode(
-            enabled: currentPage == 2,
-            child: MaterialApp(
-              home: Settings(),
-            ),
-          ),
-        )
       ],
     );
   }
