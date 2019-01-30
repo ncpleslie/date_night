@@ -26,34 +26,35 @@ class Results extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: NetworkGiffyDialog(
-          imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
-          title: Text(
-            result.toUpperCase(),
-            textAlign: TextAlign.center,
-            softWrap: true,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: _fontSizeBasedOnTextLength,
-                fontWeight: FontWeight.w600),
-          ),
-          description: Text(
-            _listOfAltText[_random.nextInt(_listOfAltText.length)],
-            softWrap: true,
-            textAlign: TextAlign.center,
-            style: TextStyle(
+        imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
+        title: Text(
+          result.toUpperCase(),
+          textAlign: TextAlign.center,
+          softWrap: true,
+          style: TextStyle(
               color: Colors.white,
-              fontSize: _fontSizeBasedOnTextLength / 2,
-            ),
+              fontSize: _fontSizeBasedOnTextLength,
+              fontWeight: FontWeight.w600),
+        ),
+        description: Text(
+          _listOfAltText[_random.nextInt(_listOfAltText.length)],
+          softWrap: true,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: _fontSizeBasedOnTextLength / 2,
           ),
-          buttonOkColor: Theme.of(context).primaryColor,
-          buttonOkText: Text(
-            'Go Do It',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        ),
+        buttonOkColor: Theme.of(context).primaryColor,
+        buttonOkText: Text(
+          'Go Do It',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          onOkButtonPressed: () =>
-              Navigator.of(context, rootNavigator: true).pop("Continue")),
+        ),
+        onOkButtonPressed: () =>
+            Navigator.of(context, rootNavigator: true).pop('Continue'),
+      ),
     );
   }
 }

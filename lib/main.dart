@@ -19,28 +19,26 @@ class DateNight extends StatefulWidget {
 }
 
 class _DateNightState extends State<DateNight> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return ScopedModel<IdeasModel>(
-        model: IdeasModel(),
-        child: MaterialApp(
-          title: 'Date Night',
-          theme: global.iOSThemeData,
-          routes: {
-            '/': (BuildContext context) => HomePage(),
-          },
-          onGenerateRoute: (RouteSettings settings) {
-            return CupertinoPageRoute<bool>(
-                builder: (BuildContext context) => HomePage());
-          },
-          // Fallback route if unable to find correct route (Will go to main page)
-          onUnknownRoute: (RouteSettings settings) {
-            return CupertinoPageRoute(
-                builder: (BuildContext context) => HomePage());
-          },
-        ));
+      model: IdeasModel(),
+      child: MaterialApp(
+        title: 'Date Night',
+        theme: global.iOSThemeData,
+        routes: {
+          '/': (BuildContext context) => HomePage(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          return CupertinoPageRoute<bool>(
+              builder: (BuildContext context) => HomePage());
+        },
+        // Fallback route if unable to find correct route (Will go to main page)
+        onUnknownRoute: (RouteSettings settings) {
+          return CupertinoPageRoute(
+              builder: (BuildContext context) => HomePage());
+        },
+      ),
+    );
   }
 }

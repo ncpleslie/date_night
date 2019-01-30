@@ -155,14 +155,14 @@ class IdeasModel extends Model {
       snapshot = await Firestore.instance
           .collection('date_ideas')
           .orderBy('uploadTime', descending: true)
-          .limit(5)
+          .limit(10)
           .getDocuments();
     } else {
       snapshot = await Firestore.instance
           .collection('date_ideas')
           .orderBy('uploadTime', descending: true)
           .startAfter([_lastVisible['uploadTime']])
-          .limit(5)
+          .limit(10)
           .getDocuments();
     } 
 

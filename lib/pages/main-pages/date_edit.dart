@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../widgets/selection_button.dart';
 import '../../scoped-models/ideas_model.dart';
-import '../../pages/secondary-pages/results.dart';
+import '../secondary-pages/loading_page.dart';
 
 class DateEdit extends StatefulWidget {
   @override
@@ -81,15 +81,14 @@ class _DateEditState extends State<DateEdit> {
     );
   }
 
-  Future<Null> _showResults(returningValue) async {
-    await showDialog(
-        context: context,
+  _showResults(returningValue) {
+    Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(
         builder: (BuildContext context) {
-          return Center(
-            widthFactor: MediaQuery.of(context).size.width * 0.90,
-            heightFactor: MediaQuery.of(context).size.height * 0.90,
-            child: Results(returningValue),
-          );
-        });
+          return LoadingPage(returningValue);
+        },
+      ),
+    );
   }
 }
