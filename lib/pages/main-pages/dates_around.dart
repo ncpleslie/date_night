@@ -70,16 +70,10 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
       icon: Icon(CupertinoIcons.refresh),
       tooltip: 'Refresh',
       onPressed: () async {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CircularProgressIndicator();
-            });
         widget.model.dateIdeasList.clear();
         widget.model.clearLastVisible();
         widget.model.clearAllLists();
         await widget.model.fetchDateIdeas();
-        Navigator.pop(context);
       },
     );
   }

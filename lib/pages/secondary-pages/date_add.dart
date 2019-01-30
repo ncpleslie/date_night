@@ -63,8 +63,22 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           : ListView.builder(
               itemCount: model.listOfIdeaCards.length,
               itemBuilder: (BuildContext context, int index) {
-                Widget widget = model.listOfIdeaCards[index];
-                return widget;
+                return Dismissible(
+                  key: Key(model.listOfDateStrings[index]),
+                  background: Container(
+                    color: Colors.red,
+                  ),
+                  onDismissed: (DismissDirection direction) {
+                    if (direction == DismissDirection.endToStart) {
+                      model.listOfDateStrings.removeAt(index);
+                      model.listOfIdeaCards.removeAt(index);
+                      setState(() {
+                        
+                      });
+                    }
+                  },
+                  child: model.listOfIdeaCards[index],
+                );
               },
             ),
     );
@@ -136,33 +150,42 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   }
 
   Widget _cardCreator(idea) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      child: Column(children: <Widget>[
-        ListTile(
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [AutoSizeText(idea, minFontSize: 20.0, maxLines: 3,)]),
-        ),
-        ButtonTheme.bar(
-            child: ButtonBar(children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                icon:  Icon(Icons.star_border),
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                  });
-                },
-              ),
-            ]),
-          )
-      ]),
+    return ScopedModelDescendant(
+      builder: (BuildContext context, Widget child, IdeasModel model) {
+        return Card(
+          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          child: Column(children: <Widget>[
+            ListTile(
+              title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AutoSizeText(
+                      idea,
+                      minFontSize: 20.0,
+                      maxLines: 3,
+                    )
+                  ]),
+            ),
+            ButtonTheme.bar(
+              child: ButtonBar(children: [
+                IconButton(
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.star_border),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    setState(() {});
+                  },
+                ),
+              ]),
+            )
+          ]),
+        );
+      },
     );
   }
 
@@ -237,33 +260,3 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 }
-
-/* Widget _buildDateIdeaCard() {
-    final Key _key = Key(_listOfTextStrings[count]);
-    String title = _listOfTextStrings[count].toString();
-    bool buttonPress = false;
-    return Dismissible(
-      key: _key,
-      background: Container(
-        color: Colors.red,
-      ),
-      onDismissed: (DismissDirection direction) {
-        if (direction == DismissDirection.endToStart ||
-            direction == DismissDirection.startToEnd) {
-          String foundValue = _key.toString().split("'")[1];
-          setState(() {
-            print(_listOfTextInputs[1]);
-            print(foundValue);
-            _listOfTextInputs.remove(foundValue);
-            _listOfTextStrings.remove(foundValue);
-            print(_listOfTextInputs);
-          });
-          count--;
-        }
-      },
-      child: Card(
-        margin: EdgeInsets.symmetric(vertical: 10.0),
-        child: 
-      ),
-    );
-  } */

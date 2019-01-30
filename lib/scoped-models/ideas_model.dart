@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,20 +16,6 @@ class IdeasModel extends Model {
 
   // For Final Selection
   String chosenIdea;
-
-  // Loading Indicators
-  bool _isLoading = false;
-
-  bool get isLoading {
-    return _isLoading;
-  }
-
-  // Error Handling
-  bool _errorHandling() {
-    _isLoading = false;
-    notifyListeners();
-    return false;
-  }
 
   void addPersonOneIdeas(List personOneIdea) {
     personOneIdeas.addAll(personOneIdea);
@@ -61,7 +46,7 @@ class IdeasModel extends Model {
   }
 
   // For adding ideas 
- final List<Widget> listOfIdeaCards = [];
+ final List/*<Widget>*/ listOfIdeaCards = [];
  final List<String> listOfDateStrings = [];
 
   List get ideaCards {
@@ -72,8 +57,6 @@ class IdeasModel extends Model {
     listOfIdeaCards.add(card);
     listOfDateStrings.add(string);
   }
-
-
 
   String compareAllIdeas() {
     // If person one and person two enter same idea
@@ -126,6 +109,19 @@ class IdeasModel extends Model {
     uploadDateIdeas();
 
     return chosenIdea;
+  }
+  // Loading Indicators
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  // Error Handling
+  bool _errorHandling() {
+    _isLoading = false;
+    notifyListeners();
+    return false;
   }
 
   Future<Null> uploadDateIdeas() async {
