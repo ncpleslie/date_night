@@ -89,7 +89,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         if (model.displayedIdeas.length > 0 && !model.isLoading) {
           content = DatesAround(model, dateList);
         } else if (model.isLoading) {
-          content = Container();
+          content = Container(child: Center(child: Text('Loading...'),),);
         }
         return RefreshIndicator(
           child: content,
