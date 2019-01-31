@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../widgets/selection_button.dart';
 import '../../scoped-models/ideas_model.dart';
+import '../../widgets/selection_button.dart';
 import '../secondary-pages/loading_page.dart';
 
 class DateEdit extends StatefulWidget {
@@ -31,17 +31,17 @@ class _DateEditState extends State<DateEdit> {
     return SelectionButton();
   }
 
-  Widget _buildFAB(model) {
-    bool areListsEmpty =
+  Widget _buildFAB(IdeasModel model) {
+    final bool areListsEmpty =
         model.personOneIdeas.isEmpty || model.personTwoIdeas.isEmpty;
     return !areListsEmpty ? _buildResultsButton(model) : Container();
   }
 
-  Widget _buildAppBar(model) {
+  Widget _buildAppBar(IdeasModel model) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(40.0),
+      preferredSize: const Size.fromHeight(40.0),
       child: AppBar(
-        title: Text('Plan A Date'),
+        title: const Text('Plan A Date'),
         elevation: 0,
         backgroundColor: Colors.deepPurple,
         toolbarOpacity: 0.7,
@@ -52,12 +52,12 @@ class _DateEditState extends State<DateEdit> {
     );
   }
 
-  Widget _buildDeleteDataIcon(model) {
-    bool areListsNotEmpty =
+  Widget _buildDeleteDataIcon(IdeasModel model) {
+    final bool areListsNotEmpty =
         model.personOneIdeas.isNotEmpty || model.personTwoIdeas.isNotEmpty;
     return areListsNotEmpty
         ? IconButton(
-            icon: Icon(CupertinoIcons.delete),
+            icon: const Icon(CupertinoIcons.delete),
             tooltip: 'Delete',
             onPressed: () {
               model.clearAllLists();
@@ -67,37 +67,26 @@ class _DateEditState extends State<DateEdit> {
         : Container();
   }
 
-  Widget _buildResultsButton(model) {
+  Widget _buildResultsButton(IdeasModel model) {
     return FloatingActionButton(
-      child: Icon(
+      child: const Icon(
         CupertinoIcons.right_chevron,
         size: 40,
       ),
       onPressed: () {
-        String returningValue = model.compareAllIdeas();
+        final String returningValue = model.compareAllIdeas();
         _showResults(returningValue);
         model.clearAllLists();
       },
     );
   }
 
-  _showResults(returningValue) {
-    showCupertinoModalPopup(
+  void _showResults(String returningValue) {
+    showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
         return LoadingPage(returningValue);
       },
     );
   }
-
-  /* Navigator.pushReplacement(
-      context,
-      CupertinoPageRoute(
-        fullscreenDialog: true,
-        builder: (BuildContext context) {
-          return ;
-        },
-      ),
-    );*/
-
 }

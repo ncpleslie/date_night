@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import '../models/date_ideas.dart';
 import '../scoped-models/ideas_model.dart';
 
 class DateCard extends StatelessWidget {
-  final index;
-  DateCard(this.index);
+  const DateCard(this.index);
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
-        final _dateData = model.displayedIdeas[index];
-        String _otherDates = _dateData.otherIdeas != null
+        final DateIdeas _dateData = model.displayedIdeas[index];
+        final String _otherDates = _dateData.otherIdeas != null
             ? _dateData.otherIdeas.join(', ')
             : null;
 
@@ -24,7 +25,7 @@ class DateCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStackOfCards(dateData, otherDates, context) {
+  Widget _buildStackOfCards(DateIdeas dateData, String otherDates, BuildContext context) {
     return Container(
       height: 200,
       child: Stack(
@@ -40,7 +41,7 @@ class DateCard extends StatelessWidget {
             left: 30.0,
             child: Text(
               dateData.randomEmoji,
-              style: TextStyle(fontSize: 90.0),
+              style: const TextStyle(fontSize: 90.0),
             ),
           )
         ],
@@ -48,16 +49,16 @@ class DateCard extends StatelessWidget {
     );
   }
 
-  Widget _cardWithWords(dateData, otherDates, context) {
+  Widget _cardWithWords(DateIdeas dateData, String otherDates, BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       height: 200.0,
       child: Card(
         color: Colors.deepPurple[300],
-        margin: EdgeInsets.all(20.0),
+        margin: const EdgeInsets.all(20.0),
         child: Padding(
           padding:
-              EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+             const  EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,24 +72,24 @@ class DateCard extends StatelessWidget {
                     softWrap: true,
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 25.0,
                     ),
                   ),
                 ],
               ),
-              otherDates.length != 0
-                  ? SizedBox(
+              otherDates.isNotEmpty
+                  ? const SizedBox(
                       height: 10.0,
                     )
                   : Container(),
-              otherDates.length != 0
+              otherDates.isNotEmpty
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Text('💔 '),
                               Text(
                                 'Other Ideas: ',

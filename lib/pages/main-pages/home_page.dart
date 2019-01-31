@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
-import './dates_around.dart';
-import './date_edit.dart';
 import '../../scoped-models/ideas_model.dart';
+import './date_edit.dart';
+import './dates_around.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Scaffold(
           body: _getPage(model),
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       inactiveIconColor: Theme.of(context).accentColor,
       initialSelection: 0,
       textColor: Colors.white,
-      onTabChangedListener: (position) {
+      onTabChangedListener: (int position) {
         setState(() {
           currentPage = position;
         });
@@ -50,9 +50,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _getPage(model) {
+  Widget _getPage(IdeasModel model) {
     return Stack(
-      children: [
+      children: <Offstage>[
         Offstage(
           offstage: currentPage != 0,
           child: TickerMode(

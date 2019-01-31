@@ -4,9 +4,10 @@ import '../scoped-models/ideas_model.dart';
 import './date_card.dart';
 
 class DatesAround extends StatefulWidget {
+  const DatesAround(this.model, this.dateList);
   final IdeasModel model;
-  final dateList;
-  DatesAround(this.model, this.dateList);
+  final Future<List<dynamic>> dateList;
+
   @override
   State<StatefulWidget> createState() {
     return _DatesAroundState();
@@ -18,7 +19,7 @@ class _DatesAroundState extends State<DatesAround> {
 
   @override
   void initState() {
-    _controller = new ScrollController()..addListener(_scrollListener);
+    _controller = ScrollController()..addListener(_scrollListener);
     super.initState();
   }
 
@@ -27,14 +28,14 @@ class _DatesAroundState extends State<DatesAround> {
     return _buildListView();
   }
 
-  _buildListView() {
+  Widget _buildListView() {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         return DateCard(index);
       },
       controller: _controller,
       itemCount: widget.model.displayedIdeas.length,
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
     );
   }
 
@@ -46,9 +47,11 @@ class _DatesAroundState extends State<DatesAround> {
 
   void _scrollListener() {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-      setState(() {
-        widget.model.fetchDateIdeas();
-      });
+      setState(
+        () {
+          widget.model.fetchDateIdeas();
+        },
+      );
     }
   }
 }

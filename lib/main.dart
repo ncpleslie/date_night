@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 
+import './globals/globals.dart' as global;
 import './pages/main-pages/home_page.dart';
 import './scoped-models/ideas_model.dart';
-import './globals/globals.dart' as global;
+
 
 void main() {
   runApp(DateNight());
@@ -35,7 +36,7 @@ class _DateNightState extends State<DateNight> {
         },
         // Fallback route if unable to find correct route (Will go to main page)
         onUnknownRoute: (RouteSettings settings) {
-          return CupertinoPageRoute(
+          return CupertinoPageRoute<void>(
               builder: (BuildContext context) => HomePage());
         },
       ),

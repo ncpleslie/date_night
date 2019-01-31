@@ -1,12 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import "dart:math";
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Results extends StatefulWidget {
+  const Results(this.result);
   final String result;
-  Results(this.result);
 
   @override
   State<StatefulWidget> createState() {
@@ -15,12 +16,12 @@ class Results extends StatefulWidget {
 }
 
 class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
-  final _random = Random();
-  final List<String> _gifURL = [
-    "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif",
-    "https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif"
+  final Random _random = Random();
+  final List<String> _gifURL = <String>[
+    'https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF\'s/gif14.gif',
+    'https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif'
   ];
-  final List<String> _listOfAltText = [
+  final List<String> _listOfAltText = <String>[
     'Sounds Good To Me',
     'Excellent Idea',
     'Great Thinking, Team!',
@@ -36,7 +37,7 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
         AnimationController(duration: Duration(milliseconds: 500), vsync: this);
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.linear);
-    _animation.addListener(() => this.setState(() {}));
+    _animation.addListener(() => setState(() {}));
     _animationController.forward();
   }
 
@@ -66,8 +67,8 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                       height: MediaQuery.of(context).size.height / 2,
                       child: Card(
                         elevation: 0,
-                        margin: EdgeInsets.all(0.0),
-                        shape: RoundedRectangleBorder(
+                        margin: const EdgeInsets.all(0.0),
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(8.0),
                                 bottomRight: Radius.circular(8.0))),
@@ -79,7 +80,7 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 16.0),
+                      padding: const EdgeInsets.only(top: 16.0),
                       child: Text(
                         widget.result.toUpperCase(),
                         textAlign: TextAlign.center,
@@ -124,8 +125,8 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/', (Route<dynamic> route) => false);
+                          Navigator.of(context)
+                              .popUntil(ModalRoute.withName('/'));
                         },
                       )
                     ],

@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import 'dart:async';
-
 import '../../scoped-models/ideas_model.dart';
 
 class PersonOneDateEdit extends StatefulWidget {
@@ -36,9 +34,11 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 
-  Widget _addBackgroundToBody(model) {
-    Color gradientStart = Colors.deepPurple[700];
-    Color gradientEnd = Colors.purple[500];
+  Widget _addBackgroundToBody(IdeasModel model) {
+    final Color gradientStart = Colors.deepPurple[700];
+    final Color gradientEnd = Colors.purple[500];
+    final List<double> _stops = <double>[0.0, 1.0];
+    final List<Color> _colors = <Color>[gradientStart, gradientEnd];
     return Container(
       child: SafeArea(
         top: true,
@@ -47,16 +47,16 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: FractionalOffset(0.0, 0.5),
-            end: FractionalOffset(0.5, 0.0),
-            stops: [0.0, 1.0],
-            colors: [gradientStart, gradientEnd],
+            begin: const FractionalOffset(0.0, 0.5),
+            end: const FractionalOffset(0.5, 0.0),
+            stops: _stops,
+            colors: _colors,
             tileMode: TileMode.clamp),
       ),
     );
   }
 
-  Widget _buildPage(model) {
+  Widget _buildPage(IdeasModel model) {
     return Center(
       child: model.listOfDateStrings.isEmpty
           ? _forEmptyList()
@@ -87,13 +87,13 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
 
   Widget _buildCardContent(IdeasModel model, int index) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Column(children: <Widget>[
         ListTile(
           title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 AutoSizeText(
                   model.listOfDateStrings[index],
                   minFontSize: 20.0,
@@ -102,15 +102,15 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
               ]),
         ),
         ButtonTheme.bar(
-          child: ButtonBar(children: [
+          child: ButtonBar(children: <IconButton>[
             IconButton(
               onPressed: () {
                 setState(() {});
               },
-              icon: Icon(Icons.star_border),
+              icon: const Icon(Icons.star_border),
             ),
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               onPressed: () {
                 model.listOfDateStrings.removeAt(index);
                 setState(() {});
@@ -130,19 +130,19 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           heroTag: 'Add More',
           backgroundColor: CupertinoColors.activeBlue,
           elevation: 0,
-          child: Icon(Icons.add, size: 30),
+          child: const Icon(Icons.add, size: 30),
           onPressed: () {
             _showInput();
           },
         ),
-        SizedBox(
+        const SizedBox(
           height: 40.0,
         )
       ],
     );
   }
 
-  Widget _buildFinishFAB(model) {
+  Widget _buildFinishFAB(IdeasModel model) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -155,20 +155,20 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 heroTag: 'Continue',
                 backgroundColor: CupertinoColors.activeBlue,
                 elevation: 0,
-                child: Icon(
+                child: const Icon(
                   CupertinoIcons.check_mark,
                   size: 50,
                 ),
                 onPressed: () => _finishFABLogic(model),
               ),
-        SizedBox(
+        const SizedBox(
           height: 40.0,
         )
       ],
     );
   }
 
-  void _finishFABLogic(model) {
+  void _finishFABLogic(IdeasModel model) {
     if (model.listOfDateStrings.isNotEmpty) {
       if (model.isPersonOneEditing) {
         model.addPersonOneIdeas(model.listOfDateStrings);
@@ -185,11 +185,11 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     }
   }
 
-  Future<Null> _showInput() async {
-    await showDialog(
+  Future _showInput() async {
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return ScopedModelDescendant(
+        return ScopedModelDescendant<IdeasModel>(
           builder: (BuildContext context, Widget child, IdeasModel model) {
             return GestureDetector(
               // If the user taps outside form boxes then the keyboard is minimized
@@ -197,9 +197,9 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               child: AlertDialog(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                title: Text('Date Idea?'),
+                title: const Text('Date Idea?'),
                 content: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   autocorrect: true,
@@ -209,29 +209,29 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6.0))),
                     color: Theme.of(context).primaryColor,
-                    child: Text('Add Idea'),
+                    child: const Text('Add Idea'),
                     onPressed: () {
                       if (_textController.text.isNotEmpty) {
-                        String ideas = _textController.text
-                            .replaceFirst(RegExp(r"^\s+"), "");
+                        final String ideas = _textController.text
+                            .replaceFirst(RegExp(r'^\s+'), '');
                         model.dateIdeaEntries(ideas);
                         _textController.text = '';
                         Navigator.of(context, rootNavigator: true)
-                            .pop("Continue");
+                            .pop('Continue');
                         setState(() {});
                       }
                     },
                   ),
                   FlatButton(
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6.0))),
                     color: Theme.of(context).primaryColor,
-                    child: Text('Discard'),
+                    child: const Text('Discard'),
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop("Discard");
+                      Navigator.of(context, rootNavigator: true).pop('Discard');
                     },
                   )
                 ],
@@ -247,7 +247,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
+      children: const <Widget>[
         Icon(CupertinoIcons.search),
         Text('No Ideas Yet?'),
       ],

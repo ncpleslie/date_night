@@ -6,8 +6,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../secondary-pages/results.dart';
 
 class LoadingPage extends StatefulWidget {
+  const LoadingPage(this.winningDate);
   final String winningDate;
-  LoadingPage(this.winningDate);
+
 
   @override
   State<StatefulWidget> createState() {
@@ -25,7 +26,7 @@ class _LoadingPageState extends State<LoadingPage> {
     return _buildPage(context, widget.winningDate);
   }
 
-  Widget _buildPage(context, winningDate) {
+  Widget _buildPage(BuildContext context, String winningDate) {
     if (loopPrevent == 0) {
       Future.delayed(Duration(seconds: 3), () {
         _showResults(context, winningDate);
@@ -55,7 +56,7 @@ class _LoadingPageState extends State<LoadingPage> {
                 Text(
                   displayedText,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 50.0,
                     color: Colors.white,
                   ),
@@ -79,7 +80,7 @@ class _LoadingPageState extends State<LoadingPage> {
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   child: RaisedButton(
-                    child: Text('Go Back'),
+                    child: const Text('Go Back'),
                     onPressed: () =>
                         Navigator.of(context).pushReplacementNamed('/'),
                   ),
@@ -91,30 +92,30 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Widget _buildBackgroundWithBody() {
-    Color gradientStart = Colors.deepPurple[700];
-    Color gradientEnd = Colors.purple[500];
+   final Color gradientStart = Colors.deepPurple[700];
+   final  Color gradientEnd = Colors.purple[500];
     return Container(
       child: _buildLoadingPage(),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: FractionalOffset(0.0, 0.5),
-            end: FractionalOffset(0.5, 0.0),
-            stops: [0.0, 1.0],
-            colors: [gradientStart, gradientEnd],
+            begin: const FractionalOffset(0.0, 0.5),
+            end: const FractionalOffset(0.5, 0.0),
+            stops: const <double>[0.0, 1.0],
+            colors: <Color>[gradientStart, gradientEnd],
             tileMode: TileMode.clamp),
       ),
     );
   }
 
-  void _showResults(BuildContext context, winningDate) {
-    showCupertinoModalPopup(
+  void _showResults(BuildContext context, String winningDate) {
+    showCupertinoModalPopup<Future<Null>>(
       context: context,
       builder: (BuildContext context) {
         return Results(winningDate);
       },
     );
   }
-  
+
   @override
   void dispose() {
     super.dispose();

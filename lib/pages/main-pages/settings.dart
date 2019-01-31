@@ -12,9 +12,9 @@ class Settings extends StatelessWidget {
 
   Widget _buildAppBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(40.0),
+      preferredSize: const Size.fromHeight(40.0),
       child: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         backgroundColor: Colors.deepPurple,
         toolbarOpacity: 0.7,
         elevation: 0,
@@ -28,7 +28,7 @@ class Settings extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
+          children: const <Widget>[
             Text('Created By Nick Leslie'),
             Text('All Rights Reserved'),
             Text('©')

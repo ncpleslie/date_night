@@ -7,9 +7,8 @@ import '../../scoped-models/ideas_model.dart';
 import '../../widgets/dates_around.dart';
 
 class DatesAroundPage extends StatefulWidget {
+  const DatesAroundPage(this.model);
   final IdeasModel model;
-
-  DatesAroundPage(this.model);
 
   @override
   State<StatefulWidget> createState() {
@@ -18,17 +17,17 @@ class DatesAroundPage extends StatefulWidget {
 }
 
 class _DatesAroundPageState extends State<DatesAroundPage> {
-  Future dateList;
+  Future<List<dynamic>> dateList;
 
   @override
   void initState() {
     super.initState();
-    dateList = widget.model.fetchDateIdeas();
+   dateList = widget.model.fetchDateIdeas();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Scaffold(
           appBar: _buildAppBar(),
@@ -39,16 +38,16 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   }
 
   Widget _buildBackgroundWithBody() {
-    Color gradientStart = Colors.deepPurple[700];
-    Color gradientEnd = Colors.purple[500];
+    final Color gradientStart = Colors.deepPurple[700];
+    final Color gradientEnd = Colors.purple[500];
     return Container(
       child: _buildDateIdeasList(),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: FractionalOffset(0.0, 0.5),
-            end: FractionalOffset(0.5, 0.0),
-            stops: [0.0, 1.0],
-            colors: [gradientStart, gradientEnd],
+            begin: const FractionalOffset(0.0, 0.5),
+            end: const FractionalOffset(0.5, 0.0),
+            stops: const <double>[0.0, 1.0],
+            colors: <Color>[gradientStart, gradientEnd],
             tileMode: TileMode.clamp),
       ),
     );
@@ -56,9 +55,9 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
 
   Widget _buildAppBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(40.0),
+      preferredSize: const Size.fromHeight(40.0),
       child: AppBar(
-        title: Text('Dates Around You'),
+        title: const Text('Dates Around You'),
         backgroundColor: Colors.deepPurple,
         toolbarOpacity: 0.7,
         elevation: 0,
@@ -71,7 +70,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
 
   Widget _refreshPage() {
     return IconButton(
-      icon: Icon(CupertinoIcons.refresh),
+      icon: const Icon(CupertinoIcons.refresh),
       tooltip: 'Refresh',
       onPressed: () async {
         widget.model.dateIdeasList.clear();
@@ -83,13 +82,17 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   }
 
   Widget _buildDateIdeasList() {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         Widget content = _noItemsLoaded();
-        if (model.displayedIdeas.length > 0 && !model.isLoading) {
+        if (model.displayedIdeas.isNotEmpty && !model.isLoading) {
           content = DatesAround(model, dateList);
         } else if (model.isLoading) {
-          content = Container(child: Center(child: Text('Loading...'),),);
+          content = Container(
+            child: const Center(
+              child: Text('Loading...'),
+            ),
+          );
         }
         return RefreshIndicator(
           child: content,
@@ -112,7 +115,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         children: <Widget>[
           Center(
             child: Column(
-              children: <Widget>[
+              children: const <Widget>[
                 Icon(CupertinoIcons.search),
                 Text('No Dates Found'),
               ],

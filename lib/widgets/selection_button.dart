@@ -16,18 +16,18 @@ class SelectionButton extends StatefulWidget {
 class _SelectionButtonState extends State<SelectionButton> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
+    return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
-        bool _isPersonOneListFull =
+        final bool _isPersonOneListFull =
             model.personOneIdeas == null || model.personOneIdeas.isEmpty;
-        bool _isPersonTwoListFull =
+        final bool _isPersonTwoListFull =
             model.personTwoIdeas == null || model.personTwoIdeas.isEmpty;
 
         return Column(
           //        mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _buildPersonOneButton(model, _isPersonOneListFull),
-            SizedBox(
+            const SizedBox(
               height: 1.0,
             ),
             _buildPersonTwoButton(model, _isPersonTwoListFull),
@@ -37,7 +37,7 @@ class _SelectionButtonState extends State<SelectionButton> {
     );
   }
 
-  Widget _buildPersonOneButton(model, _isPersonOneListFull) {
+  Widget _buildPersonOneButton(IdeasModel model, bool _isPersonOneListFull) {
     return Expanded(
       child: Material(
         textStyle: TextStyle(
@@ -52,15 +52,15 @@ class _SelectionButtonState extends State<SelectionButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _isPersonOneListFull
-                    ? Icon(
+                    ? const Icon(
                         Icons.person_add,
                         color: Colors.white,
                       )
-                    : Icon(
+                    : const Icon(
                         Icons.person,
                         color: Colors.white,
                       ),
-                Text('Person One')
+                const Text('Person One')
               ],
             ),
           ),
@@ -69,30 +69,30 @@ class _SelectionButtonState extends State<SelectionButton> {
     );
   }
 
-  Widget _buildPersonTwoButton(model, _isPersonTwoListFull) {
+  Widget _buildPersonTwoButton(
+      IdeasModel model, bool _isPersonTwoListFull) {
     return Expanded(
       child: Material(
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.white,
         ),
         color: _isPersonTwoListFull ? Colors.red : Colors.greenAccent[700],
         child: InkWell(
-          onTap: () =>
-              _isPersonTwoListFull ? _navigateToEdit(model, false, true) : null,
+          onTap: () => _isPersonTwoListFull ? _navigateToEdit(model, false, true) : null,
           child: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _isPersonTwoListFull
-                      ? Icon(
+                      ? const Icon(
                           Icons.person_add,
                           color: Colors.white,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.person,
                           color: Colors.white,
                         ),
-                  Text('Person Two')
+                  const Text('Person Two')
                 ]),
           ),
         ),
@@ -100,12 +100,12 @@ class _SelectionButtonState extends State<SelectionButton> {
     );
   }
 
-  _navigateToEdit(model, personOne, personTwo) {
+  void _navigateToEdit(IdeasModel model, bool personOne, bool personTwo) {
     model.isPersonOneEditing = personOne;
     model.isPersonTwoEditing = personTwo;
-    Navigator.push(
+    Navigator.push<Null>(
       context,
-      CupertinoPageRoute(
+      CupertinoPageRoute<Null>(
         builder: (BuildContext context) {
           return PersonOneDateEdit();
         },
