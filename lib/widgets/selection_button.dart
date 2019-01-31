@@ -103,9 +103,9 @@ class _SelectionButtonState extends State<SelectionButton> {
   void _navigateToEdit(IdeasModel model, bool personOne, bool personTwo) {
     model.isPersonOneEditing = personOne;
     model.isPersonTwoEditing = personTwo;
-    Navigator.push<Null>(
+    Navigator.push<void>(
       context,
-      CupertinoPageRoute<Null>(
+      CupertinoPageRoute<void>(
         builder: (BuildContext context) {
           return PersonOneDateEdit();
         },

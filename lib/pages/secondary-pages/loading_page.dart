@@ -28,10 +28,10 @@ class _LoadingPageState extends State<LoadingPage> {
 
   Widget _buildPage(BuildContext context, String winningDate) {
     if (loopPrevent == 0) {
-      Future.delayed(Duration(seconds: 3), () {
+      Future<void>.delayed(Duration(seconds: 3), () {
         _showResults(context, winningDate);
         if (mounted) {
-          Future.delayed(Duration(seconds: 3), () {
+          Future<void>.delayed(Duration(seconds: 3), () {
             displayedText = 'Error Loading';
             error = true;
             setState(() {});
@@ -108,7 +108,7 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   void _showResults(BuildContext context, String winningDate) {
-    showCupertinoModalPopup<Future<Null>>(
+    showCupertinoModalPopup<Future<void>>(
       context: context,
       builder: (BuildContext context) {
         return Results(winningDate);

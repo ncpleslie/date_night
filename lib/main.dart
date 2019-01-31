@@ -27,7 +27,7 @@ class _DateNightState extends State<DateNight> {
       child: MaterialApp(
         title: 'Date Night',
         theme: global.iOSThemeData,
-        routes: {
+        routes: <String, WidgetBuilder>{
           '/': (BuildContext context) => HomePage(),
         },
         onGenerateRoute: (RouteSettings settings) {

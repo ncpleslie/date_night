@@ -6,9 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/date_ideas.dart';
 
 class IdeasModel extends Model {
-  List<String> chosenDateIdeas = [];
-  List<String> personOneIdeas = [];
-  List<String> personTwoIdeas = [];
+  List<String> chosenDateIdeas = <String>[];
+  List<String> personOneIdeas = <String>[];
+  List<String> personTwoIdeas = <String>[];
 
   // Knowing who is editing
   bool isPersonOneEditing = false;
@@ -39,14 +39,14 @@ class IdeasModel extends Model {
   }
 
   // From Fetching ideas
-  List<DateIdeas> dateIdeasList = [];
+  List<DateIdeas> dateIdeasList = <DateIdeas>[];
 
   List<DateIdeas> get displayedIdeas {
     return List<DateIdeas>.from(dateIdeasList);
   }
 
-  // For adding ideas 
- final List<String> listOfDateStrings = [];
+  // For adding ideas
+  final List<String> listOfDateStrings = <String>[];
 
   void dateIdeaEntries(String string) {
     listOfDateStrings.add(string);
@@ -58,7 +58,6 @@ class IdeasModel extends Model {
     // else
     // return a random idea
     //compare shortest list against longest list
-    
 
     if (personOneIdeas.length >= personTwoIdeas.length) {
       for (int i = 0; i <= personOneIdeas.length - 1; i++) {
@@ -83,10 +82,8 @@ class IdeasModel extends Model {
     combineLists();
     final Random random = Random();
 
-    if (chosenIdea == null) {
-      chosenIdea =
-          chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
-    }
+    chosenIdea ??= chosenIdea =
+        chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
 
     // Remove Dupes
     // Called twice because it could be in there twice
@@ -104,6 +101,7 @@ class IdeasModel extends Model {
 
     return chosenIdea;
   }
+
   // Loading Indicators
   bool _isLoading = false;
 
@@ -118,9 +116,9 @@ class IdeasModel extends Model {
     return false;
   }
 
-  Future<Null> uploadDateIdeas() async {
-    final random = Random();
-    final List<String> _emojiList = ['🎉', '😍', '🍾', '🍻'];
+  Future<void> uploadDateIdeas() async {
+    final Random random = Random();
+    final List<String> _emojiList = <String>['🎉', '😍', '🍾', '🍻'];
 
     final Map<String, dynamic> dateIdeas = <String, dynamic>{
       'chosenDate': chosenIdea,
@@ -131,7 +129,7 @@ class IdeasModel extends Model {
 
     Firestore.instance.runTransaction(
       (Transaction transaction) async {
-       final CollectionReference collectionRef =
+        final CollectionReference collectionRef =
             Firestore.instance.collection('date_ideas');
         await collectionRef.document().setData(dateIdeas);
       },
@@ -143,7 +141,7 @@ class IdeasModel extends Model {
   }
 
   DocumentSnapshot _lastVisible;
-  List<DateIdeas>fetchedDateIdeas = <DateIdeas>[];
+  List<DateIdeas> fetchedDateIdeas = <DateIdeas>[];
 
   Future<List<DocumentSnapshot>> fetchDateIdeas() async {
     _isLoading = true;
@@ -164,23 +162,20 @@ class IdeasModel extends Model {
           .startAfter(<Timestamp>[_lastVisible['uploadTime']])
           .limit(10)
           .getDocuments();
-    } 
+    }
 
     if (snapshot != null && snapshot.documents.isNotEmpty) {
       _lastVisible = snapshot.documents[snapshot.documents.length - 1];
 
-      snapshot.documents.forEach(
-        (DocumentSnapshot dateData) {
-          dateIdeas = DateIdeas(
-              chosenDate: dateData['chosenDate'],
-              otherIdeas: dateData['otherIdeas'],
-              randomEmoji: dateData['randomEmoji']);
-
-          fetchedDateIdeas.add(dateIdeas);
-        },
-      );
+      for (DocumentSnapshot dateData in snapshot.documents) {
+        dateIdeas = DateIdeas(
+            chosenDate: dateData['chosenDate'],
+            otherIdeas: dateData['otherIdeas'],
+            randomEmoji: dateData['randomEmoji']);
+        fetchedDateIdeas.add(dateIdeas);
+      }
       dateIdeasList = fetchedDateIdeas;
-    } 
+    }
 
     if (snapshot.documents.isEmpty) {
       _errorHandling();

@@ -50,8 +50,8 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
     final double _fontSizeBasedOnTextLength =
         widget.result.length >= 9 ? 40.0 : 50.0;
     return SafeArea(
+      top: true,
       bottom: true,
-      top: false,
       child: Material(
         type: MaterialType.transparency,
         child: Transform.scale(
@@ -69,9 +69,8 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                         elevation: 0,
                         margin: const EdgeInsets.all(0.0),
                         shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0))),
                         clipBehavior: Clip.antiAlias,
                         child: CachedNetworkImage(
                           imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
@@ -92,7 +91,7 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 16.0),
+                      padding: const EdgeInsets.only(top: 16.0),
                       child: Text(
                         _listOfAltText[_random.nextInt(_listOfAltText.length)],
                         softWrap: true,
@@ -106,18 +105,18 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       RaisedButton(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 30.0, vertical: 20.0),
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0))),
                         color: Theme.of(context).primaryColor,
-                        child: Text(
+                        child: const Text(
                           'Let\'s Do This!',
                           style: TextStyle(
                             fontSize: 40.0,
@@ -141,16 +140,16 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildBackgroundWithBody() {
-    Color gradientStart = Colors.deepPurple[700];
-    Color gradientEnd = Colors.purple[500];
+    final Color gradientStart = Colors.deepPurple[700];
+    final Color gradientEnd = Colors.purple[500];
     return Container(
       child: _buildResults(),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: FractionalOffset(0.0, 0.5),
-            end: FractionalOffset(0.5, 0.0),
-            stops: [0.0, 1.0],
-            colors: [gradientStart, gradientEnd],
+            begin: const FractionalOffset(0.0, 0.5),
+            end: const FractionalOffset(0.5, 0.0),
+            stops: const <double>[0.0, 1.0],
+            colors: <Color>[gradientStart, gradientEnd],
             tileMode: TileMode.clamp),
       ),
     );
