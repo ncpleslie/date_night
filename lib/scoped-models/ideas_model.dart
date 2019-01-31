@@ -145,6 +145,7 @@ class IdeasModel extends Model {
 
   Future<List<DocumentSnapshot>> fetchDateIdeas() async {
     _isLoading = true;
+    notifyListeners();
 
     QuerySnapshot snapshot;
     DateIdeas dateIdeas;

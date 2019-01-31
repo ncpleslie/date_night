@@ -22,7 +22,7 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
   @override
   void initState() {
     super.initState();
-   dateList = widget.model.fetchDateIdeas();
+    dateList = widget.model.fetchDateIdeas();
   }
 
   @override
@@ -85,8 +85,19 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         Widget content = _noItemsLoaded();
-        if (model.displayedIdeas.isNotEmpty && !model.isLoading) {
-          content = DatesAround(model, dateList);
+        if (model.displayedIdeas.isNotEmpty) {
+          content = model.isLoading
+              ? Stack(
+                  children: <Widget>[
+                    DatesAround(model, dateList),
+                    LinearProgressIndicator(
+                      backgroundColor: Colors.deepPurple[300],
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Colors.deepPurple),
+                    )
+                  ],
+                )
+              : DatesAround(model, dateList);
         } else if (model.isLoading) {
           content = Container(
             child: const Center(
