@@ -82,13 +82,22 @@ class _DateEditState extends State<DateEdit> {
   }
 
   _showResults(returningValue) {
-    Navigator.pushReplacement(
-      context,
-      CupertinoPageRoute(
-        builder: (BuildContext context) {
-          return LoadingPage(returningValue);
-        },
-      ),
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return LoadingPage(returningValue);
+      },
     );
   }
+
+  /* Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) {
+          return ;
+        },
+      ),
+    );*/
+
 }

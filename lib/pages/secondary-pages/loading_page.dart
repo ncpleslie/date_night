@@ -1,23 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../secondary-pages/results.dart';
 
-class LoadingPage extends StatelessWidget {
+class LoadingPage extends StatefulWidget {
   final String winningDate;
   LoadingPage(this.winningDate);
 
   @override
+  State<StatefulWidget> createState() {
+    return _LoadingPageState();
+  }
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+  int loopPrevent = 0;
+  String displayedText = 'CALCULATING...';
+  bool error = false;
+
+  @override
   Widget build(BuildContext context) {
-    return _buildPage(context, winningDate);
+    return _buildPage(context, widget.winningDate);
   }
 
   Widget _buildPage(context, winningDate) {
-    Future.delayed(Duration(seconds: 3), () {
-      _showResults(context, winningDate);
-    });
-    return Scaffold(body: _buildBackgroundWithBody());
+    if (loopPrevent == 0) {
+      Future.delayed(Duration(seconds: 3), () {
+        _showResults(context, winningDate);
+        if (mounted) {
+          Future.delayed(Duration(seconds: 3), () {
+            displayedText = 'Error Loading';
+            error = true;
+            setState(() {});
+          });
+        }
+      });
+
+      loopPrevent++;
+    }
+    return Material(child: _buildBackgroundWithBody());
   }
 
   Widget _buildLoadingPage() {
@@ -30,15 +53,12 @@ class LoadingPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'CALCULATING...',
+                  displayedText,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 50.0,
                     color: Colors.white,
                   ),
-                ),
-                Text(
-                  'Hopefully, no one gets angry',
-                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
@@ -48,12 +68,24 @@ class LoadingPage extends StatelessWidget {
           child: Opacity(
             opacity: 0.5,
             child: SpinKitDoubleBounce(
-              size: 200.0,
+              size: 250.0,
               duration: Duration(seconds: 3),
               color: Colors.white,
             ),
           ),
         ),
+        error
+            ? Positioned(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: RaisedButton(
+                    child: Text('Go Back'),
+                    onPressed: () =>
+                        Navigator.of(context).pushReplacementNamed('/'),
+                  ),
+                ),
+              )
+            : Container()
       ],
     );
   }
@@ -74,16 +106,17 @@ class LoadingPage extends StatelessWidget {
     );
   }
 
-  Future<Null> _showResults(context, winningDate) async {
-    Navigator.of(context).pushReplacementNamed('/');
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Center(
-            widthFactor: MediaQuery.of(context).size.width * 0.90,
-            heightFactor: MediaQuery.of(context).size.height * 0.90,
-            child: Results(winningDate),
-          );
-        });
+  void _showResults(BuildContext context, winningDate) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return Results(winningDate);
+      },
+    );
+  }
+  
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
