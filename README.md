@@ -9,9 +9,9 @@ What you want to do with the last hour before bed?
 Date Night is there to help
 
 
-| Home Screen  | Add Date     |              |              |        Results      |
-| Shows dates from other users  | Each user can add ideas     |              |              |              |
+| Home Screen  | Add Date     |              |              |  Results     |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
+| Dates from other users |    |              |              |              |
 | ![Home Screen - Displaying other dates from other users](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/image1.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image2.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image3.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image4.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/image5.png) |
 
 # Key Features:
