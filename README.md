@@ -8,6 +8,8 @@ What you want to do with the last hour before bed?
 
 Date Night is there to help
 
+![Home Screen - Displaying other dates from other users](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/image1.png)
+
 # Key Features:
   - See dates happening around you
   - Enter in your date ideas, and Date Night will pick the right one for you
