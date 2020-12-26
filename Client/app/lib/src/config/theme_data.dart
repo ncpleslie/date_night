@@ -8,5 +8,6 @@ class ThemeConfig {
       primaryColor: Colors.deepPurple,
       accentColor: Colors.deepPurple[300],
       buttonColor: CupertinoColors.activeBlue,
-      dialogBackgroundColor: Colors.deepPurple[300]);
+      dialogBackgroundColor: Colors.deepPurple[300],
+      );
 }

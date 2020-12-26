@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/ideas_model.dart';
 import '../../widgets/selection_button.dart';
 import './loading_page.dart';
+import 'date_add.dart';
 
 class DateEdit extends StatefulWidget {
   @override
@@ -19,21 +20,58 @@ class _DateEditState extends State<DateEdit> {
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
           appBar: _buildAppBar(model),
-          body: _buildSelectionButtons(),
+          body: _buildSelectionButtons(model),
           floatingActionButton: _buildFAB(model),
         );
       },
     );
   }
 
-  Widget _buildSelectionButtons() {
-    return SelectionButton();
+  Widget _buildSelectionButtons(IdeasModel model) {
+    return Column(
+      children: <Widget>[
+        SelectionButton(
+            context,
+            'Person One',
+            model.isSelectedEditorsListValid(0),
+            () => _navigateToEdit(model, 0)),
+        const SizedBox(
+          height: 1.0,
+        ),
+        SelectionButton(
+            context,
+            'Person Two',
+            model.isSelectedEditorsListValid(1),
+            () => _navigateToEdit(model, 1)),
+      ],
+    );
+  }
+
+  /// Will navigate to the correct editting page based on is currently editing
+  void _navigateToEdit(IdeasModel model, int whoIsEditing) {
+    model.setCurrentEditor(whoIsEditing);
+    Navigator.push<void>(
+      context,
+      CupertinoPageRoute<void>(
+        builder: (BuildContext context) {
+          return PersonOneDateEdit();
+        },
+      ),
+    );
   }
 
   Widget _buildFAB(IdeasModel model) {
-    final bool areListsEmpty =
-        model.personOneIdeas.isEmpty || model.personTwoIdeas.isEmpty;
-    return !areListsEmpty ? _buildResultsButton(model) : Container();
+    return model.isAllEditorsListsValid()
+        ? FloatingActionButton(
+            child: const Icon(
+              Icons.keyboard_arrow_right,
+              size: 30,
+            ),
+            onPressed: () {
+              _showResults(model.calculateResults());
+            },
+          )
+        : Container();
   }
 
   Widget _buildAppBar(IdeasModel model) {
@@ -52,9 +90,7 @@ class _DateEditState extends State<DateEdit> {
   }
 
   Widget _buildDeleteDataIcon(IdeasModel model) {
-    final bool areListsNotEmpty =
-        model.personOneIdeas.isNotEmpty || model.personTwoIdeas.isNotEmpty;
-    return areListsNotEmpty
+    return model.isAnyEditorsListValid()
         ? IconButton(
             icon: const Icon(CupertinoIcons.delete),
             tooltip: 'Delete',
@@ -64,20 +100,6 @@ class _DateEditState extends State<DateEdit> {
             },
           )
         : Container();
-  }
-
-  Widget _buildResultsButton(IdeasModel model) {
-    return FloatingActionButton(
-      child: const Icon(
-        CupertinoIcons.right_chevron,
-        size: 40,
-      ),
-      onPressed: () {
-        final String returningValue = model.compareAllIdeas();
-        _showResults(returningValue);
-        model.clearAllLists();
-      },
-    );
   }
 
   void _showResults(String returningValue) {

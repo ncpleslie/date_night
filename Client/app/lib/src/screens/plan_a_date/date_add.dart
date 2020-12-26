@@ -24,7 +24,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: Row(
-              mainAxisAlignment: model.listOfDateStrings.isEmpty
+              mainAxisAlignment: !model.isCurrentEditorsListValid()
                   ? MainAxisAlignment.center
                   : MainAxisAlignment.spaceAround,
               children: <Widget>[_buildAddIdeaFAB(), _buildFinishFAB(model)]),
@@ -57,68 +57,65 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
 
   Widget _buildPage(IdeasModel model) {
     return Center(
-      child: model.listOfDateStrings.isEmpty
+      child: !model.isCurrentEditorsListValid()
           ? _forEmptyList()
           : ListView.builder(
-              itemCount: model.listOfDateStrings.length,
+              itemCount: model.getCurrentEditorsIdeasList().length,
               itemBuilder: (BuildContext context, int index) {
-                return _makeCards(model, index);
+                return _makeCards(
+                    model, model.getCurrentEditorsIdeasList()[index], index);
               },
             ),
     );
   }
 
-  Widget _makeCards(IdeasModel model, int index) {
+  Widget _makeCards(IdeasModel model, String name, int index) {
     return Dismissible(
-      key: Key(model.listOfDateStrings[index]),
+      key: Key(name),
       background: Container(
         color: Colors.red,
       ),
       onDismissed: (DismissDirection direction) {
         if (direction == DismissDirection.endToStart) {
-          model.listOfDateStrings.removeAt(index);
+          model.removeItemAt(index);
           setState(() {});
         }
       },
-      child: _buildCardContent(model, index),
-    );
-  }
-
-  Widget _buildCardContent(IdeasModel model, int index) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      child: Column(children: <Widget>[
-        ListTile(
-          title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                AutoSizeText(
-                  model.listOfDateStrings[index],
-                  minFontSize: 20.0,
-                  maxLines: 3,
-                )
-              ]),
-        ),
-        ButtonBarTheme(
-          data: const ButtonBarThemeData(),
-          child: ButtonBar(children: <IconButton>[
-            IconButton(
-              onPressed: () {
-                setState(() {});
-              },
-              icon: const Icon(Icons.star_border),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                model.listOfDateStrings.removeAt(index);
-                setState(() {});
-              },
-            ),
-          ]),
-        )
-      ]),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        child: Column(children: <Widget>[
+          ListTile(
+            title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  AutoSizeText(
+                    name,
+                    minFontSize: 20.0,
+                    maxLines: 3,
+                  )
+                ]),
+          ),
+          ButtonBarTheme(
+            data: const ButtonBarThemeData(),
+            child: ButtonBar(children: <IconButton>[
+              IconButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                icon: const Icon(Icons.star_border),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  model.removeItemAt(index);
+                  setState(() {});
+                },
+              ),
+            ]),
+          )
+        ]),
+      ),
     );
   }
 
@@ -146,7 +143,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        model.listOfDateStrings.isEmpty
+        !model.isCurrentEditorsListValid()
             ? Container(
                 width: 0.0,
                 height: 0.0,
@@ -157,7 +154,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                 elevation: 0,
                 child: const Icon(
                   CupertinoIcons.check_mark,
-                  size: 50,
+                  size: 30,
                 ),
                 onPressed: () => _finishFABLogic(model),
               ),
@@ -169,18 +166,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
   }
 
   void _finishFABLogic(IdeasModel model) {
-    if (model.listOfDateStrings.isNotEmpty) {
-      if (model.isPersonOneEditing) {
-        model.addPersonOneIdeas(model.listOfDateStrings);
-        model.listOfDateStrings.clear();
-        model.isPersonOneEditing = false;
-        setState(() {});
-      } else if (model.isPersonTwoEditing) {
-        model.addPersonTwoIdeas(model.listOfDateStrings);
-        model.listOfDateStrings.clear();
-        model.isPersonTwoEditing = false;
-        setState(() {});
-      }
+    if (model.isCurrentEditorsListValid()) {
       Navigator.pop(context);
     }
   }
@@ -214,11 +200,15 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     color: Theme.of(context).primaryColor,
                     child: const Text('Add Idea'),
                     onPressed: () {
+                      // Add the idea to the current editors list.
                       if (_textController.text.isNotEmpty) {
-                        final String ideas = _textController.text
-                            .replaceFirst(RegExp(r'^\s+'), '');
-                        model.dateIdeaEntries(ideas);
+                        model.addIdea(_textController.text);
+
+                        // Clear text from dialog.
+                        // Otherwise text will remain next time.
                         _textController.text = '';
+
+                        // Remove the dialog box.
                         Navigator.of(context, rootNavigator: true)
                             .pop('Continue');
                         setState(() {});

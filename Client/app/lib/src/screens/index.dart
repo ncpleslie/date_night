@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import '../scoped_model/ideas_model.dart';
-import './date_edit/date_edit.dart';
 import './dates_around/dates_around.dart';
+import './plan_a_date/date_edit.dart';
 
 class Index extends StatefulWidget {
   @override

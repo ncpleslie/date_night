@@ -4,6 +4,10 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/ideas_model.dart';
 import '../../widgets/dates_around.dart';
 
+/// Dates Around displays the winning date idea of other users
+/// along with their non-winning ideas.
+/// This screen will pull these ideas from the DB and display
+/// them in a list of cards.
 class DatesAroundPage extends StatefulWidget {
   const DatesAroundPage(this.model);
   final IdeasModel model;
@@ -60,13 +64,13 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
         toolbarOpacity: 0.7,
         elevation: 0,
         actions: <Widget>[
-          _refreshPage(),
+          _refreshPageIcon(),
         ],
       ),
     );
   }
 
-  Widget _refreshPage() {
+  Widget _refreshPageIcon() {
     return IconButton(
       icon: const Icon(CupertinoIcons.refresh),
       tooltip: 'Refresh',
