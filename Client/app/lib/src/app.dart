@@ -3,7 +3,7 @@ import 'package:flutter/material.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './config/theme_data.dart';
-import './routes/routes.dart';
+import './routes/route_generator.dart';
 import './scoped_model/ideas_model.dart';
 
 class App extends StatelessWidget {
@@ -14,8 +14,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Date Night',
         theme: ThemeConfig.iOSTheme,
-        onGenerateRoute: routes,
-        onUnknownRoute: routes,
+        onGenerateRoute: RouteGenerator.routes,
       ),
     );
   }

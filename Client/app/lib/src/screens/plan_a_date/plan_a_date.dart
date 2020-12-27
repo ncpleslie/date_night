@@ -1,26 +1,40 @@
+import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/src/widgets/page_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/ideas_model.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/selection_button.dart';
-import './loading_page.dart';
-import 'date_add.dart';
+import './date_add.dart';
 
-class DateEdit extends StatefulWidget {
+class PlanADate extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _DateEditState();
+    return _PlanADateState();
   }
 }
 
-class _DateEditState extends State<DateEdit> {
+class _PlanADateState extends State<PlanADate> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
-          appBar: _buildAppBar(model),
-          body: _buildSelectionButtons(model),
+          appBar: CustomAppBar(
+                  'Plan A Date',
+                  model.isAnyEditorsListValid()
+                      ? IconButton(
+                          icon: const Icon(CupertinoIcons.delete),
+                          tooltip: 'Delete',
+                          onPressed: () {
+                            model.clearAllLists();
+                            setState(() {});
+                          },
+                        )
+                      : Container())
+              .build(context),
+          body: PageBackground(child: _buildSelectionButtons(model)),
           floatingActionButton: _buildFAB(model),
         );
       },
@@ -50,64 +64,22 @@ class _DateEditState extends State<DateEdit> {
   /// Will navigate to the correct editting page based on is currently editing
   void _navigateToEdit(IdeasModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
+    print('Route change called');
     Navigator.push<void>(
-      context,
-      CupertinoPageRoute<void>(
-        builder: (BuildContext context) {
-          return PersonOneDateEdit();
-        },
-      ),
-    );
+        context, MaterialPageRoute<bool>(builder: (_) => DateAdd()));
   }
 
   Widget _buildFAB(IdeasModel model) {
-    return model.isAllEditorsListsValid()
+    return model.isAnyEditorsListValid()
         ? FloatingActionButton(
             child: const Icon(
               Icons.keyboard_arrow_right,
               size: 30,
             ),
             onPressed: () {
-              _showResults(model.calculateResults());
+              Navigator.of(context).pushNamed(Routes.Loading);
             },
           )
         : Container();
-  }
-
-  Widget _buildAppBar(IdeasModel model) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(40.0),
-      child: AppBar(
-        title: const Text('Plan A Date'),
-        elevation: 0,
-        backgroundColor: Colors.deepPurple,
-        toolbarOpacity: 0.7,
-        actions: <Widget>[
-          _buildDeleteDataIcon(model),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDeleteDataIcon(IdeasModel model) {
-    return model.isAnyEditorsListValid()
-        ? IconButton(
-            icon: const Icon(CupertinoIcons.delete),
-            tooltip: 'Delete',
-            onPressed: () {
-              model.clearAllLists();
-              setState(() {});
-            },
-          )
-        : Container();
-  }
-
-  void _showResults(String returningValue) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return LoadingPage(returningValue);
-      },
-    );
   }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import '../routes/route_generator.dart';
 import '../scoped_model/ideas_model.dart';
 import './dates_around/dates_around.dart';
-import './plan_a_date/date_edit.dart';
+import './plan_a_date/plan_a_date.dart';
 
 class Index extends StatefulWidget {
   @override
@@ -65,8 +66,7 @@ class _IndexState extends State<Index> {
           child: TickerMode(
             enabled: currentPage == 1,
             child: MaterialApp(
-              home: DateEdit(),
-            ),
+                home: PlanADate(), onGenerateRoute: RouteGenerator.routes),
           ),
         ),
       ],

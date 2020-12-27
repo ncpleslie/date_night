@@ -1,12 +1,13 @@
 import 'dart:math';
+import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/src/scoped_model/ideas_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../widgets/page_background.dart';
 
 class Results extends StatefulWidget {
-  const Results(this.result);
-  final String result;
-
   @override
   State<StatefulWidget> createState() {
     return _ResultsState();
@@ -16,7 +17,7 @@ class Results extends StatefulWidget {
 class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
   final Random _random = Random();
   final List<String> _gifURL = <String>[
-    'https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF\'s/gif14.gif',
+    "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif",
     'https://raw.githubusercontent.com/xsahil03x/giffy_dialog/master/example/assets/men_wearing_jacket.gif'
   ];
   final List<String> _listOfAltText = <String>[
@@ -41,12 +42,14 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return _buildBackgroundWithBody();
+    return ScopedModelDescendant<IdeasModel>(
+      builder: (BuildContext context, Widget child, IdeasModel model) {
+        return PageBackground(child: _results(model));
+      },
+    );
   }
 
-  Widget _buildResults() {
-    final double _fontSizeBasedOnTextLength =
-        widget.result.length >= 9 ? 40.0 : 50.0;
+  Widget _results(IdeasModel model) {
     return SafeArea(
       top: true,
       bottom: true,
@@ -71,7 +74,7 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                                 BorderRadius.all(Radius.circular(8.0))),
                         clipBehavior: Clip.antiAlias,
                         child: CachedNetworkImage(
-                          imageUrl: _gifURL[_random.nextInt(_gifURL.length)],
+                          imageUrl: _gifURL[0],
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -79,12 +82,12 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Text(
-                        widget.result.toUpperCase(),
+                        model.chosenIdea,
                         textAlign: TextAlign.center,
                         softWrap: true,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
-                            fontSize: _fontSizeBasedOnTextLength,
+                            fontSize: 40.0,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -94,16 +97,16 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                         _listOfAltText[_random.nextInt(_listOfAltText.length)],
                         softWrap: true,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
-                          fontSize: _fontSizeBasedOnTextLength / 2,
+                          fontSize: 40.0 / 2,
                         ),
                       ),
                     ),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -123,7 +126,7 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                         ),
                         onPressed: () {
                           Navigator.of(context)
-                              .popUntil(ModalRoute.withName('/'));
+                              .popUntil(ModalRoute.withName(Routes.Index));
                         },
                       )
                     ],
@@ -133,22 +136,6 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBackgroundWithBody() {
-    final Color gradientStart = Colors.deepPurple[700];
-    final Color gradientEnd = Colors.purple[500];
-    return Container(
-      child: _buildResults(),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: const FractionalOffset(0.0, 0.5),
-            end: const FractionalOffset(0.5, 0.0),
-            stops: const <double>[0.0, 1.0],
-            colors: <Color>[gradientStart, gradientEnd],
-            tileMode: TileMode.clamp),
       ),
     );
   }

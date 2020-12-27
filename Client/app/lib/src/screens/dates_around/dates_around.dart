@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/ideas_model.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/dates_around.dart';
+import '../../widgets/empty_screen_icon.dart';
+import '../../widgets/page_background.dart';
 
 /// Dates Around displays the winning date idea of other users
 /// along with their non-winning ideas.
@@ -32,41 +35,11 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget child, IdeasModel model) {
         return Scaffold(
-          appBar: _buildAppBar(),
-          body: _buildBackgroundWithBody(),
+          appBar: CustomAppBar('Dates Around You', _refreshPageIcon())
+              .build(context),
+          body: PageBackground(child: _buildDateIdeasList()),
         );
       },
-    );
-  }
-
-  Widget _buildBackgroundWithBody() {
-    final Color gradientStart = Colors.deepPurple[700];
-    final Color gradientEnd = Colors.purple[500];
-    return Container(
-      child: _buildDateIdeasList(),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: const FractionalOffset(0.0, 0.5),
-            end: const FractionalOffset(0.5, 0.0),
-            stops: const <double>[0.0, 1.0],
-            colors: <Color>[gradientStart, gradientEnd],
-            tileMode: TileMode.clamp),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(40.0),
-      child: AppBar(
-        title: const Text('Dates Around You'),
-        backgroundColor: Colors.deepPurple,
-        toolbarOpacity: 0.7,
-        elevation: 0,
-        actions: <Widget>[
-          _refreshPageIcon(),
-        ],
-      ),
     );
   }
 
@@ -125,13 +98,11 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
       alignment: Alignment.center,
       child: ListView(
         shrinkWrap: true,
-        children: <Widget>[
+        children: const <Widget>[
           Center(
-            child: Column(
-              children: const <Widget>[
-                Icon(CupertinoIcons.search),
-                Text('No Dates Found'),
-              ],
+            child: EmptyScreenIcon(
+              'No Dates Found',
+              Icon(CupertinoIcons.search),
             ),
           ),
         ],

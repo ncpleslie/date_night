@@ -3,15 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../../scoped_model/ideas_model.dart';
+import '../../widgets/custom_app_bar.dart';
+import '../../widgets/empty_screen_icon.dart';
+import '../../widgets/page_background.dart';
 
-class PersonOneDateEdit extends StatefulWidget {
+/// DateAdd allows the user to add a new date.
+/// The user can tap the "add" button to enter new ideas.
+/// They can swipe away bad ideas, or tap delete.
+/// Once they have finished they can tap the finish icon to
+/// return back to the 'Plan A Date' screen.
+class DateAdd extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _PersonOneDateEditState();
+    return _DateAddState();
   }
 }
 
-class _PersonOneDateEditState extends State<PersonOneDateEdit> {
+class _DateAddState extends State<DateAdd> {
   final TextEditingController _textController = TextEditingController();
 
   @override
@@ -19,46 +27,40 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     return ScopedModelDescendant<IdeasModel>(
       builder: (BuildContext context, Widget widget, IdeasModel model) {
         return Scaffold(
+          // Build Appbar
+          appBar: CustomAppBar('', Container()).build(context),
           resizeToAvoidBottomPadding: false,
-          body: _addBackgroundToBody(model),
+
+          // Create body
+          body: PageBackground(child: _buildPage(model)),
+
+          // FAB
+          floatingActionButton: Row(
+            mainAxisAlignment: !model.isCurrentEditorsListValid()
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _addIdeaButton(),
+              !model.isCurrentEditorsListValid()
+                  ? Container(
+                      width: 0.0,
+                      height: 0.0,
+                    )
+                  : _finishButton(() => _finish(model))
+            ],
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: Row(
-              mainAxisAlignment: !model.isCurrentEditorsListValid()
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.spaceAround,
-              children: <Widget>[_buildAddIdeaFAB(), _buildFinishFAB(model)]),
         );
       },
-    );
-  }
-
-  Widget _addBackgroundToBody(IdeasModel model) {
-    final Color gradientStart = Colors.deepPurple[700];
-    final Color gradientEnd = Colors.purple[500];
-    final List<double> _stops = <double>[0.0, 1.0];
-    final List<Color> _colors = <Color>[gradientStart, gradientEnd];
-    return Container(
-      child: SafeArea(
-        top: true,
-        bottom: true,
-        child: _buildPage(model),
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: const FractionalOffset(0.0, 0.5),
-            end: const FractionalOffset(0.5, 0.0),
-            stops: _stops,
-            colors: _colors,
-            tileMode: TileMode.clamp),
-      ),
     );
   }
 
   Widget _buildPage(IdeasModel model) {
     return Center(
       child: !model.isCurrentEditorsListValid()
-          ? _forEmptyList()
+          ? EmptyScreenIcon('No ideas yet?\n${model.randomIdea()}',
+              const Icon(CupertinoIcons.search))
           : ListView.builder(
               itemCount: model.getCurrentEditorsIdeasList().length,
               itemBuilder: (BuildContext context, int index) {
@@ -100,12 +102,6 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
             data: const ButtonBarThemeData(),
             child: ButtonBar(children: <IconButton>[
               IconButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                icon: const Icon(Icons.star_border),
-              ),
-              IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
                   model.removeItemAt(index);
@@ -119,7 +115,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 
-  Widget _buildAddIdeaFAB() {
+  Widget _addIdeaButton() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -139,25 +135,20 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 
-  Widget _buildFinishFAB(IdeasModel model) {
+  Widget _finishButton(Function callback) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        !model.isCurrentEditorsListValid()
-            ? Container(
-                width: 0.0,
-                height: 0.0,
-              )
-            : FloatingActionButton(
-                heroTag: 'Continue',
-                backgroundColor: CupertinoColors.activeBlue,
-                elevation: 0,
-                child: const Icon(
-                  CupertinoIcons.check_mark,
-                  size: 30,
-                ),
-                onPressed: () => _finishFABLogic(model),
-              ),
+        FloatingActionButton(
+          heroTag: 'Continue',
+          backgroundColor: CupertinoColors.activeBlue,
+          elevation: 0,
+          child: const Icon(
+            CupertinoIcons.check_mark,
+            size: 30,
+          ),
+          onPressed: callback,
+        ),
         const SizedBox(
           height: 40.0,
         )
@@ -165,7 +156,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
     );
   }
 
-  void _finishFABLogic(IdeasModel model) {
+  void _finish(IdeasModel model) {
     if (model.isCurrentEditorsListValid()) {
       Navigator.pop(context);
     }
@@ -185,7 +176,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
               child: AlertDialog(
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                title: const Text('Date Idea?'),
+                title: const Text('Date Ideas?'),
                 content: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   autocorrect: true,
@@ -198,7 +189,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6.0))),
                     color: Theme.of(context).primaryColor,
-                    child: const Text('Add Idea'),
+                    child: const Icon(Icons.add),
                     onPressed: () {
                       // Add the idea to the current editors list.
                       if (_textController.text.isNotEmpty) {
@@ -219,7 +210,7 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6.0))),
                     color: Theme.of(context).primaryColor,
-                    child: const Text('Discard'),
+                    child: const Icon(Icons.delete),
                     onPressed: () {
                       Navigator.of(context, rootNavigator: true).pop('Discard');
                     },
@@ -230,17 +221,6 @@ class _PersonOneDateEditState extends State<PersonOneDateEdit> {
           },
         );
       },
-    );
-  }
-
-  Widget _forEmptyList() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const <Widget>[
-        Icon(CupertinoIcons.search),
-        Text('No Ideas Yet?'),
-      ],
     );
   }
 }

@@ -7,6 +7,9 @@ class IdeasModel extends Model {
   /// List of all the current date ideas.
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
+  // For Final Selection
+  String chosenIdea;
+
   /// The current date editor.
   int currentEditor = 0;
 
@@ -55,6 +58,7 @@ class IdeasModel extends Model {
   /// Removes the current editors idea by index.
   void removeItemAt(int index) {
     dateIdeas[currentEditor].removeAt(index);
+    notifyListeners();
   }
 
   /// Add a single idea to the current editors idea list.
@@ -70,13 +74,17 @@ class IdeasModel extends Model {
   }
 
   /// Determine the final result.
-  String calculateResults() {
+  Future<String> calculateResults() async {
     // Determine result
     // Combine lists
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
-    return 'Null value error';
+    return await Future<String>.delayed(const Duration(seconds: 3), () {
+      clearAllLists();
+      chosenIdea = 'Null value error';
+      return chosenIdea;
+    });
   }
 
   /// Deletes all dates from all lists.
@@ -87,6 +95,11 @@ class IdeasModel extends Model {
     notifyListeners();
   }
 
+  String randomIdea() {
+    const String idea = 'Null value error';
+    return 'How about $idea';
+  }
+
   List<String> chosenDateIdeas = <String>[];
   List<String> personOneIdeas = <String>[];
   List<String> personTwoIdeas = <String>[];
@@ -94,9 +107,6 @@ class IdeasModel extends Model {
   // Knowing who is editing
   bool isPersonOneEditing = false;
   bool isPersonTwoEditing = false;
-
-  // For Final Selection
-  String chosenIdea;
 
   void addPersonOneIdeas(List<String> personOneIdea) {
     personOneIdeas.addAll(personOneIdea);
