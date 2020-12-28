@@ -1,9 +1,6 @@
-import 'dart:math';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/date_ideas.dart';
 
-class IdeasModel extends Model {
+mixin IdeasModel on Model {
   /// List of all the current date ideas.
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
@@ -100,172 +97,172 @@ class IdeasModel extends Model {
     return 'How about $idea';
   }
 
-  List<String> chosenDateIdeas = <String>[];
-  List<String> personOneIdeas = <String>[];
-  List<String> personTwoIdeas = <String>[];
+  // List<String> chosenDateIdeas = <String>[];
+  // List<String> personOneIdeas = <String>[];
+  // List<String> personTwoIdeas = <String>[];
 
-  // Knowing who is editing
-  bool isPersonOneEditing = false;
-  bool isPersonTwoEditing = false;
+  // // Knowing who is editing
+  // bool isPersonOneEditing = false;
+  // bool isPersonTwoEditing = false;
 
-  void addPersonOneIdeas(List<String> personOneIdea) {
-    personOneIdeas.addAll(personOneIdea);
-  }
+  // void addPersonOneIdeas(List<String> personOneIdea) {
+  //   personOneIdeas.addAll(personOneIdea);
+  // }
 
-  void addPersonTwoIdeas(List<String> personTwoIdea) {
-    personTwoIdeas.addAll(personTwoIdea);
-  }
+  // void addPersonTwoIdeas(List<String> personTwoIdea) {
+  //   personTwoIdeas.addAll(personTwoIdea);
+  // }
 
-  void combineLists() {
-    chosenDateIdeas = List<String>.from(personOneIdeas)..addAll(personTwoIdeas);
-    chosenDateIdeas.shuffle();
-  }
+  // void combineLists() {
+  //   chosenDateIdeas = List<String>.from(personOneIdeas)..addAll(personTwoIdeas);
+  //   chosenDateIdeas.shuffle();
+  // }
 
-  // From Fetching ideas
-  List<DateIdeas> dateIdeasList = <DateIdeas>[];
+  // // From Fetching ideas
+  // List<DateAroundModel> dateIdeasList = <DateAroundModel>[];
 
-  List<DateIdeas> get displayedIdeas {
-    return List<DateIdeas>.from(dateIdeasList);
-  }
+  // List<DateAroundModel> get displayedIdeas {
+  //   return List<DateAroundModel>.from(dateIdeasList);
+  // }
 
-  // For adding ideas
-  final List<String> listOfDateStrings = <String>[];
+  // // For adding ideas
+  // final List<String> listOfDateStrings = <String>[];
 
-  void dateIdeaEntries(String string) {
-    listOfDateStrings.add(string);
-  }
+  // void dateIdeaEntries(String string) {
+  //   listOfDateStrings.add(string);
+  // }
 
-  String compareAllIdeas() {
-    // If person one and person two enter same idea
-    // return similar idea
-    // else
-    // return a random idea
-    //compare shortest list against longest list
+  // String compareAllIdeas() {
+  //   // If person one and person two enter same idea
+  //   // return similar idea
+  //   // else
+  //   // return a random idea
+  //   //compare shortest list against longest list
 
-    if (personOneIdeas.length >= personTwoIdeas.length) {
-      for (int i = 0; i <= personOneIdeas.length - 1; i++) {
-        for (int j = 0; j <= personTwoIdeas.length - 1; j++) {
-          if (personOneIdeas[i].toLowerCase() ==
-              personTwoIdeas[j].toLowerCase()) {
-            chosenIdea = personOneIdeas[i];
-          }
-        }
-      }
-    } else {
-      for (int i = 0; i <= personTwoIdeas.length - 1; i++) {
-        for (int j = 0; j <= personOneIdeas.length - 1; j++) {
-          if (personTwoIdeas[i].toLowerCase() ==
-              personOneIdeas[j].toLowerCase()) {
-            chosenIdea = personTwoIdeas[i];
-          }
-        }
-      }
-    }
+  //   if (personOneIdeas.length >= personTwoIdeas.length) {
+  //     for (int i = 0; i <= personOneIdeas.length - 1; i++) {
+  //       for (int j = 0; j <= personTwoIdeas.length - 1; j++) {
+  //         if (personOneIdeas[i].toLowerCase() ==
+  //             personTwoIdeas[j].toLowerCase()) {
+  //           chosenIdea = personOneIdeas[i];
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     for (int i = 0; i <= personTwoIdeas.length - 1; i++) {
+  //       for (int j = 0; j <= personOneIdeas.length - 1; j++) {
+  //         if (personTwoIdeas[i].toLowerCase() ==
+  //             personOneIdeas[j].toLowerCase()) {
+  //           chosenIdea = personTwoIdeas[i];
+  //         }
+  //       }
+  //     }
+  //   }
 
-    combineLists();
-    final Random random = Random();
+  //   combineLists();
+  //   final Random random = Random();
 
-    chosenIdea ??= chosenIdea =
-        chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
+  //   chosenIdea ??= chosenIdea =
+  //       chosenDateIdeas[random.nextInt(chosenDateIdeas.length)].toString();
 
-    // Remove Dupes
-    // Called twice because it could be in there twice
+  //   // Remove Dupes
+  //   // Called twice because it could be in there twice
 
-    if (chosenDateIdeas.contains(chosenIdea)) {
-      chosenDateIdeas.remove(chosenIdea);
-      if (chosenDateIdeas.contains(chosenIdea)) {
-        chosenDateIdeas.remove(chosenIdea);
-      }
-    }
+  //   if (chosenDateIdeas.contains(chosenIdea)) {
+  //     chosenDateIdeas.remove(chosenIdea);
+  //     if (chosenDateIdeas.contains(chosenIdea)) {
+  //       chosenDateIdeas.remove(chosenIdea);
+  //     }
+  //   }
 
-    //Once all done
-    // Upload data
-    uploadDateIdeas();
+  //   //Once all done
+  //   // Upload data
+  //   uploadDateIdeas();
 
-    return chosenIdea;
-  }
+  //   return chosenIdea;
+  // }
 
-  // Loading Indicators
-  bool _isLoading = false;
+  // // Loading Indicators
+  // bool _isLoading = false;
 
-  bool get isLoading {
-    return _isLoading;
-  }
+  // bool get isLoading {
+  //   return _isLoading;
+  // }
 
-  // Error Handling
-  bool _errorHandling() {
-    _isLoading = false;
-    notifyListeners();
-    return false;
-  }
+  // // Error Handling
+  // bool _errorHandling() {
+  //   _isLoading = false;
+  //   notifyListeners();
+  //   return false;
+  // }
 
-  Future<void> uploadDateIdeas() async {
-    final Random random = Random();
-    final List<String> _emojiList = <String>['🎉', '😍', '🍾', '🍻'];
+  // Future<void> uploadDateIdeas() async {
+  //   final Random random = Random();
+  //   final List<String> _emojiList = <String>['🎉', '😍', '🍾', '🍻'];
 
-    final Map<String, dynamic> dateIdeas = <String, dynamic>{
-      'chosenDate': chosenIdea,
-      'otherIdeas': chosenDateIdeas,
-      'randomEmoji': _emojiList[random.nextInt(_emojiList.length)],
-      'uploadTime': DateTime.now()
-    };
+  //   final Map<String, dynamic> dateIdeas = <String, dynamic>{
+  //     'chosenDate': chosenIdea,
+  //     'otherIdeas': chosenDateIdeas,
+  //     'randomEmoji': _emojiList[random.nextInt(_emojiList.length)],
+  //     'uploadTime': DateTime.now()
+  //   };
 
-    FirebaseFirestore.instance.runTransaction(
-      (Transaction transaction) async {
-        final CollectionReference collectionRef =
-            FirebaseFirestore.instance.collection('date_ideas');
-        await collectionRef.doc().set(dateIdeas);
-      },
-    );
-  }
+  //   FirebaseFirestore.instance.runTransaction(
+  //     (Transaction transaction) async {
+  //       final CollectionReference collectionRef =
+  //           FirebaseFirestore.instance.collection('date_ideas');
+  //       await collectionRef.doc().set(dateIdeas);
+  //     },
+  //   );
+  // }
 
-  void clearLastVisible() {
-    _lastVisible = null;
-  }
+  // void clearLastVisible() {
+  //   _lastVisible = null;
+  // }
 
-  DocumentSnapshot _lastVisible;
-  List<DateIdeas> fetchedDateIdeas = <DateIdeas>[];
+  // DocumentSnapshot _lastVisible;
+  // List<DateAroundModel> fetchedDateIdeas = <DateAroundModel>[];
 
-  Future<List<DocumentSnapshot>> fetchDateIdeas() async {
-    _isLoading = true;
-    notifyListeners();
+  // Future<List<DocumentSnapshot>> fetchDateIdeas() async {
+  //   _isLoading = true;
+  //   notifyListeners();
 
-    QuerySnapshot snapshot;
-    DateIdeas dateIdeas;
+  //   QuerySnapshot snapshot;
+  //   DateAroundModel dateIdeas;
 
-    if (_lastVisible == null) {
-      snapshot = await FirebaseFirestore.instance
-          .collection('date_ideas')
-          .orderBy('uploadTime', descending: true)
-          .limit(10)
-          .get();
-    } else {
-      snapshot = await FirebaseFirestore.instance
-          .collection('date_ideas')
-          .orderBy('uploadTime', descending: true)
-          .startAfter(<Timestamp>[_lastVisible['uploadTime']])
-          .limit(10)
-          .get();
-    }
+  //   if (_lastVisible == null) {
+  //     snapshot = await FirebaseFirestore.instance
+  //         .collection('date_ideas')
+  //         .orderBy('uploadTime', descending: true)
+  //         .limit(10)
+  //         .get();
+  //   } else {
+  //     snapshot = await FirebaseFirestore.instance
+  //         .collection('date_ideas')
+  //         .orderBy('uploadTime', descending: true)
+  //         .startAfter(<Timestamp>[_lastVisible['uploadTime']])
+  //         .limit(10)
+  //         .get();
+  //   }
 
-    if (snapshot != null && snapshot.docs.isNotEmpty) {
-      _lastVisible = snapshot.docs[snapshot.docs.length - 1];
+  //   if (snapshot != null && snapshot.docs.isNotEmpty) {
+  //     _lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
-      for (DocumentSnapshot dateData in snapshot.docs) {
-        dateIdeas = DateIdeas(
-            chosenDate: dateData['chosenDate'],
-            otherIdeas: dateData['otherIdeas'],
-            randomEmoji: dateData['randomEmoji']);
-        fetchedDateIdeas.add(dateIdeas);
-      }
-      dateIdeasList = fetchedDateIdeas;
-    }
+  //     for (DocumentSnapshot dateData in snapshot.docs) {
+  //       dateIdeas = DateAroundModel(
+  //           chosenDate: dateData['chosenDate'],
+  //           otherIdeas: dateData['otherIdeas'],
+  //           randomEmoji: dateData['randomEmoji']);
+  //       fetchedDateIdeas.add(dateIdeas);
+  //     }
+  //     dateIdeasList = fetchedDateIdeas;
+  //   }
 
-    if (snapshot.docs.isEmpty) {
-      _errorHandling();
-    }
-    _isLoading = false;
-    notifyListeners();
-    return snapshot.docs;
-  }
+  //   if (snapshot.docs.isEmpty) {
+  //     _errorHandling();
+  //   }
+  //   _isLoading = false;
+  //   notifyListeners();
+  //   return snapshot.docs;
+  // }
 }

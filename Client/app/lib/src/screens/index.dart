@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import '../routes/route_generator.dart';
-import '../scoped_model/ideas_model.dart';
+import '../scoped_model/main_model.dart';
 import './dates_around/dates_around.dart';
 import './plan_a_date/plan_a_date.dart';
 
@@ -19,8 +19,8 @@ class _IndexState extends State<Index> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<IdeasModel>(
-      builder: (BuildContext context, Widget child, IdeasModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
           body: _getPage(model),
           resizeToAvoidBottomPadding: false,
@@ -49,7 +49,7 @@ class _IndexState extends State<Index> {
     );
   }
 
-  Widget _getPage(IdeasModel model) {
+  Widget _getPage(MainModel model) {
     return Stack(
       children: <Offstage>[
         Offstage(
@@ -57,8 +57,8 @@ class _IndexState extends State<Index> {
           child: TickerMode(
             enabled: currentPage == 0,
             child: MaterialApp(
-              home: DatesAroundPage(model),
-            ),
+                home: DatesAroundPage(),
+                onGenerateRoute: RouteGenerator.routes),
           ),
         ),
         Offstage(

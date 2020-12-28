@@ -195,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  flutter_emoji:
+    dependency: "direct main"
+    description:
+      name: flutter_emoji
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1+1"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -352,6 +359,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
+  pull_to_refresh:
+    dependency: "direct main"
+    description:
+      name: pull_to_refresh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.3"
   quiver:
     dependency: transitive
     description:

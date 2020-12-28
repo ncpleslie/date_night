@@ -5,4 +5,5 @@ class Routes {
   static const String DateAdd = '/date_add';
   static const String Results = '/results';
   static const String Loading = '/loading';
+  static const String Settings = '/settings';
 }

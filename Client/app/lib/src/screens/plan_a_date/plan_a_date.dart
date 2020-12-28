@@ -3,7 +3,7 @@ import 'package:date_night/src/widgets/page_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_model/ideas_model.dart';
+import '../../scoped_model/main_model.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/selection_button.dart';
 import './date_add.dart';
@@ -18,8 +18,8 @@ class PlanADate extends StatefulWidget {
 class _PlanADateState extends State<PlanADate> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<IdeasModel>(
-      builder: (BuildContext context, Widget widget, IdeasModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
           appBar: CustomAppBar(
                   'Plan A Date',
@@ -41,7 +41,7 @@ class _PlanADateState extends State<PlanADate> {
     );
   }
 
-  Widget _buildSelectionButtons(IdeasModel model) {
+  Widget _buildSelectionButtons(MainModel model) {
     return Column(
       children: <Widget>[
         SelectionButton(
@@ -62,14 +62,14 @@ class _PlanADateState extends State<PlanADate> {
   }
 
   /// Will navigate to the correct editting page based on is currently editing
-  void _navigateToEdit(IdeasModel model, int whoIsEditing) {
+  void _navigateToEdit(MainModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
     print('Route change called');
     Navigator.push<void>(
         context, MaterialPageRoute<bool>(builder: (_) => DateAdd()));
   }
 
-  Widget _buildFAB(IdeasModel model) {
+  Widget _buildFAB(MainModel model) {
     return model.isAnyEditorsListValid()
         ? FloatingActionButton(
             child: const Icon(

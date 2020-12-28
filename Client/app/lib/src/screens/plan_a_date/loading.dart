@@ -1,4 +1,4 @@
-import 'package:date_night/src/scoped_model/ideas_model.dart';
+import 'package:date_night/src/scoped_model/main_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -9,8 +9,8 @@ import '../../widgets/page_background.dart';
 class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<IdeasModel>(
-        builder: (BuildContext context, Widget widget, IdeasModel model) {
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget widget, MainModel model) {
       _getResults(context, model);
 
       return Scaffold(
@@ -18,7 +18,7 @@ class Loading extends StatelessWidget {
     });
   }
 
-  Future<void> _getResults(BuildContext context, IdeasModel model) async {
+  Future<void> _getResults(BuildContext context, MainModel model) async {
     await model.calculateResults();
     Navigator.of(context).pushReplacementNamed(Routes.Results);
   }

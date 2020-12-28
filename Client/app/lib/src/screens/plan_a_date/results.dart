@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:date_night/src/routes/routes.dart';
-import 'package:date_night/src/scoped_model/ideas_model.dart';
+import 'package:date_night/src/scoped_model/main_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -42,14 +42,14 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<IdeasModel>(
-      builder: (BuildContext context, Widget child, IdeasModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         return PageBackground(child: _results(model));
       },
     );
   }
 
-  Widget _results(IdeasModel model) {
+  Widget _results(MainModel model) {
     return SafeArea(
       top: true,
       bottom: true,

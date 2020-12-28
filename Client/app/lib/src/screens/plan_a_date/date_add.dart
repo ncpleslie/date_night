@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../../scoped_model/ideas_model.dart';
+import '../../scoped_model/main_model.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/empty_screen_icon.dart';
 import '../../widgets/page_background.dart';
@@ -24,8 +24,8 @@ class _DateAddState extends State<DateAdd> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<IdeasModel>(
-      builder: (BuildContext context, Widget widget, IdeasModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
           // Build Appbar
           appBar: CustomAppBar('', Container()).build(context),
@@ -56,11 +56,11 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
-  Widget _buildPage(IdeasModel model) {
+  Widget _buildPage(MainModel model) {
     return Center(
       child: !model.isCurrentEditorsListValid()
-          ? EmptyScreenIcon('No ideas yet?\n${model.randomIdea()}',
-              const Icon(CupertinoIcons.search))
+          ? EmptyScreenIcon(
+              'No ideas yet?\n${model.randomIdea()}', CupertinoIcons.search)
           : ListView.builder(
               itemCount: model.getCurrentEditorsIdeasList().length,
               itemBuilder: (BuildContext context, int index) {
@@ -71,7 +71,7 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
-  Widget _makeCards(IdeasModel model, String name, int index) {
+  Widget _makeCards(MainModel model, String name, int index) {
     return Dismissible(
       key: Key(name),
       background: Container(
@@ -156,7 +156,7 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
-  void _finish(IdeasModel model) {
+  void _finish(MainModel model) {
     if (model.isCurrentEditorsListValid()) {
       Navigator.pop(context);
     }
@@ -166,8 +166,8 @@ class _DateAddState extends State<DateAdd> {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return ScopedModelDescendant<IdeasModel>(
-          builder: (BuildContext context, Widget child, IdeasModel model) {
+        return ScopedModelDescendant<MainModel>(
+          builder: (BuildContext context, Widget child, MainModel model) {
             return GestureDetector(
               // If the user taps outside form boxes then the keyboard is minimized
               onTap: () {
