@@ -1,26 +1,40 @@
-import 'dart:math';
+import 'package:date_night/src/scoped_model/main_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../models/date_around_model.dart';
 
+/// The DateCard Widget is the card that displays dates other
+/// other users that are currently happening.
 // ignore: must_be_immutable
 class DateCard extends StatelessWidget {
-  DateCard({@required this.date}) {
+  DateCard({@required this.date, @required this.model}) {
     _chosenDate = date.chosenDate;
-    _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
-        ? date.otherIdeas.join(', ')
-        : null;
 
     _datePosted = DateFormat.EEEE()
         .addPattern('@')
         .add_jm()
         .format(date.datePosted)
         .toString();
-    _randomEmoji = _emojis[Random().nextInt(_emojis.length)];
+
+    _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
+        ? date.otherIdeas.join(', ')
+        : null;
+
+    _randomEmoji = _emojis[model.generateRandomInt(_emojis.length)];
   }
 
+  /// The dates of other users.
+  final DateAroundModel date;
+
+  /// The winning date idea.
+  String _chosenDate;
+
+  /// When the date was posted.
+  String _datePosted;
+
+  /// Possible emojis that can be displayed over the date card
   final List<String> _emojis = <String>[
     ':heart:',
     ':tada:',
@@ -29,11 +43,14 @@ class DateCard extends StatelessWidget {
     ':beers:'
   ];
 
-  String _chosenDate;
+  /// The Scoped Model model.
+  final MainModel model;
+
+  /// The other date ideas.
   String _otherDates;
-  String _datePosted;
+
+  /// The emoji that will be displayed over the card.
   String _randomEmoji;
-  final DateAroundModel date;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +77,7 @@ class DateCard extends StatelessWidget {
     );
   }
 
+  /// Build the card.
   Widget _cardWithWords(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,

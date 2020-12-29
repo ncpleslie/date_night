@@ -7,10 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'date_card.dart';
 
+/// The list of Dates of other users.
 // ignore: must_be_immutable
 class DatesAroundListView extends StatefulWidget {
   DatesAroundListView({@required this.model});
 
+  /// The Scoped model.
   MainModel model;
 
   @override
@@ -20,9 +22,42 @@ class DatesAroundListView extends StatefulWidget {
 }
 
 class _DatesAroundListViewState extends State<DatesAroundListView> {
-  final ScrollController scrollController = ScrollController();
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<DateAroundModel>>(
+      stream: widget.model.stream,
+      builder: (BuildContext context,
+          AsyncSnapshot<List<DateAroundModel>> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Text(
+              'Loading...',
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        }
+        return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          header: const WaterDropHeader(
+            waterDropColor: Colors.deepPurple,
+          ),
+          footer:
+              CustomFooter(builder: (BuildContext context, LoadStatus status) {
+            return _loadingState(status);
+          }),
+          controller: refreshController,
+          onRefresh: _refresh,
+          onLoading: _loading,
+          child: _list(context, snapshot),
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -37,6 +72,40 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
     super.initState();
   }
 
+  /// Creates the list of dates around.
+  Widget _list(
+      BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      controller: scrollController,
+      separatorBuilder: (BuildContext context, int index) => Container(),
+      itemCount: snapshot.data.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (snapshot.hasError || snapshot.data.isEmpty) {
+          return _padding(
+            const EmptyScreenIcon(
+              'No Dates Found.',
+              CupertinoIcons.refresh,
+            ),
+          );
+        }
+        if (index < snapshot.data.length) {
+          return DateCard(date: snapshot.data[index], model: widget.model);
+        }
+        return Container();
+      },
+    );
+  }
+
+  /// What happens when the list is loading.
+  Future<void> _loading() async {
+    if (mounted) {
+      setState(() {});
+    }
+    refreshController.loadComplete();
+  }
+
+  /// The states the "Pull to refresh" Widget can have.
   Widget _loadingState(LoadStatus status) {
     switch (status) {
       case LoadStatus.loading:
@@ -60,74 +129,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
     }
   }
 
-  Future<void> refresh() async {
-    await widget.model.refresh();
-    refreshController.refreshCompleted();
-  }
-
-  Future<void> loading() async {
-    if (mounted) {
-      setState(() {});
-    }
-    refreshController.loadComplete();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<DateAroundModel>>(
-        stream: widget.model.stream,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<DateAroundModel>> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: Text(
-                'Loading...',
-                style: TextStyle(color: Colors.white),
-              ),
-            );
-          }
-          return SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            header: const WaterDropHeader(
-              waterDropColor: Colors.deepPurple,
-            ),
-            footer: CustomFooter(
-                builder: (BuildContext context, LoadStatus status) {
-              return _loadingState(status);
-            }),
-            controller: refreshController,
-            onRefresh: refresh,
-            onLoading: loading,
-            child: _list(context, snapshot),
-          );
-        });
-  }
-
-  Widget _list(
-      BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      controller: scrollController,
-      separatorBuilder: (BuildContext context, int index) => Container(),
-      itemCount: snapshot.data.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (snapshot.hasError || snapshot.data.isEmpty) {
-          return _padding(
-            const EmptyScreenIcon(
-              'No Dates Found.',
-              CupertinoIcons.refresh,
-            ),
-          );
-        }
-        if (index < snapshot.data.length) {
-          return DateCard(date: snapshot.data[index]);
-        }
-        return Container();
-      },
-    );
-  }
-
+  /// Padding put around most elements of the list.
   Widget _padding(Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
@@ -135,5 +137,11 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         child: child,
       ),
     );
+  }
+
+  /// Will refresh the list of dates.
+  Future<void> _refresh() async {
+    await widget.model.refresh();
+    refreshController.refreshCompleted();
   }
 }

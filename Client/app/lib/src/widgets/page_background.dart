@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+/// The custom background that will be displayed on most screens.
+/// It can be animiated with the background fading between colors.
+/// This can be useful to show a "thinking" state to the user and
+/// provide feedback that the application is loading.
 // ignore: must_be_immutable
 class PageBackground extends StatefulWidget {
-  PageBackground({this.child, this.animated = false});
+  PageBackground({@required this.child, this.animated = false});
 
+  /// What will be displayed over the background.
   final Widget child;
+
+  /// If the background will be animated.
   bool animated;
+
   @override
   State<StatefulWidget> createState() {
     return _PageBackgroundState();
@@ -16,15 +24,6 @@ class PageBackground extends StatefulWidget {
 class _PageBackgroundState extends State<PageBackground>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +52,23 @@ class _PageBackgroundState extends State<PageBackground>
     );
   }
 
-  Color _colorTween(Color begin, Color end) {
-    return ColorTween(begin: begin, end: end).transform(_controller.value);
-  }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat();
+  }
+
+  /// Creates a tween that can be used when the background is animated.
+  Color _colorTween(Color begin, Color end) {
+    return ColorTween(begin: begin, end: end).transform(_controller.value);
   }
 }

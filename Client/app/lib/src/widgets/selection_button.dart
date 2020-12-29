@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+/// Creates a large, half-screen selection button.
+/// This button can be used on the "Plan a date" page to
+/// bring the user to a "date add" page.
+/// The button will change color and become disabled if the user
+/// should no longer use this button.
 class SelectionButton extends StatelessWidget {
   const SelectionButton(
-      this.context, this.buttonName, this.isPersonListFull, this.callback);
+      {@required this.context,
+      @required this.text,
+      @required this.disabled,
+      @required this.onTap});
 
+  /// BuildContext of the parent Widget
   final BuildContext context;
-  final String buttonName;
-  final bool isPersonListFull;
-  final Function callback;
+
+  /// Whether the button should be disabled.
+  final bool disabled;
+
+  /// The function to call when the button is tapped.
+  final Function onTap;
+
+  /// The text to display on the button.
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Material(
         textStyle: const TextStyle(color: Colors.white),
-        color: isPersonListFull ? Colors.red : Colors.greenAccent[700],
+        color: disabled ? Colors.red : Colors.greenAccent[700],
         child: InkWell(
-          onTap: isPersonListFull ? null : callback,
+          onTap: disabled ? null : onTap,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                isPersonListFull
+                disabled
                     ? const Icon(
                         Icons.person_add_disabled,
                         color: Colors.white,
@@ -31,7 +46,7 @@ class SelectionButton extends StatelessWidget {
                         Icons.person_add,
                         color: Colors.white,
                       ),
-                Text(buttonName)
+                Text(text)
               ],
             ),
           ),

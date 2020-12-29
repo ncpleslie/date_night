@@ -77,6 +77,7 @@ mixin IdeasModel on Model {
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
+    print('Calculating results');
     return await Future<String>.delayed(const Duration(seconds: 3), () {
       clearAllLists();
       chosenIdea = 'Null value error';

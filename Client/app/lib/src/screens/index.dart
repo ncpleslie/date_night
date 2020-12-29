@@ -7,6 +7,9 @@ import '../scoped_model/main_model.dart';
 import './dates_around/dates_around.dart';
 import './plan_a_date/plan_a_date.dart';
 
+/// The Index page displays the bottom navigation bar.
+/// Allows the navigation to other pages while still persisting over those pages.
+/// This allows the user to switch to other pages while also keep those page's state.
 class Index extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -30,6 +33,7 @@ class _IndexState extends State<Index> {
     );
   }
 
+  /// Returns the bottom navigation bar
   Widget _buildTabBar() {
     return FancyBottomNavigation(
       tabs: <TabData>[
@@ -49,6 +53,9 @@ class _IndexState extends State<Index> {
     );
   }
 
+  /// Returns the a page. They are stored in a stack
+  /// to ensure their state is kept even when the user
+  /// navigates to another page.
   Widget _getPage(MainModel model) {
     return Stack(
       children: <Offstage>[

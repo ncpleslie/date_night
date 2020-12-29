@@ -28,7 +28,7 @@ class _DateAddState extends State<DateAdd> {
       builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
           // Build Appbar
-          appBar: CustomAppBar('', Container()).build(context),
+          appBar: CustomAppBar(name: '').build(context),
           resizeToAvoidBottomPadding: false,
 
           // Create body
@@ -56,6 +56,7 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
+  /// Builds the list of ideas the user entered.
   Widget _buildPage(MainModel model) {
     return Center(
       child: !model.isCurrentEditorsListValid()
@@ -71,6 +72,8 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
+  /// Makes each card for a chosen idea input by the user.
+  /// The card can also be dismissed or deleted.
   Widget _makeCards(MainModel model, String name, int index) {
     return Dismissible(
       key: Key(name),
@@ -115,6 +118,8 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
+  /// Creates the "add an idea" button.
+  /// TODO: Refactor to own widget
   Widget _addIdeaButton() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -135,6 +140,9 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
+  /// Creates the "finished" button moving the user back to
+  /// the previous screen.
+  /// TODO: Refactor to own widget
   Widget _finishButton(Function callback) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -156,12 +164,15 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
+  /// Moves the user back a screen.
   void _finish(MainModel model) {
     if (model.isCurrentEditorsListValid()) {
       Navigator.pop(context);
     }
   }
 
+  /// Shows the dialog box to allow the user to enter their ideas.
+  /// TODO: Refactor to own widget
   Future<void> _showInput() async {
     await showDialog<String>(
       context: context,

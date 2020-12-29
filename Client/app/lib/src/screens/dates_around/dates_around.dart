@@ -18,7 +18,8 @@ class DatesAroundPage extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
-          appBar: CustomAppBar('Dates Around You', _settingsIcon(context))
+          appBar: CustomAppBar(
+                  name: 'Dates Around You', icon: _settingsIcon(context))
               .build(context),
           body: PageBackground(
               child: DatesAroundListView(
@@ -29,6 +30,8 @@ class DatesAroundPage extends StatelessWidget {
     );
   }
 
+  /// The settings icon display in the AppBar.
+  /// Will take the user to the settings page.
   Widget _settingsIcon(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.settings),

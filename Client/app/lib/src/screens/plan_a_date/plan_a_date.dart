@@ -8,6 +8,7 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/selection_button.dart';
 import './date_add.dart';
 
+/// The Plan a Date page.
 class PlanADate extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,8 +23,8 @@ class _PlanADateState extends State<PlanADate> {
       builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
           appBar: CustomAppBar(
-                  'Plan A Date',
-                  model.isAnyEditorsListValid()
+                  name: 'Plan A Date',
+                  icon: model.isAnyEditorsListValid()
                       ? IconButton(
                           icon: const Icon(CupertinoIcons.delete),
                           tooltip: 'Delete',
@@ -35,41 +36,15 @@ class _PlanADateState extends State<PlanADate> {
                       : Container())
               .build(context),
           body: PageBackground(child: _buildSelectionButtons(model)),
-          floatingActionButton: _buildFAB(model),
+          floatingActionButton: _buildFinishButton(model),
         );
       },
     );
   }
 
-  Widget _buildSelectionButtons(MainModel model) {
-    return Column(
-      children: <Widget>[
-        SelectionButton(
-            context,
-            'Person One',
-            model.isSelectedEditorsListValid(0),
-            () => _navigateToEdit(model, 0)),
-        const SizedBox(
-          height: 1.0,
-        ),
-        SelectionButton(
-            context,
-            'Person Two',
-            model.isSelectedEditorsListValid(1),
-            () => _navigateToEdit(model, 1)),
-      ],
-    );
-  }
-
-  /// Will navigate to the correct editting page based on is currently editing
-  void _navigateToEdit(MainModel model, int whoIsEditing) {
-    model.setCurrentEditor(whoIsEditing);
-    print('Route change called');
-    Navigator.push<void>(
-        context, MaterialPageRoute<bool>(builder: (_) => DateAdd()));
-  }
-
-  Widget _buildFAB(MainModel model) {
+  /// Create the finish button to take the user to the loading page
+  /// so their date can be calculated.
+  Widget _buildFinishButton(MainModel model) {
     return model.isAnyEditorsListValid()
         ? FloatingActionButton(
             child: const Icon(
@@ -81,5 +56,33 @@ class _PlanADateState extends State<PlanADate> {
             },
           )
         : Container();
+  }
+
+  /// Create the selectin buttons
+  Widget _buildSelectionButtons(MainModel model) {
+    return Column(
+      children: <Widget>[
+        SelectionButton(
+            context: context,
+            text: 'Person One',
+            disabled: model.isSelectedEditorsListValid(0),
+            onTap: () => _navigateToEdit(model, 0)),
+        const SizedBox(
+          height: 1.0,
+        ),
+        SelectionButton(
+            context: context,
+            text: 'Person Two',
+            disabled: model.isSelectedEditorsListValid(1),
+            onTap: () => _navigateToEdit(model, 1)),
+      ],
+    );
+  }
+
+  /// Will navigate to the correct editting page based on is currently editing
+  void _navigateToEdit(MainModel model, int whoIsEditing) {
+    model.setCurrentEditor(whoIsEditing);
+    Navigator.push<void>(
+        context, MaterialPageRoute<bool>(builder: (_) => DateAdd()));
   }
 }
