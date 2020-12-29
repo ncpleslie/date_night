@@ -12,7 +12,7 @@ Date Night is there to help
 | Home Screen  | Add Date     |              |              |  Results     |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
 | Dates from other users |    |              |              |              |
-| ![Home Screen - Displaying other dates from other users](./docs/readme/image1.png) | ![](./docs/readme/image2.png) | ![](./docs/readme/image3.png) | ![](./docs/readme/image4.png) | ![](./docs/readme/image5.png) |
+| ![Home Screen - Displaying other dates from other users](./docs/readme/image1.png) | ![](./docs/readme/Image2.png) | ![](./docs/readme/Image3.png) | ![](./docs/readme/Image4.png) | ![](./docs/readme/image5.png) |
 
 # Key Features:
   - See dates happening around you
