@@ -12,7 +12,7 @@ Date Night is there to help
 | Home Screen  | Add Date     |              |              |  Results     |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
 | Dates from other users |    |              |              |              |
-| ![Home Screen - Displaying other dates from other users](./docs/readme/image1.png) | ![](./docs/Image2.png) | ![](./docs/Image3.png) | ![](./docs/Image4.png) | ![](./docs/image5.png) |
+| ![Home Screen - Displaying other dates from other users](./docs/readme/image1.png) | ![](./docs/readme/image2.png) | ![](./docs/readme/image3.png) | ![](./docs/readme/image4.png) | ![](./docs/readme/image5.png) |
 
 # Key Features:
   - See dates happening around you
@@ -21,10 +21,6 @@ Date Night is there to help
 # New Features!
 
   - Automatically uploads ideas to Firebase so other couples can get help deciding
-  
-# To Do
-  
-  - The ability to 'Star' your favorite idea
 
 ### Tech
 
@@ -33,9 +29,9 @@ Date Night uses a number of open source projects to work properly:
 * [Dart] - A language optimized for client-side development for web and mobile.
 * [Flutter] - Google's mobile UI framework for crafting high-quality native experiences on iOS and Android 
 * [Firebase] - Google's mobile platform that helps you quickly develop high-quality apps 
-* The template is based on GeekyAnt's [Template](flutter-starting template)
+* The template is based on GeekyAnt's [flutter-starter]
 
    [Dart]: <https://www.dartlang.org/>
    [Flutter]: <https://flutter.io/>
    [Firebase]: <https://firebase.google.com/>
-   [Template]: <https://github.com/GeekyAnts/flutter-starter>
+   [flutter-starter]: <https://github.com/GeekyAnts/flutter-starter>
