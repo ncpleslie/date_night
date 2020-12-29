@@ -12,7 +12,7 @@ Date Night is there to help
 | Home Screen  | Add Date     |              |              |  Results     |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
 | Dates from other users |    |              |              |              |
-| ![Home Screen - Displaying other dates from other users](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/image1.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image2.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image3.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/Image4.png) | ![](https://github.com/ncpleslie/date_night/blob/Linted/assets/readme/image5.png) |
+| ![Home Screen - Displaying other dates from other users](./docs/readme/image1.png) | ![](./docs/Image2.png) | ![](./docs/Image3.png) | ![](./docs/Image4.png) | ![](./docs/image5.png) |
 
 # Key Features:
   - See dates happening around you
@@ -33,7 +33,9 @@ Date Night uses a number of open source projects to work properly:
 * [Dart] - A language optimized for client-side development for web and mobile.
 * [Flutter] - Google's mobile UI framework for crafting high-quality native experiences on iOS and Android 
 * [Firebase] - Google's mobile platform that helps you quickly develop high-quality apps 
+* The template is based on GeekyAnt's [Template](flutter-starting template)
 
    [Dart]: <https://www.dartlang.org/>
    [Flutter]: <https://flutter.io/>
    [Firebase]: <https://firebase.google.com/>
+   [Template]: <https://github.com/GeekyAnts/flutter-starter>
