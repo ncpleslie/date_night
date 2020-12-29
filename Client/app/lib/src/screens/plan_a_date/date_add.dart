@@ -4,7 +4,7 @@ import 'package:date_night/src/widgets/date_add_idea_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_model/main_model.dart';
+import 'package:model/main.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/empty_screen_icon.dart';
 import '../../widgets/page_background.dart';

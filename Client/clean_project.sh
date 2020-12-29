@@ -1,17 +1,21 @@
 #!/bin/bash
 
-cd api_sdk
-echo "+++++API SDK pub clean+++++"
-flutter clean
-echo "+++++API SDK done+++++"
+echo "==============================="
+echo "===========Cleaning============"
+echo "==============================="
+echo ""
 
-
-cd ../shared
-echo "+++++Shared pub clean+++++"
+cd api
+echo "====== api_sdk: cleaning ======"
 flutter clean
-echo "+++++Shared done+++++"
+echo "====== api_sdk: done =========="
+
+cd ../model
+echo "======= model: cleaning ======="
+flutter clean
+echo "======= model: done ==========="
 
 cd ../app
-echo "+++++Main app pub clean+++++"
+echo "======== app: cleaning ========"
 flutter clean
-echo "+++++Cleaning done+++++"
+echo "======== app: done ============"

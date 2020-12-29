@@ -1,4 +1,4 @@
-import 'package:date_night/src/scoped_model/main_model.dart';
+import 'package:model/main.dart';
 import 'package:date_night/src/widgets/date_add_dialog_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

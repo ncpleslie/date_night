@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import '../routes/route_generator.dart';
-import '../scoped_model/main_model.dart';
 import './dates_around/dates_around.dart';
 import './plan_a_date/plan_a_date.dart';
 

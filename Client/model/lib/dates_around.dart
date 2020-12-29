@@ -1,22 +1,7 @@
 import 'dart:async';
-
-import 'package:date_night/src/scoped_model/ideas_model.dart';
-import '../models/date_around_model.dart';
-
-Future<List<Map<String, Object>>> _getExampleDates(int length) {
-  print('Getting Example Dates...');
-  return Future<List<Map<String, Object>>>.delayed(
-    const Duration(seconds: 1),
-    () => List<Map<String, Object>>.generate(
-      length,
-      (int index) => <String, Object>{
-        'chosenDate': 'Null',
-        'otherIdeas': <Object>['Null', 'Null'],
-        'datePosted': DateTime.now()
-      },
-    ),
-  );
-}
+import 'package:api/main.dart';
+import './ideas.dart';
+import './models/date_around_model.dart';
 
 mixin DatesAroundModel on IdeasModel {
   Stream<List<DateAroundModel>> stream;
@@ -54,7 +39,7 @@ mixin DatesAroundModel on IdeasModel {
     }
 
     _isLoading = true;
-    return _getExampleDates(1)
+    return MockApiSdk.getDatesAround()
         .then((List<Map<String, Object>> datesAroundData) {
       _isLoading = false;
       _data.addAll(datesAroundData);

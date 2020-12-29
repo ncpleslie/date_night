@@ -1,9 +1,9 @@
-import 'package:date_night/src/scoped_model/main_model.dart';
+import 'package:model/main.dart';
+import 'package:model/models/date_around_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import '../models/date_around_model.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.

@@ -1,4 +1,4 @@
-import 'package:date_night/src/scoped_model/main_model.dart';
+import 'package:model/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';

@@ -1,5 +1,5 @@
-import 'package:date_night/src/models/date_around_model.dart';
-import 'package:date_night/src/scoped_model/main_model.dart';
+import 'package:model/main.dart';
+import 'package:model/models/date_around_model.dart';
 import 'package:date_night/src/widgets/empty_screen_icon.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

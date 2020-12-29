@@ -1,5 +1,5 @@
 import 'package:date_night/src/routes/routes.dart';
-import 'package:date_night/src/scoped_model/main_model.dart';
+import 'package:model/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
