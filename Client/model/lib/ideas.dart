@@ -1,3 +1,6 @@
+import 'package:api/main.dart';
+import 'package:model/models/date_model.dart';
+import 'package:model/models/random_date_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin IdeasModel on Model {
@@ -71,18 +74,16 @@ mixin IdeasModel on Model {
   }
 
   /// Determine the final result.
-  Future<String> calculateResults() async {
+  Future<void> calculateResults() async {
     // Determine result
     // Combine lists
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
-    print('Calculating results');
-    return await Future<String>.delayed(const Duration(seconds: 3), () {
-      clearAllLists();
-      chosenIdea = 'Null value error';
-      return chosenIdea;
-    });
+    final Map<String, String> response = await MockApiSdk.postDate(dateIdeas);
+    final Date date = Date.fromServerMap(response);
+    clearAllLists();
+    chosenIdea = date.chosenIdea;
   }
 
   /// Deletes all dates from all lists.
@@ -93,9 +94,10 @@ mixin IdeasModel on Model {
     notifyListeners();
   }
 
-  String randomIdea() {
-    const String idea = 'Null value error';
-    return 'How about $idea';
+  Future<String> randomIdea() async {
+    final Map<String, String> response = await MockApiSdk.getRandomDate();
+    final RandomDate randomDate = RandomDate.fromServerMap(response);
+    return randomDate.date;
   }
 
   // List<String> chosenDateIdeas = <String>[];

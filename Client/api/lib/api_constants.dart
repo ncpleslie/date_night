@@ -1,3 +1,3 @@
 Map<String, String> apiConstants = {
-  "dateNight": "https://example.com",
+  "dateNight": "https://us-central1-date-night-api.cloudfunctions.net/",
 };

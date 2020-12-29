@@ -5,15 +5,21 @@ import './rest/rest_api_handler_data.dart';
 class ApiSdk {
   /// Fetch other current dates
   static Future<List<Map<String, Object>>> getDatesAround() async {
+    final response = await RestApiHandlerData.getData(
+        '${apiConstants["dateNight"]}/dates_around');
+    return response;
+  }
+
+  static Future<List<Map<String, Object>>> getRandomDate() async {
     final response =
-        await RestApiHandlerData.getData('${apiConstants["dateNight"]}/');
+        await RestApiHandlerData.getData('${apiConstants["dateNight"]}/random');
     return response;
   }
 
   /// Get the winning date idea
-  static Future postDate(dynamic body) async {
+  static Future postDate(List<List<String>> body) async {
     final response = await RestApiHandlerData.postData(
-        '${apiConstants["dateNight"]}/', body);
+        '${apiConstants["dateNight"]}/date', body);
     return response;
   }
 }
@@ -35,5 +41,17 @@ class MockApiSdk {
         },
       ),
     );
+  }
+
+  static Future<Map<String, String>> postDate(List<List<String>> body) async {
+    print('Calculating results');
+    return await Future<Map<String, String>>.delayed(
+        const Duration(seconds: 3), () => {'chosenIdea': 'Null'});
+  }
+
+  static Future<Map<String, String>> getRandomDate() async {
+    print('Getting Random Date');
+    return await Future<Map<String, String>>.delayed(
+        const Duration(seconds: 3), () => {'date': 'Unknown'});
   }
 }

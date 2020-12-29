@@ -14,11 +14,21 @@ import '../../widgets/page_background.dart';
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAdd extends StatelessWidget {
+class DateAdd extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _DateAddState();
+  }
+}
+
+class _DateAddState extends State<DateAdd> {
+  String randomDate;
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget widget, MainModel model) {
+        _getRandomDate(model);
         return Scaffold(
           // Build Appbar
           appBar: CustomAppBar(name: '').build(context),
@@ -56,12 +66,19 @@ class DateAdd extends StatelessWidget {
     );
   }
 
+  Future<void> _getRandomDate(MainModel model) async {
+    randomDate = await model.randomIdea();
+    setState(() {});
+  }
+
   /// Builds the list of ideas the user entered.
   Widget _buildPage(MainModel model) {
+    final String emptyIconString = randomDate != null
+        ? 'No ideas yet?\nHow about $randomDate?'
+        : 'No ideas yet?';
     return Center(
       child: !model.isCurrentEditorsListValid()
-          ? EmptyScreenIcon(
-              'No ideas yet?\n${model.randomIdea()}', CupertinoIcons.search)
+          ? EmptyScreenIcon(emptyIconString, CupertinoIcons.search)
           : ListView.builder(
               itemCount: model.getCurrentEditorsIdeasList().length,
               itemBuilder: (BuildContext context, int index) {
