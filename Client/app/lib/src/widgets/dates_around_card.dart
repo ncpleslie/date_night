@@ -5,11 +5,11 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../models/date_around_model.dart';
 
-/// The DateCard Widget is the card that displays dates other
+/// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.
 // ignore: must_be_immutable
-class DateCard extends StatelessWidget {
-  DateCard({@required this.date, @required this.model}) {
+class DatesAroundCard extends StatelessWidget {
+  DatesAroundCard({@required this.date, @required this.model}) {
     _chosenDate = date.chosenDate;
 
     _datePosted = DateFormat.EEEE()

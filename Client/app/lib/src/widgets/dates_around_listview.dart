@@ -5,7 +5,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'date_card.dart';
+import 'dates_around_card.dart';
 
 /// The list of Dates of other users.
 // ignore: must_be_immutable
@@ -90,7 +90,8 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
           );
         }
         if (index < snapshot.data.length) {
-          return DateCard(date: snapshot.data[index], model: widget.model);
+          return DatesAroundCard(
+              date: snapshot.data[index], model: widget.model);
         }
         return Container();
       },

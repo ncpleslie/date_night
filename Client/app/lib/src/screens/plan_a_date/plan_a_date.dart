@@ -6,7 +6,6 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../scoped_model/main_model.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/selection_button.dart';
-import './date_add.dart';
 
 /// The Plan a Date page.
 class PlanADate extends StatefulWidget {
@@ -51,9 +50,7 @@ class _PlanADateState extends State<PlanADate> {
               Icons.keyboard_arrow_right,
               size: 30,
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(Routes.Loading);
-            },
+            onPressed: _navigateToNext,
           )
         : Container();
   }
@@ -82,7 +79,11 @@ class _PlanADateState extends State<PlanADate> {
   /// Will navigate to the correct editting page based on is currently editing
   void _navigateToEdit(MainModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
-    Navigator.push<void>(
-        context, MaterialPageRoute<bool>(builder: (_) => DateAdd()));
+    Navigator.of(context).pushNamed(Routes.DateAdd);
+  }
+
+  /// Navigate to the next stage
+  Future<void> _navigateToNext() async {
+    Navigator.of(context).pushNamed(Routes.Loading);
   }
 }
