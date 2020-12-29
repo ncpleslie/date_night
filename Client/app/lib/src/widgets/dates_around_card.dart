@@ -55,7 +55,7 @@ class DatesAroundCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150, // Increase this to change the padding
+      height: 155, // Increase this to change the padding
       child: Stack(
         children: <Widget>[
           // Words in card

@@ -75,10 +75,9 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   /// Creates the list of dates around.
   Widget _list(
       BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       controller: scrollController,
-      separatorBuilder: (BuildContext context, int index) => Container(),
       itemCount: snapshot.data.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (snapshot.hasError || snapshot.data.isEmpty) {
