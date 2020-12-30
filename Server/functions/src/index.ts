@@ -1,10 +1,12 @@
 import * as functions from 'firebase-functions';
-// import * as admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 import DateRequest from './models/date_request.model';
-import DateResponse from './models/date_response.model';
-import RandomDateResponse from './models/random_date_response.model';
+import DateDTO from './models/date_dto.model';
+import RandomDateDTO from './models/random_date_dto.model';
+import { StoredDate } from './models/stored_date.model';
+import { Firestore } from './enums/firestore.enum';
 
-// admin.initializeApp(functions.config().firebase);
+admin.initializeApp(functions.config().firebase);
 // const firestore = admin.firestore();
 
 // /**
@@ -26,30 +28,51 @@ import RandomDateResponse from './models/random_date_response.model';
 /**
  * Winning date decider.
  */
+// TODO: Implement fuzzy matching
 export const date = functions.https.onRequest(async (request: functions.Request, response: functions.Response) => {
     if (!request.body || !request.body.dateIdeas) {
         response.status(400).send('Invalid request. Ensure you have provided a valid array of date ideas.');
         return;
     }
-    const dateReq = new DateRequest(request.body.dateIdeas);
-    functions.logger.info('Dates queried');
-    functions.logger.info(dateReq);
 
-    // Flatten the arrays
+    const dateReq = new DateRequest(sanitize(request.body.dateIdeas));
+    let chosenIdea: string;
+
     // If dupe, return dupe
+    const dupeIndex = firstDupeIndex(dateReq.dateIdeas);
+    // TODO: Remove all dupes
+
     // Else return random
+    if (dupeIndex === -1) {
+        const randomIndex = getRandomInt(dateReq.dateIdeas.length)
+        chosenIdea = dateReq.dateIdeas[randomIndex];
+        dateReq.dateIdeas.splice(randomIndex, 1);
+    } else {
+        chosenIdea = dateReq.dateIdeas[dupeIndex];
+        dateReq.dateIdeas.splice(dupeIndex, 1);
+    }
+
     // Store in DB
-    const dateResponse = new DateResponse(dateReq.dateIdeas[0]);
-    response.send(JSON.stringify(dateResponse));
-    return;
+    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now());
+    const writeResult = await admin.firestore().collection(Firestore.name).add(storedDate.toObject());
+    const dateDTO = new DateDTO(chosenIdea, dateReq.dateIdeas, writeResult.path);
+    functions.logger.info(`Dates successfully queried: ${dateDTO}`);
+    response.send(JSON.stringify(dateDTO));
 });
+
+const sanitize = (list: string[]) => list.map((item) => item.toLowerCase().trim());
+
+const firstDupeIndex = (list: string[]) => list.findIndex(
+    (item: string, index: number) => list.lastIndexOf(item) !== index
+);
+
+const getRandomInt = (max: number) => Math.floor(Math.random() * Math.floor(max));
 
 /**
  * Random date ideas.
  */
 export const random = functions.https.onRequest(async (request: functions.Request, response: functions.Response) => {
-    functions.logger.info('Random Idea queried');
-    functions.logger.info(request);
-    const randomDateResponse = new RandomDateResponse('Random Idea');
-    response.send(JSON.stringify(randomDateResponse));
+    const randomDateDTO = new RandomDateDTO('Random Idea');
+    functions.logger.info(`Random Idea successfully queried: ${randomDateDTO}`);
+    response.send(JSON.stringify(randomDateDTO));
 })

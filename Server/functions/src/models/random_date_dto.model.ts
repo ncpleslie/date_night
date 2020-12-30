@@ -1,4 +1,4 @@
-export default class RandomDateResponse {
+export default class RandomDateDTO {
     public date: string;
 
     constructor(date: string) {
