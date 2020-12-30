@@ -14,16 +14,7 @@ import '../../widgets/page_background.dart';
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAdd extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _DateAddState();
-  }
-}
-
-class _DateAddState extends State<DateAdd> {
-  String randomDate;
-
+class DateAdd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
@@ -66,29 +57,34 @@ class _DateAddState extends State<DateAdd> {
     );
   }
 
-  Future<void> _getRandomDate(MainModel model) async {
-    randomDate = await model.randomIdea();
-    setState(() {});
+  Future<String> _getRandomDate(MainModel model) async {
+    return await model.randomIdea();
   }
 
   /// Builds the list of ideas the user entered.
   Widget _buildPage(MainModel model) {
-    final String emptyIconString = randomDate != null
-        ? 'No ideas yet?\nHow about $randomDate?'
-        : 'No ideas yet?';
-    return Center(
-      child: !model.isCurrentEditorsListValid()
-          ? EmptyScreenIcon(emptyIconString, CupertinoIcons.search)
-          : ListView.builder(
-              itemCount: model.getCurrentEditorsIdeasList().length,
-              itemBuilder: (BuildContext context, int index) {
-                return DateAddIdeaCard(
-                    model: model,
-                    index: index,
-                    name: model.getCurrentEditorsIdeasList()[index],
-                    onDelete: _remove);
-              },
-            ),
+    String emptyIconString = 'No ideas yet?';
+    return FutureBuilder<String>(
+      future: _getRandomDate(model),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          emptyIconString = 'No ideas yet?\nHow about ${snapshot.data}?';
+        }
+        return Center(
+          child: !model.isCurrentEditorsListValid()
+              ? EmptyScreenIcon(emptyIconString, CupertinoIcons.search)
+              : ListView.builder(
+                  itemCount: model.getCurrentEditorsIdeasList().length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return DateAddIdeaCard(
+                        model: model,
+                        index: index,
+                        name: model.getCurrentEditorsIdeasList()[index],
+                        onDelete: _remove);
+                  },
+                ),
+        );
+      },
     );
   }
 

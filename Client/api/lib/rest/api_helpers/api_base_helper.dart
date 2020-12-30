@@ -17,15 +17,17 @@ class ApiBaseHelper {
   }
 
   Future<dynamic> post(String url, dynamic body) async {
-    var responseJson;
     try {
-      final response = await http.post(url, body: body);
-      responseJson = _returnResponse(response);
+      final response = await http.post(url,
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: json.encode(body));
+      return _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
-
-    return responseJson;
   }
 
   Future<dynamic> put(String url, dynamic body) async {
@@ -66,6 +68,6 @@ dynamic _returnResponse(http.Response response) {
     case 500:
     default:
       return FetchDataException(
-          'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+          'Error occured while communicating with server. StatusCode: ${response.statusCode}');
   }
 }

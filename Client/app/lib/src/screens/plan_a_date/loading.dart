@@ -11,13 +11,18 @@ import '../../widgets/page_background.dart';
 /// This creates a buffer screen to allow the client to
 /// query the server and provides feedback to the user
 /// that the application is processing their request.
-class Loading extends StatelessWidget {
+class Loading extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _LoadingState();
+  }
+}
+
+class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget widget, MainModel model) {
-      _getResults(context, model);
-
       return Scaffold(
           body: PageBackground(
               child: Stack(
@@ -60,10 +65,17 @@ class Loading extends StatelessWidget {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    final MainModel model = ScopedModel.of(context);
+    _getResults(model);
+  }
+
   /// Calculates the results of their users chosen request.
   /// These results can be grabbed from the model when needed.
   /// (Probably the results page).
-  Future<void> _getResults(BuildContext context, MainModel model) async {
+  Future<void> _getResults(MainModel model) async {
     await model.calculateResults();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushReplacementNamed(Routes.Results);

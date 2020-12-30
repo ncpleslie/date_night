@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:api/main.dart';
-import 'package:model/models/date_model.dart';
+import 'package:model/models/date_request_model.dart';
+import 'package:model/models/date_response_model.dart';
 import 'package:model/models/random_date_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'constants/date_ideas.dart';
 
 mixin IdeasModel on Model {
   /// List of all the current date ideas.
@@ -80,10 +85,19 @@ mixin IdeasModel on Model {
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
-    final Map<String, String> response = await MockApiSdk.postDate(dateIdeas);
-    final Date date = Date.fromServerMap(response);
+    final Map<String, dynamic> dateReq =
+        DateRequest(dateIdeas: dateIdeas).toJson();
+    try {
+      final Map<String, dynamic> response = await ApiSdk.postDate(dateReq);
+      final DateResponse date = DateResponse.fromServerMap(response);
+      chosenIdea = date.chosenIdea;
+    } catch (_) {
+      await Future<void>.delayed(const Duration(seconds: 2), () {
+        chosenIdea =
+            dateReq['dateIdeas'][Random().nextInt(dateReq['dateIdeas'].length)];
+      });
+    }
     clearAllLists();
-    chosenIdea = date.chosenIdea;
   }
 
   /// Deletes all dates from all lists.
@@ -94,10 +108,18 @@ mixin IdeasModel on Model {
     notifyListeners();
   }
 
+  /// Get a random date idea.
   Future<String> randomIdea() async {
-    final Map<String, String> response = await MockApiSdk.getRandomDate();
-    final RandomDate randomDate = RandomDate.fromServerMap(response);
-    return randomDate.date;
+    try {
+      final Map<String, dynamic> response = await ApiSdk.getRandomDate();
+      final RandomDate randomDate = RandomDate.fromServerMap(response);
+      return randomDate.date;
+    } catch (_) {
+      return await Future<String>.delayed(const Duration(seconds: 2), () {
+        return DateIdeas.RandomDateIdeas[
+            Random().nextInt(DateIdeas.RandomDateIdeas.length)];
+      });
+    }
   }
 
   // List<String> chosenDateIdeas = <String>[];
