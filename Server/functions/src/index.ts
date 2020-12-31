@@ -4,26 +4,35 @@ import DateRequest from './models/date_request.model';
 import DateDTO from './models/date_dto.model';
 import RandomDateDTO from './models/random_date_dto.model';
 import { StoredDate } from './models/stored_date.model';
-import { Firestore } from './enums/firestore.enum';
+import { FirestoreConstants } from './constants/firestore.constants';
+import { DatesAroundDTO } from './models/dates_around_dto.model';
 
 admin.initializeApp(functions.config().firebase);
-// const firestore = admin.firestore();
+const firestore = admin.firestore();
 
-// /**
-//  * Dates of other user.
-//  */
-// export const dates_around = functions.https.onRequest(async (request: functions.Request, response: functions.Response) => {
-//     functions.logger.info('Dates Around queried');
-//     functions.logger.info(request);
+/**
+ * Dates of other user.
+ */
+export const dates_around = functions.https.onRequest(async (request: functions.Request, response: functions.Response) => {
+    functions.logger.info('Dates Around queried');
+    if (!request.query || !request.query.lastId) {
+        const initialSnapshot = await getDatesAroundQuery.get();
+        response.send(initialSnapshot.docs.map(doc =>
+            new DatesAroundDTO(doc.data().chosenIdea, doc.data().otherIdeas, doc.data().date.toDate(), doc.id)
+        ));
+        return;
+    }
+    const queryCursor = firestore.collection(FirestoreConstants.DB_NAME).doc(request.query.lastId as string);
+    const paginatedSnapshot = await getDatesAroundQuery.startAfter(queryCursor).get();
+    paginatedSnapshot.docs.forEach((doc) => {
+        functions.logger.info(doc);
+    })
+    response.send(paginatedSnapshot.docs.map(doc =>
+        new DatesAroundDTO(doc.data().chosenIdea, doc.data().otherIdeas, doc.data().date.toDate(), doc.id)
+    ));
+});
 
-//     if (!request.body.lastDateId) {
-//         const snapshot = await firestore.collection('datesAround').orderBy('datePosted', 'desc').limit(10).get();
-//         response.send(snapshot.docs.map(doc => doc.data()));
-//     } else {
-//         const snapshot = await firestore.collection('datesAround').orderBy('datePosted', 'desc').startAfter(request.body.lastDateId).limit(10).get();
-//         response.send(snapshot.docs.map(doc => doc.data()));
-//     }
-// });
+const getDatesAroundQuery = firestore.collection(FirestoreConstants.DB_NAME).orderBy(FirestoreConstants.ORDER_BY, FirestoreConstants.ORDER).limit(FirestoreConstants.LIMIT);
 
 /**
  * Winning date decider.
@@ -54,7 +63,7 @@ export const date = functions.https.onRequest(async (request: functions.Request,
 
     // Store in DB
     const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now());
-    const writeResult = await admin.firestore().collection(Firestore.name).add(storedDate.toObject());
+    const writeResult = await admin.firestore().collection(FirestoreConstants.DB_NAME).add(storedDate.toObject());
     const dateDTO = new DateDTO(chosenIdea, dateReq.dateIdeas, writeResult.path);
     functions.logger.info(`Dates successfully queried: ${dateDTO}`);
     response.send(JSON.stringify(dateDTO));
