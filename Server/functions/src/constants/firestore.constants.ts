@@ -10,4 +10,9 @@ export class FirestoreConstants {
         DB_NAME: 'random_ideas',
         LIMIT: 1,
     }
+
+    public static readonly RESULT_IMAGE = {
+        DB_NAME: 'result_images',
+        LIMIT: 1,
+    }
 }

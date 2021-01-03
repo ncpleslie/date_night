@@ -10,7 +10,7 @@ class DateAroundModel {
     return DateAroundModel(
         chosenIdea: data['chosenIdea'],
         otherIdeas: data['otherIdeas'],
-        date: DateTime.parse(data['date']),
+        date: DateTime.parse(data['date']).toLocal(),
         id: data['id']);
   }
 }

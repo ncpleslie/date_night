@@ -13,7 +13,7 @@ export const randomIdea = async (request: functions.Request, response: functions
     const snapshot = await getRandomIdea(db);
     const randomDateDTO = snapshot.docs.map(doc => new RandomDateDTO(doc.data().idea))[0];
     functions.logger.info(`Random Idea successfully queried: ${randomDateDTO.idea}`);
-    response.send({ ...randomDateDTO });
+    response.send(randomDateDTO);
 }
 
 async function getRandomIdea(db: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>, input = '>=' as FirebaseFirestore.WhereFilterOp): Promise<FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>> {

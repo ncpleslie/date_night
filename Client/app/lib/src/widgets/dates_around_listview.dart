@@ -1,3 +1,4 @@
+import 'package:date_night/src/widgets/shimmer_dates_around_listview.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:date_night/src/widgets/empty_screen_icon.dart';
@@ -33,12 +34,14 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
       builder: (BuildContext context,
           AsyncSnapshot<List<DateAroundModel>> snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
-            ),
-          );
+          // return const Center(
+          //   child: Text(
+          //     'Loading...',
+          //     style: TextStyle(color: Colors.white),
+          //   ),
+          // );
+
+          return ShimmerDatesAroundListView();
         }
         return SmartRefresher(
           enablePullDown: true,

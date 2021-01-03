@@ -22,6 +22,7 @@ export const datesAround = async (request: functions.Request, response: function
         response.send(new DatesAroundDTO(datesAroundArray));
 
     } catch (e) {
+        functions.logger.error(e);
         response.status(500).send('Internal Server Error. Something went wrong on our end but it could\'ve been something in your request.');
     }
 }

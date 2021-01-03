@@ -9,7 +9,7 @@ mixin IdeasModel on Model {
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
   // For Final Selection
-  String chosenIdea;
+  DateResponse dateResponse;
 
   /// The current date editor.
   int currentEditor = 0;
@@ -86,11 +86,12 @@ mixin IdeasModel on Model {
     try {
       final Map<String, dynamic> response = await ApiSdk.postDate(dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);
-      chosenIdea = date.chosenIdea;
+      dateResponse = date;
     } catch (_) {
       await Future<void>.delayed(const Duration(seconds: 2), () {
-        chosenIdea =
-            dateReq['dateIdeas'][Random().nextInt(dateReq['dateIdeas'].length)];
+        dateResponse = DateResponse(
+            chosenIdea: dateReq['dateIdeas']
+                [Random().nextInt(dateReq['dateIdeas'].length)]);
       });
     }
     clearAllLists();

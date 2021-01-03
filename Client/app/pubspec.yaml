@@ -40,6 +40,8 @@ dependencies:
   pull_to_refresh: 1.6.3
   model:
     path: ../model
+  shimmer: 1.1.2
+  confetti: 0.5.4+1
 
 dev_dependencies:
   flutter_test:
