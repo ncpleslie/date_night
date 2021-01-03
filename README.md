@@ -1,5 +1,7 @@
 # Date Night
 
+[![Codemagic build status](https://api.codemagic.io/apps/5ff23f576b96eaca17003c59/5ff23f576b96eaca17003c58/status_badge.svg)](https://codemagic.io/apps/5ff23f576b96eaca17003c59/5ff23f576b96eaca17003c58/latest_build)
+
 Date Night is a flutter based cross-platform mobile app designed to make your relationship easier.
 
 Can't decide what to have for dinner? 
