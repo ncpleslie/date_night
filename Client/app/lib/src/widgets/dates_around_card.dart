@@ -10,13 +10,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
   DatesAroundCard({@required this.date, @required this.model}) {
-    _chosenDate = date.chosenDate;
+    _chosenDate = date.chosenIdea;
 
-    _datePosted = DateFormat.EEEE()
-        .addPattern('@')
-        .add_jm()
-        .format(date.datePosted)
-        .toString();
+    _datePosted =
+        DateFormat.EEEE().addPattern('@').add_jm().format(date.date).toString();
 
     _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
         ? date.otherIdeas.join(', ')

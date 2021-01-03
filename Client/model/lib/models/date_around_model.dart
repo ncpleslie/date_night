@@ -1,14 +1,16 @@
 class DateAroundModel {
-  DateAroundModel({this.chosenDate, this.otherIdeas, this.datePosted});
+  DateAroundModel({this.chosenIdea, this.otherIdeas, this.date, this.id});
 
-  final String chosenDate;
+  final String chosenIdea;
   final List<dynamic> otherIdeas;
-  final DateTime datePosted;
+  final DateTime date;
+  final String id;
 
   factory DateAroundModel.fromServerMap(dynamic data) {
     return DateAroundModel(
-        chosenDate: data['chosenDate'],
+        chosenIdea: data['chosenIdea'],
         otherIdeas: data['otherIdeas'],
-        datePosted: data['datePosted']);
+        date: DateTime.parse(data['date']),
+        id: data['id']);
   }
 }

@@ -110,16 +110,9 @@ mixin IdeasModel on Model {
 
   /// Get a random date idea.
   Future<String> randomIdea() async {
-    try {
-      final Map<String, dynamic> response = await ApiSdk.getRandomDate();
-      final RandomDate randomDate = RandomDate.fromServerMap(response);
-      return randomDate.date;
-    } catch (_) {
-      return await Future<String>.delayed(const Duration(seconds: 2), () {
-        return DateIdeas.RandomDateIdeas[
-            Random().nextInt(DateIdeas.RandomDateIdeas.length)];
-      });
-    }
+    final Map<String, dynamic> response = await ApiSdk.getRandomDate();
+    final RandomDate randomDate = RandomDate.fromServerMap(response);
+    return randomDate.date;
   }
 
   // List<String> chosenDateIdeas = <String>[];

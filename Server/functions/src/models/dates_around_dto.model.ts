@@ -1,13 +1,11 @@
-export class DatesAroundDTO {
-    public chosenIdea: string;
-    public otherIdeas: string[];
-    public date: Date;
-    public id: string;
+import { DateAround } from "./date_around.model";
 
-    constructor(chosenIdea: string, otherIdeas: string[], date: Date, id: string) {
-        this.chosenIdea = chosenIdea;
-        this.otherIdeas = otherIdeas;
+export class DatesAroundDTO {
+    public date: number;
+    public datesAround: DateAround[]
+
+    constructor(datesAround: DateAround[], date = Date.now()) {
         this.date = date;
-        this.id = id;
+        this.datesAround = datesAround;
     }
 }

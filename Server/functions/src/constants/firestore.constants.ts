@@ -1,6 +1,13 @@
 export class FirestoreConstants {
-    public static readonly DB_NAME = 'dates';
-    public static readonly ORDER_BY = 'date';
-    public static readonly ORDER = "asc" as const;
-    public static readonly LIMIT = 2;
+    public static readonly DATES = {
+        DB_NAME: 'dates',
+        ORDER_BY: 'date',
+        ORDER: "desc" as const,
+        LIMIT: 15,
+    }
+
+    public static readonly RANDOM_IDEAS = {
+        DB_NAME: 'random_ideas',
+        LIMIT: 1,
+    }
 }

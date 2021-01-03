@@ -4,9 +4,12 @@ import './rest/rest_api_handler_data.dart';
 /// For querying a production API.
 class ApiSdk {
   /// Fetch other current dates
-  static Future<List<Map<String, dynamic>>> getDatesAround() async {
-    final response = await RestApiHandlerData.getData(
-        '${apiConstants["dateNight"]}/dates_around');
+  static Future<Map<String, dynamic>> getDatesAround([String lastId]) async {
+    String url = '${apiConstants["dateNight"]}/dates_around';
+    if (lastId != null) {
+      url = '$url/?lastId=$lastId';
+    }
+    final response = await RestApiHandlerData.getData(url);
     return response;
   }
 
@@ -27,20 +30,23 @@ class ApiSdk {
 
 /// A mock API for on device testing.
 class MockApiSdk {
-  static Future<List<Map<String, dynamic>>> getDatesAround() {
+  static Future<Map<String, dynamic>> getDatesAround() {
     print('Getting example dates from Mock API service.');
     print('This service should only be used for development.');
     const int length = 2;
-    return Future<List<Map<String, Object>>>.delayed(
+    return Future<Map<String, Object>>.delayed(
       const Duration(seconds: 1),
-      () => List<Map<String, Object>>.generate(
-        length,
-        (int index) => <String, Object>{
-          'chosenDate': 'Null',
-          'otherIdeas': <Object>['Null', 'Null'],
-          'datePosted': DateTime.now()
-        },
-      ),
+      () => {
+        "datesAround": List<Map<String, Object>>.generate(
+          length,
+          (int index) => <String, Object>{
+            'chosenIdea': 'Null',
+            'otherIdeas': <Object>['Null', 'Null'],
+            'date': DateTime.now(),
+            'id': '123'
+          },
+        )
+      },
     );
   }
 

@@ -1,7 +1,7 @@
 export default class RandomDateDTO {
-    public date: string;
+    public idea: string;
 
-    constructor(date: string) {
-        this.date = date;
+    constructor(idea: string) {
+        this.idea = idea;
     }
 }
