@@ -15,4 +15,9 @@ export class FirestoreConstants {
         DB_NAME: 'result_images',
         LIMIT: 1,
     }
+
+    public static readonly ROOM = {
+        DB_NAME: 'get_a_room',
+        LIMIT: 1,
+    }
 }

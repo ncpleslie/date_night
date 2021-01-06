@@ -6,6 +6,8 @@ import { DateAround } from './models/date_around.model';
 const firestore = Admin.firestore;
 /**
  * Dates of other user.
+ * @param request 
+ * @param response 
  */
 export const datesAround = async (request: functions.Request, response: functions.Response) => {
     functions.logger.info('Dates Around queried');

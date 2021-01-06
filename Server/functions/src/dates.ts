@@ -7,9 +7,10 @@ import { FirestoreConstants } from './constants/firestore.constants';
 
 /**
  * Winning date decider.
+ * @param request 
+ * @param response 
  */
 // TODO: Implement fuzzy matching
-// TODO: Rate limit
 export const dates = async (request: functions.Request, response: functions.Response) => {
     if (!request.body || !request.body.dateIdeas) {
         response.status(400).send('Invalid request. Ensure you have provided a valid array of date ideas.');

@@ -7,6 +7,8 @@ const firestore = Admin.firestore;
 
 /**
  * Random date ideas.
+ * @param request 
+ * @param response 
  */
 export const randomIdea = async (request: functions.Request, response: functions.Response) => {
     const db = firestore.collection(FirestoreConstants.RANDOM_IDEAS.DB_NAME);

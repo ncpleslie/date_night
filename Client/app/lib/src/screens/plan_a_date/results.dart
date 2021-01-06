@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:date_night/src/routes/routes.dart';
 import 'package:model/main.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:confetti/confetti.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../config/images.dart';
 import '../../config/strings.dart';
 import '../../widgets/page_background.dart';
 
@@ -67,31 +65,24 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                               Container(
                                 height: MediaQuery.of(context).size.height / 2,
                                 child: Card(
-                                    elevation: 0,
-                                    margin: const EdgeInsets.all(0.0),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0))),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: Image.network(
-                                        model.dateResponse.imageURL,
-                                        fit: BoxFit.cover)
-                                    // CachedNetworkImage(
-                                    //   imageUrl: model.dateResponse.imageURL,
-                                    //   fit: BoxFit.cover,
-                                    //   progressIndicatorBuilder:
-                                    //       (BuildContext context,
-                                    //               String url,
-                                    //               DownloadProgress
-                                    //                   downloadProgress) =>
-                                    //           CircularProgressIndicator(
-                                    //               value:
-                                    //                   downloadProgress.progress),
-                                    //   errorWidget: (BuildContext context,
-                                    //           String url, dynamic error) =>
-                                    //       const Icon(Icons.error),
-                                    // ),
-                                    ),
+                                  elevation: 0,
+                                  margin: const EdgeInsets.all(0.0),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0))),
+                                  clipBehavior: Clip.antiAlias,
+                                  child:
+                                      // Image.network(
+                                      //     model.dateResponse.imageURL,
+                                      //     fit: BoxFit.cover)
+                                      CachedNetworkImage(
+                                    imageUrl: model.dateResponse.imageURL,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (BuildContext context,
+                                            String url, dynamic error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
