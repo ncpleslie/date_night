@@ -8,7 +8,6 @@ import PostARoomDTO from '../models/post_a_room_dto.model'
 import { HTTPMethod } from '../enums/http_method.enum';
 const firestore = Admin.firestore;
 
-
 /**
  * Get or Post to a room.
  * @param request 
@@ -30,9 +29,15 @@ export const room = async (request: functions.Request, response: functions.Respo
 }
 
 const getARoom = async (request: functions.Request, response: functions.Response) => {
+    const deviceId = request.query.deviceId;
+    if (!deviceId) {
+        response.status(400).send('Bad request. Please include a deviceId.');
+        return;
+    }
+
     try {
         const roomId = rword.generate();
-        await firestore.collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).set({ chosenIdeas: [] });
+        await firestore.collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).set({ chosenIdeas: [], deviceId: deviceId });
         response.send(new GetARoomDTO(roomId as string));
     } catch (error) {
         response.status(500).send('Unable to create room');
@@ -41,26 +46,8 @@ const getARoom = async (request: functions.Request, response: functions.Response
 }
 
 const postARoom = async (request: functions.Request, response: functions.Response) => {
-
-    const deviceToken = request.body.deviceToken;
-    const message = {
-        data: {
-            score: '850',
-            time: '2:45',
-        },
-        token: deviceToken,
-    };
-
-
-    try {
-        const fcmMessage = await admin.messaging().send(message);
-        functions.logger.info(fcmMessage);
-    } catch (e) {
-        functions.logger.error(e);
-    }
-
-    const roomId = request.body.roomId;
-    const dateIdeas = request.body.dateIdeas;
+    const roomId: string = request.body.roomId;
+    const dateIdeas: string[] = request.body.dateIdeas;
     if (roomId && dateIdeas) {
 
         const roomRef = firestore.collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId);
@@ -73,14 +60,22 @@ const postARoom = async (request: functions.Request, response: functions.Respons
             }
 
         } catch (error) {
-            response.status(404).send('Unable to locate room.');
+            response.status(400).send('Bad request. Unable to locate room.');
             return;
         }
 
         try {
-            const currentDates = roomSnapshot.data()?.['chosenIdeas'];
+            const roomData = roomSnapshot.data();
+            const currentDates = roomData?.['chosenIdeas'];
             const newDateIdeas = [...currentDates, ...dateIdeas]
             await roomRef.update({ chosenIdeas: newDateIdeas });
+
+            // Send FCM back to device to notify them if the ideas 
+            // array already had stuff in it
+            if (newDateIdeas.length > dateIdeas.length) {
+                await sendFCM(roomData?.['deviceId'], roomId);
+            }
+
             response.send(new PostARoomDTO(roomId, newDateIdeas));
             return;
         } catch (error) {
@@ -88,8 +83,20 @@ const postARoom = async (request: functions.Request, response: functions.Respons
             return;
         }
     }
-    response.status(404).send('Please provide a roomId and dateIdeas array.');
+    response.status(400).send('Bad request. Please provide a roomId and dateIdeas array.');
 }
 
+const sendFCM = async (deviceId: string, roomId: string) => {
+    const message = {
+        data: { roomId: roomId, type: '0' },
+        token: deviceId,
+    };
+
+    try {
+        await admin.messaging().send(message);
+    } catch (e) {
+        throw new Error('Unable to send FCM back');
+    }
+}
 
 

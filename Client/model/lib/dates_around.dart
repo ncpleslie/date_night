@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:api/main.dart';
 import './ideas.dart';
 import './models/date_around_model.dart';
@@ -12,8 +11,6 @@ mixin DatesAroundModel on IdeasModel {
   List<Map<String, dynamic>> _data;
   StreamController<List<Map<String, dynamic>>> _controller;
 
-  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-
   void init() {
     _data = List<Map<String, dynamic>>();
     _controller = StreamController<List<Map<String, dynamic>>>.broadcast();
@@ -25,26 +22,6 @@ mixin DatesAroundModel on IdeasModel {
             .toList());
     hasMore = true;
     refresh();
-
-    /// TESTING BELOW
-    ///
-    ///
-    firebaseMessaging.configure(
-      onLaunch: null,
-      onBackgroundMessage: null,
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-    );
-    fcmSubscribe();
-  }
-
-  void fcmSubscribe() {
-    firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      print('TOKEN');
-      print(token);
-    });
   }
 
   Future<void> refresh() {
