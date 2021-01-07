@@ -1,4 +1,4 @@
-package com.example.datenight;
+package dev.nickleslie.date_night;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

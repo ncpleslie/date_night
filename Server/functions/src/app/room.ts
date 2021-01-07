@@ -1,10 +1,11 @@
 import * as functions from 'firebase-functions';
 import { rword } from 'rword';
+import * as admin from 'firebase-admin';
 import Admin from './admin';
-import { FirestoreConstants } from './constants/firestore.constants';
-import GetARoomDTO from './models/get_a_room_dto.model';
-import PostARoomDTO from './models/post_a_room_dto.model'
-import { HTTPMethod } from './enums/http_method.enum';
+import { FirestoreConstants } from '../constants/firestore.constants';
+import GetARoomDTO from '../models/get_a_room_dto.model';
+import PostARoomDTO from '../models/post_a_room_dto.model'
+import { HTTPMethod } from '../enums/http_method.enum';
 const firestore = Admin.firestore;
 
 
@@ -40,6 +41,24 @@ const getARoom = async (request: functions.Request, response: functions.Response
 }
 
 const postARoom = async (request: functions.Request, response: functions.Response) => {
+
+    const deviceToken = request.body.deviceToken;
+    const message = {
+        data: {
+            score: '850',
+            time: '2:45',
+        },
+        token: deviceToken,
+    };
+
+
+    try {
+        const fcmMessage = await admin.messaging().send(message);
+        functions.logger.info(fcmMessage);
+    } catch (e) {
+        functions.logger.error(e);
+    }
+
     const roomId = request.body.roomId;
     const dateIdeas = request.body.dateIdeas;
     if (roomId && dateIdeas) {

@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import Admin from './admin';
-import RandomDateDTO from './models/random_date_dto.model';
-import { FirestoreConstants } from './constants/firestore.constants';
+import RandomDateDTO from '../models/random_date_dto.model';
+import { FirestoreConstants } from '../constants/firestore.constants';
 const firestore = Admin.firestore;
 
 /**

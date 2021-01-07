@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions';
 import Admin from './admin';
-import { FirestoreConstants } from './constants/firestore.constants';
-import { DatesAroundDTO } from './models/dates_around_dto.model';
-import { DateAround } from './models/date_around.model';
+import { FirestoreConstants } from '../constants/firestore.constants';
+import { DatesAroundDTO } from '../models/dates_around_dto.model';
+import { DateAround } from '../models/date_around.model';
 const firestore = Admin.firestore;
 /**
  * Dates of other user.

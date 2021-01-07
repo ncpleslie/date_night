@@ -64,6 +64,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
 
   @override
   void initState() {
+    super.initState();
     widget.model.init();
     // Add Scroll listener to load more data
     scrollController.addListener(() {
@@ -72,7 +73,6 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         widget.model.loadMore();
       }
     });
-    super.initState();
   }
 
   /// Creates the list of dates around.

@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import DateRequest from './models/date_request.model';
-import DateDTO from './models/date_dto.model';
-import { StoredDate } from './models/stored_date.model';
-import { FirestoreConstants } from './constants/firestore.constants';
+import DateRequest from '../models/date_request.model';
+import DateDTO from '../models/date_dto.model';
+import { StoredDate } from '../models/stored_date.model';
+import { FirestoreConstants } from '../constants/firestore.constants';
 
 /**
  * Winning date decider.
