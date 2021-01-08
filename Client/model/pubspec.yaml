@@ -24,10 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  firebase_core: 0.5.3
+  cloud_firestore: 0.14.4
   scoped_model: 1.1.0
   api:
     path: ../api
-  firebase_messaging: 7.0.3
 
 dev_dependencies:
   flutter_test:

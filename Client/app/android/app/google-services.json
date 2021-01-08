@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1065412985332",
+    "project_id": "date-night-api",
+    "storage_bucket": "date-night-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065412985332:android:6873c3b0dbdc4df349b9a1",
+        "android_client_info": {
+          "package_name": "dev.nickleslie.date_night"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065412985332-faorldv95gm0iu1supglhf8fgi3gquo3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9eUtejwamPfvR2Pc3WIR__tDZ0DK8n2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065412985332-faorldv95gm0iu1supglhf8fgi3gquo3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

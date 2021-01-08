@@ -13,6 +13,7 @@ class ApiSdk {
     return response;
   }
 
+  /// Get a random date idea
   static Future<Map<String, dynamic>> getRandomDate() async {
     final response =
         await RestApiHandlerData.getData('${apiConstants["dateNight"]}/random');
@@ -25,6 +26,12 @@ class ApiSdk {
     final response = await RestApiHandlerData.postData(
         '${apiConstants["dateNight"]}/date', body);
     return response;
+  }
+
+  static Future<Map<String, dynamic>> getARoom() async {
+    final respone = await RestApiHandlerData.getData(
+        '${apiConstants["dateNight"]}/get_a_room');
+    return respone;
   }
 }
 

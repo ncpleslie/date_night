@@ -14,7 +14,7 @@ import '../../widgets/page_background.dart';
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAdd extends StatelessWidget {
+class DateAddSingle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(

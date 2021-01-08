@@ -8,14 +8,14 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/selection_button.dart';
 
 /// The Plan a Date page.
-class PlanADate extends StatefulWidget {
+class PlanADateSingle extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _PlanADateState();
   }
 }
 
-class _PlanADateState extends State<PlanADate> {
+class _PlanADateState extends State<PlanADateSingle> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(

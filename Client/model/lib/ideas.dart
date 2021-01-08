@@ -6,9 +6,10 @@ import 'package:scoped_model/scoped_model.dart';
 
 mixin IdeasModel on Model {
   /// List of all the current date ideas.
+  // TODO: Refactor this so it is a single list
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
-  // For Final Selection
+  /// For Final Selection
   DateResponse dateResponse;
 
   /// The current date editor.
