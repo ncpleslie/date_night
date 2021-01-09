@@ -76,9 +76,19 @@ class _LoadingState extends State<Loading> {
   /// These results can be grabbed from the model when needed.
   /// (Probably the results page).
   Future<void> _getResults(MainModel model) async {
-    await model.calculateResults();
+    print(model.isMultiEditing);
+    print(model.isRoomHost);
+    if (model.isMultiEditing) {
+      if (model.isRoomHost) {
+        await model.calculateMultiResults();
+      } else {
+        await model.waitForResults();
+      }
+    } else {
+      await model.calculateResults();
+    }
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushReplacementNamed(Routes.Results);
+      Navigator.of(context).popAndPushNamed(Routes.Results);
     });
   }
 }

@@ -17,13 +17,14 @@ class DatesAroundPage extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
-          appBar: CustomAppBar(
-                  name: 'Dates Around You', icon: _settingsIcon(context))
+          extendBodyBehindAppBar: true,
+          appBar: CustomAppBar(name: '', icon: _settingsIcon(context))
               .build(context),
           body: PageBackground(
-              child: DatesAroundListView(
-            model: model,
-          )),
+            child: DatesAroundListView(
+              model: model,
+            ),
+          ),
         );
       },
     );

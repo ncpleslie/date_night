@@ -1,9 +1,10 @@
 // routes for the app
-import 'package:date_night/src/screens/plan_a_date/plan_a_date_single.dart';
 import 'package:flutter/material.dart';
 import '../screens/index.dart';
-import '../screens/plan_a_date/date_add_single.dart';
-import '../screens/plan_a_date/date_add_multi.dart';
+import '../screens/plan_a_date/multi/waiting_room.dart';
+import '../screens/plan_a_date/single/plan_a_date_single.dart';
+import '../screens/plan_a_date/single/date_add_single.dart';
+import '../screens/plan_a_date/multi/date_add_multi.dart';
 import '../screens/plan_a_date/loading.dart';
 import '../screens/plan_a_date/results.dart';
 import '../screens/settings/settings.dart';
@@ -39,6 +40,9 @@ class RouteGenerator {
           builder: (_) => Settings(),
           fullscreenDialog: true,
         );
+
+      case Routes.WaitingRoom:
+        return MaterialPageRoute<bool>(builder: (_) => WaitingRoom());
 
       default:
         return MaterialPageRoute<bool>(builder: (_) => Index());

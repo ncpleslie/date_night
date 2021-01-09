@@ -6,6 +6,6 @@ class DateResponse {
 
   factory DateResponse.fromServerMap(dynamic data) {
     return DateResponse(
-        chosenIdea: data['chosenIdea'], imageURL: data['image']);
+        chosenIdea: data['chosenIdea'], imageURL: data['imageUrl']);
   }
 }

@@ -76,7 +76,9 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                                       //     model.dateResponse.imageURL,
                                       //     fit: BoxFit.cover)
                                       CachedNetworkImage(
-                                    imageUrl: model.dateResponse.imageURL,
+                                    imageUrl: model.isMultiEditing
+                                        ? model.dateMultiResponse.imageURL
+                                        : model.dateResponse.imageURL,
                                     fit: BoxFit.cover,
                                     errorWidget: (BuildContext context,
                                             String url, dynamic error) =>
@@ -87,7 +89,9 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                               Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
                                 child: Text(
-                                  model.dateResponse.chosenIdea,
+                                  model.isMultiEditing
+                                  ? model.dateMultiResponse.chosenIdea
+                                  : model.dateResponse.chosenIdea,
                                   textAlign: TextAlign.center,
                                   softWrap: true,
                                   style: const TextStyle(

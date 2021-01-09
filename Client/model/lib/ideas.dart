@@ -82,8 +82,9 @@ mixin IdeasModel on Model {
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
+    List<String> flatList = dateIdeas.expand((i) => i).toList();
     final Map<String, dynamic> dateReq =
-        DateRequest(dateIdeas: dateIdeas).toJson();
+        DateRequest(dateIdeas: flatList).toJson();
     try {
       final Map<String, dynamic> response = await ApiSdk.postDate(dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);

@@ -40,6 +40,8 @@ dependencies:
     path: ../model
   shimmer: 1.1.2
   confetti: 0.5.4+1
+  timeago: 2.0.29
+  flushbar: 1.10.4
 
 dev_dependencies:
   flutter_test:

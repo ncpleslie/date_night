@@ -34,13 +34,6 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
       builder: (BuildContext context,
           AsyncSnapshot<List<DateAroundModel>> snapshot) {
         if (!snapshot.hasData) {
-          // return const Center(
-          //   child: Text(
-          //     'Loading...',
-          //     style: TextStyle(color: Colors.white),
-          //   ),
-          // );
-
           return ShimmerDatesAroundListView();
         }
         return SmartRefresher(
@@ -79,7 +72,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   Widget _list(
       BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       controller: scrollController,
       itemCount: snapshot.data.length + 1,
       itemBuilder: (BuildContext context, int index) {

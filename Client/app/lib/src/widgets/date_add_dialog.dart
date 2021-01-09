@@ -43,7 +43,11 @@ class DateAddDialog extends StatelessWidget {
   /// Add the idea to list of possible dates
   void _addIdea(BuildContext context) {
     if (_textController.text.isNotEmpty) {
-      model.addIdea(_textController.text);
+      if (model.isMultiEditing) {
+        model.addMultiIdea(_textController.text);
+      } else {
+        model.addIdea(_textController.text);
+      }
 
       // Clear text from dialog.
       // Otherwise text will remain next time.

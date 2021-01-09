@@ -1,3 +1,4 @@
+import 'package:date_night/src/routes/routes.dart';
 import 'package:date_night/src/widgets/custom_fab.dart';
 import 'package:date_night/src/widgets/date_add_dialog.dart';
 import 'package:date_night/src/widgets/date_add_idea_card.dart';
@@ -5,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:model/main.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/empty_screen_icon.dart';
-import '../../widgets/page_background.dart';
+import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/empty_screen_icon.dart';
+import '../../../widgets/page_background.dart';
 
 /// DateAdd allows the user to add a new date.
 /// The user can tap the "add" button to enter new ideas.
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAddSingle extends StatelessWidget {
+class DateAddMulti extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
@@ -22,7 +23,10 @@ class DateAddSingle extends StatelessWidget {
         _getRandomDate(model);
         return Scaffold(
           // Build Appbar
-          appBar: CustomAppBar(name: '').build(context),
+          appBar: CustomAppBar(
+            name: 'Room code: ${model.roomId}',
+            transparent: false,
+          ).build(context),
           resizeToAvoidBottomPadding: false,
 
           // Create body
@@ -30,7 +34,7 @@ class DateAddSingle extends StatelessWidget {
 
           // FAB
           floatingActionButton: Row(
-            mainAxisAlignment: !model.isCurrentEditorsListValid()
+            mainAxisAlignment: !model.isMultiEditorsListValid()
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -38,7 +42,7 @@ class DateAddSingle extends StatelessWidget {
                   tag: 'Add More',
                   icon: Icons.add,
                   onTap: () => _showInput(context, model)),
-              !model.isCurrentEditorsListValid()
+              !model.isMultiEditorsListValid()
                   ? Container(
                       width: 0.0,
                       height: 0.0,
@@ -71,15 +75,15 @@ class DateAddSingle extends StatelessWidget {
           emptyIconString = 'No ideas yet?\nHow about ${snapshot.data}?';
         }
         return Center(
-          child: !model.isCurrentEditorsListValid()
+          child: !model.isMultiEditorsListValid()
               ? EmptyScreenIcon(emptyIconString, CupertinoIcons.search)
               : ListView.builder(
-                  itemCount: model.getCurrentEditorsIdeasList().length,
+                  itemCount: model.getMultiEditorsIdeasList().length,
                   itemBuilder: (BuildContext context, int index) {
                     return DateAddIdeaCard(
                         model: model,
                         index: index,
-                        name: model.getCurrentEditorsIdeasList()[index],
+                        name: model.getMultiEditorsIdeasList()[index],
                         onDelete: _remove);
                   },
                 ),
@@ -90,14 +94,14 @@ class DateAddSingle extends StatelessWidget {
 
   /// Moves the user back a screen.
   void _finish(BuildContext context, MainModel model) {
-    if (model.isCurrentEditorsListValid()) {
-      Navigator.pop(context);
+    if (model.isMultiEditorsListValid()) {
+      Navigator.of(context).popAndPushNamed(Routes.WaitingRoom);
     }
   }
 
   /// Removes the date idea from potential dates.
   void _remove(MainModel model, int index) {
-    model.removeItemAt(index);
+    model.removeMultiEditorsItemAt(index);
   }
 
   /// Shows the dialog box to allow the user to enter their ideas.

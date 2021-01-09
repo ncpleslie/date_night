@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:model/main.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/selection_button.dart';
+import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/selection_button.dart';
 
 /// The Plan a Date page.
 class PlanADateSingle extends StatefulWidget {
@@ -23,6 +23,7 @@ class _PlanADateState extends State<PlanADateSingle> {
         return Scaffold(
           appBar: CustomAppBar(
                   name: 'Plan A Date',
+                  transparent: false,
                   icon: model.isAnyEditorsListValid()
                       ? IconButton(
                           icon: const Icon(CupertinoIcons.delete),

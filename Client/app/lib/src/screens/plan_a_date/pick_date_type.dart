@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/services.dart';
+import 'package:flushbar/flushbar.dart';
 
 class PickDateType extends StatefulWidget {
   @override
@@ -16,14 +18,16 @@ class PickDateType extends StatefulWidget {
 class _PickDateTypeState extends State<PickDateType> {
   bool _isLoading = false;
   final TextEditingController _textController = TextEditingController();
+  final TextEditingController _roomTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
       builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: CustomAppBar(
-            name: 'Plan A Date',
+            name: '',
             icon: Container(),
           ).build(context),
           body: PageBackground(
@@ -34,14 +38,19 @@ class _PickDateTypeState extends State<PickDateType> {
                   : ListView(
                       children: [
                         _button(
-                            title: 'Plan a date with this phone',
-                            onPressed: _navigateToSingle),
+                            title: 'Plan a date',
+                            subtitle:
+                                'Enter your ideas then hand your phone to someone else',
+                            onPressed: () => _navigateToSingle(model)),
                         _button(
-                            title:
-                                'Plan a date with this phone\nand another phone',
+                            title: 'Create a room',
+                            subtitle:
+                                'Get a room code and share it will another user.\nYou use your phone and they use theirs',
                             onPressed: () => _navigateToMulti(model)),
                         _button(
-                            title: 'Enter a room code',
+                            title: 'Enter a room',
+                            subtitle:
+                                'If your friend has set up a room, you can enter their code and join them',
                             onPressed: () => _enterARoom(model)),
                       ],
                     ),
@@ -52,7 +61,7 @@ class _PickDateTypeState extends State<PickDateType> {
     );
   }
 
-  Widget _button({String title, Function onPressed}) {
+  Widget _button({String title, String subtitle, Function onPressed}) {
     return Container(
       height: 155, // Increase this to change the padding
       child: Stack(
@@ -77,20 +86,23 @@ class _PickDateTypeState extends State<PickDateType> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AutoSizeText(
-                              title,
-                              softWrap: true,
-                              maxLines: 3,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ],
+                        AutoSizeText(
+                          title,
+                          softWrap: true,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 24.0,
+                          ),
+                        ),
+                        AutoSizeText(
+                          subtitle,
+                          softWrap: true,
+                          maxLines: 3,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                          ),
                         ),
                       ],
                     ),
@@ -131,8 +143,11 @@ class _PickDateTypeState extends State<PickDateType> {
             actions: <Widget>[
               DateAddDialogButton(
                   icon: Icons.chevron_right,
-                  onTap: () =>
-                      {Navigator.pop(context), _navigateToMulti(model)})
+                  onTap: () => {
+                        Navigator.pop(context),
+                        _navigateToMulti(model),
+                        model.isMultiEditing = true,
+                      })
             ],
           ),
         );
@@ -167,7 +182,60 @@ class _PickDateTypeState extends State<PickDateType> {
     );
   }
 
-  void _navigateToSingle() {
+  Future<void> _newRoomCode(String roomCode, MainModel model) async {
+    _roomTextController.text = roomCode;
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          // If the user taps outside form boxes then the keyboard is minimized
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            title: const Center(
+              child: Text('Room code'),
+            ),
+            content: TextField(
+              style: TextStyle(fontSize: 20.0),
+              autofocus: true,
+              textAlign: TextAlign.center,
+              controller: _roomTextController,
+              enableInteractiveSelection: true,
+              readOnly: true,
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: roomCode));
+                Flushbar(
+                  margin: EdgeInsets.all(8),
+                  borderRadius: 8,
+                  title: 'Copied!',
+                  message: 'Room code copied to clipboard',
+                  duration: Duration(seconds: 3),
+                )..show(context);
+              },
+              decoration:
+                  InputDecoration(filled: true, fillColor: Colors.white),
+            ),
+            actions: <Widget>[
+              DateAddDialogButton(
+                  icon: Icons.chevron_right,
+                  onTap: () => {
+                        Navigator.of(context)
+                            .popAndPushNamed(Routes.PlanADateMulti),
+                        model.isMultiEditing = true,
+                        model.isRoomHost = true
+                      })
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _navigateToSingle(MainModel model) {
+    model.isMultiEditing = false;
     Navigator.of(context).pushNamed(Routes.PlanADateSingle);
   }
 
@@ -187,7 +255,7 @@ class _PickDateTypeState extends State<PickDateType> {
       }
     } else {
       await model.getARoom();
-      Navigator.of(context).pushNamed(Routes.PlanADateMulti);
+      await _newRoomCode(model.roomId, model);
     }
 
     // Give the route change animation time to finish

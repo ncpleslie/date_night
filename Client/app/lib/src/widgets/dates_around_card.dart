@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 /// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.
@@ -60,19 +62,67 @@ class DatesAroundCard extends StatelessWidget {
             left: 20.0,
             child: _cardWithWords(context),
           ),
-          // Emoji over the top
           Positioned(
-            top: 5.0,
-            left: 20.0,
-            child: Text(
-              EmojiParser().emojify(_randomEmoji),
-              style: const TextStyle(fontSize: 90.0),
-            ),
-          )
+              left: 20.0,
+              child: Container(
+                height: 175.0,
+                width: 150.0,
+                child: Card(
+                  color: Colors.deepPurple,
+                  margin: const EdgeInsets.all(20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            timeago.format(this.date.date),
+                            softWrap: true,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        ]),
+                  ),
+                ),
+              )
+              // Text(
+              //   EmojiParser().emojify(_randomEmoji),
+              //   style: const TextStyle(fontSize: 90.0),
+              // ),
+              )
         ],
       ),
     );
   }
+
+  // Widget _cardWithWords2(BuildContext context) {
+  //   return Card(
+  //     elevation: 0,
+  //     margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0.0),
+  //     child: Container(
+  //       decoration: BoxDecoration(color: Theme.of(context).cardColor),
+  //       child: Stack(
+  //         children: <Widget>[_buildPodcastTile(), _buildImage()],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildImage() {
+  //   return Container(
+  //     height: 70.0,
+  //     width: 70.0,
+  //     child: Text(
+  //       EmojiParser().emojify(_randomEmoji),
+  //       style: const TextStyle(fontSize: 90.0),
+  //     ),
+  //   );
+  // }
 
   /// Build the card.
   Widget _cardWithWords(BuildContext context) {
@@ -84,7 +134,7 @@ class DatesAroundCard extends StatelessWidget {
         margin: const EdgeInsets.all(20.0),
         child: Padding(
           padding: const EdgeInsets.only(
-              top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+              top: 8.0, bottom: 8.0, left: 100.0, right: 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,14 +181,6 @@ class DatesAroundCard extends StatelessWidget {
                       ],
                     )
                   : Container(),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(_datePosted)
-                  ])
             ],
           ),
         ),

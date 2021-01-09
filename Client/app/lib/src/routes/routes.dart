@@ -7,4 +7,5 @@ class Routes {
   static const String Results = '/results';
   static const String Loading = '/loading';
   static const String Settings = '/settings';
+  static const String WaitingRoom = '/waiting_room';
 }

@@ -7,7 +7,7 @@ mixin DatesAroundModel on IdeasModel {
   Stream<List<DateAroundModel>> stream;
   bool hasMore;
 
-  bool _isLoading;
+  bool _isLoading = false;
   List<Map<String, dynamic>> _data;
   StreamController<List<Map<String, dynamic>>> _controller;
 

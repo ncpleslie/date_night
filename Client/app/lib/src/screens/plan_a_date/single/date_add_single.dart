@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:model/main.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/empty_screen_icon.dart';
-import '../../widgets/page_background.dart';
+import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/empty_screen_icon.dart';
+import '../../../widgets/page_background.dart';
 
 /// DateAdd allows the user to add a new date.
 /// The user can tap the "add" button to enter new ideas.
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAddMulti extends StatelessWidget {
+class DateAddSingle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
