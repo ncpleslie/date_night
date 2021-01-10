@@ -18,11 +18,13 @@ class EmptyScreenIcon extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Icon(icon, color: Colors.white),
+        Icon(icon,
+            color: Theme.of(context).iconTheme.color,
+            size: Theme.of(context).iconTheme.size),
         Text(
           text,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white),
+          style: Theme.of(context).primaryTextTheme.subtitle1,
         )
       ],
     );

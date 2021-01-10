@@ -65,11 +65,10 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                               Container(
                                 height: MediaQuery.of(context).size.height / 2,
                                 child: Card(
-                                  elevation: 0,
+                                  elevation:
+                                      Theme.of(context).cardTheme.elevation,
                                   margin: const EdgeInsets.all(0.0),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0))),
+                                  shape: Theme.of(context).cardTheme.shape,
                                   clipBehavior: Clip.antiAlias,
                                   child:
                                       // Image.network(
@@ -90,12 +89,15 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                                 padding: const EdgeInsets.only(top: 16.0),
                                 child: Text(
                                   model.isMultiEditing
-                                  ? model.dateMultiResponse.chosenIdea
-                                  : model.dateResponse.chosenIdea,
+                                      ? model.dateMultiResponse.chosenIdea
+                                      : model.dateResponse.chosenIdea,
                                   textAlign: TextAlign.center,
                                   softWrap: true,
-                                  style: const TextStyle(
-                                      color: Colors.white,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .primaryTextTheme
+                                          .headline6
+                                          .color,
                                       fontSize: 40.0,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -108,8 +110,11 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                                           Strings.ResultsResponses.length)],
                                   softWrap: true,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline6
+                                        .color,
                                     fontSize: 40.0 / 2,
                                   ),
                                 ),
@@ -129,11 +134,14 @@ class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(8.0))),
                                   color: Theme.of(context).primaryColor,
-                                  child: const Text(
+                                  child: Text(
                                     'Let\'s Do This!',
                                     style: TextStyle(
                                       fontSize: 40.0,
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .primaryTextTheme
+                                          .headline6
+                                          .color,
                                     ),
                                   ),
                                   onPressed: () {

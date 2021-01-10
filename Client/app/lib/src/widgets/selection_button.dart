@@ -29,7 +29,8 @@ class SelectionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Material(
-        textStyle: const TextStyle(color: Colors.white),
+        textStyle: TextStyle(
+            color: Theme.of(context).primaryTextTheme.headline6.color),
         color: disabled ? Colors.red : Colors.greenAccent[700],
         child: InkWell(
           onTap: disabled ? null : onTap,
@@ -38,13 +39,13 @@ class SelectionButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 disabled
-                    ? const Icon(
+                    ? Icon(
                         Icons.person_add_disabled,
-                        color: Colors.white,
+                        color: Theme.of(context).iconTheme.color,
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.person_add,
-                        color: Colors.white,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                 Text(text)
               ],

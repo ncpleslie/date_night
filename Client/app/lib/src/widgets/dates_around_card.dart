@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeline_tile/timeline_tile.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.
@@ -65,31 +67,26 @@ class DatesAroundCard extends StatelessWidget {
           Positioned(
               left: 20.0,
               child: Container(
-                height: 175.0,
-                width: 150.0,
-                child: Card(
-                  color: Colors.deepPurple,
-                  margin: const EdgeInsets.all(20.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            timeago.format(this.date.date),
-                            softWrap: true,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 25.0,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-              )
+                  height: 175.0,
+                  width: 150,
+                  child: TimelineTile(
+                    indicatorStyle: IndicatorStyle(
+                      color: Colors.white,
+                      width: 75,
+                      height: 75,
+                      indicator: Container(
+                        margin: EdgeInsets.all(0),
+                        padding: EdgeInsets.all(12.5),
+                        color: Theme.of(context).accentColor,
+                        child: Text(
+                          timeago.format(this.date.date),
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                        ),
+                      ),
+                    ),
+                    afterLineStyle: LineStyle(color: Colors.white),
+                    beforeLineStyle: LineStyle(color: Colors.white),
+                  ))
               // Text(
               //   EmojiParser().emojify(_randomEmoji),
               //   style: const TextStyle(fontSize: 90.0),
@@ -130,7 +127,8 @@ class DatesAroundCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       height: 175.0,
       child: Card(
-        color: Colors.deepPurple[300],
+        shape: Theme.of(context).cardTheme.shape,
+        color: Theme.of(context).cardTheme.color,
         margin: const EdgeInsets.all(20.0),
         child: Padding(
           padding: const EdgeInsets.only(
@@ -143,15 +141,11 @@ class DatesAroundCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  AutoSizeText(
-                    _chosenDate.toString().toUpperCase(),
-                    softWrap: true,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 25.0,
-                    ),
-                  ),
+                  AutoSizeText(_chosenDate.toString().toUpperCase(),
+                      softWrap: true,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).primaryTextTheme.bodyText1),
                 ],
               ),
               _otherDates.isNotEmpty
@@ -167,9 +161,11 @@ class DatesAroundCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(EmojiParser().emojify(':broken_heart: ')),
-                              const Text(
+                              Text(
                                 'Other Ideas: ',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .subtitle2,
                               ),
                             ]),
                         AutoSizeText(
@@ -177,6 +173,7 @@ class DatesAroundCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,
                           maxLines: 1,
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
                         ),
                       ],
                     )

@@ -27,8 +27,8 @@ class _PageBackgroundState extends State<PageBackground>
 
   @override
   Widget build(BuildContext context) {
-    final Color gradientStart = Colors.deepPurple[700];
-    final Color gradientEnd = Colors.purple[500];
+    final Color gradientStart = Theme.of(context).scaffoldBackgroundColor;
+    final Color gradientEnd = Theme.of(context).backgroundColor;
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {

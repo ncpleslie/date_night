@@ -39,8 +39,8 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         return SmartRefresher(
           enablePullDown: true,
           enablePullUp: true,
-          header: const WaterDropHeader(
-            waterDropColor: Colors.deepPurple,
+          header: WaterDropHeader(
+            waterDropColor: Theme.of(context).primaryColor,
           ),
           footer:
               CustomFooter(builder: (BuildContext context, LoadStatus status) {

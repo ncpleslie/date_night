@@ -17,8 +17,8 @@ class ShimmerDatesAroundListView extends StatelessWidget {
         offset += 10;
         time = time + offset;
         return Shimmer.fromColors(
-            highlightColor: Colors.deepPurple,
-            baseColor: Colors.deepPurple[300],
+            highlightColor: Theme.of(context).primaryColor,
+            baseColor: Theme.of(context).accentColor,
             period: Duration(milliseconds: time),
             child: _card(context));
       },
@@ -38,7 +38,8 @@ class ShimmerDatesAroundListView extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.9,
               height: 175.0,
               child: Card(
-                color: Colors.deepPurple[300],
+                color: Theme.of(context).cardTheme.color,
+                shape: Theme.of(context).cardTheme.shape,
                 margin: const EdgeInsets.all(20.0),
                 child: Padding(
                     padding: const EdgeInsets.only(

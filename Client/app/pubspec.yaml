@@ -42,6 +42,7 @@ dependencies:
   confetti: 0.5.4+1
   timeago: 2.0.29
   flushbar: 1.10.4
+  timeline_tile: 1.0.0
 
 dev_dependencies:
   flutter_test:

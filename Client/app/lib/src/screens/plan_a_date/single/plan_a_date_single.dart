@@ -47,9 +47,9 @@ class _PlanADateState extends State<PlanADateSingle> {
   Widget _buildFinishButton(MainModel model) {
     return model.isAnyEditorsListValid()
         ? FloatingActionButton(
-            child: const Icon(
+            child: Icon(
               Icons.keyboard_arrow_right,
-              size: 30,
+              size: Theme.of(context).iconTheme.size,
             ),
             onPressed: _navigateToNext,
           )

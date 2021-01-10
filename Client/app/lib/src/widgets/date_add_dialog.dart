@@ -19,8 +19,7 @@ class DateAddDialog extends StatelessWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: AlertDialog(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6.0))),
+        shape: Theme.of(context).dialogTheme.shape,
         title: const Center(
           child: Text('Date Ideas?'),
         ),
@@ -33,8 +32,11 @@ class DateAddDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           DateAddDialogButton(
-              icon: Icons.delete, onTap: () => _discard(context)),
-          DateAddDialogButton(icon: Icons.add, onTap: () => _addIdea(context))
+              context: context,
+              icon: Icons.delete,
+              onTap: () => _discard(context)),
+          DateAddDialogButton(
+              context: context, icon: Icons.add, onTap: () => _addIdea(context))
         ],
       ),
     );

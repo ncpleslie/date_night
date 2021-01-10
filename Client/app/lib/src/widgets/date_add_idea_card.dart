@@ -34,7 +34,7 @@ class DateAddIdeaCard extends StatelessWidget {
         padding: const EdgeInsets.only(right: 20.0),
         width: MediaQuery.of(context).size.width / 2,
         alignment: Alignment.centerRight,
-        color: Colors.red,
+        color: Theme.of(context).errorColor,
         child: const Icon(
           Icons.delete,
           size: 40.0,

@@ -73,11 +73,14 @@ class _PickDateTypeState extends State<PickDateType> {
               width: MediaQuery.of(context).size.width * 0.9,
               height: 175.0,
               child: Card(
-                elevation: 10,
-                color: Colors.deepPurple[300],
+                elevation: Theme.of(context).cardTheme.elevation,
+                shape: Theme.of(context).cardTheme.shape,
+                color: Theme.of(context).cardTheme.color,
                 margin: const EdgeInsets.all(20.0),
                 child: TextButton(
-                  style: TextButton.styleFrom(primary: Colors.black),
+                  style: TextButton.styleFrom(
+                      primary:
+                          Theme.of(context).primaryTextTheme.headline6.color),
                   onPressed: onPressed,
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -91,18 +94,14 @@ class _PickDateTypeState extends State<PickDateType> {
                           softWrap: true,
                           maxLines: 1,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 24.0,
-                          ),
+                          style: Theme.of(context).primaryTextTheme.bodyText1,
                         ),
                         AutoSizeText(
                           subtitle,
                           softWrap: true,
                           maxLines: 3,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                          ),
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
                         ),
                       ],
                     ),

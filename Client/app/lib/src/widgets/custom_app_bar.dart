@@ -19,9 +19,10 @@ class CustomAppBar extends StatelessWidget {
     return AppBar(
         title: Text(name),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor:
-            this.transparent ? Colors.transparent : Colors.deepPurple,
+        elevation: Theme.of(context).appBarTheme.elevation,
+        backgroundColor: this.transparent
+            ? Colors.transparent
+            : Theme.of(context).appBarTheme.color,
         toolbarOpacity: 0.7,
         actions: icon != null ? <Widget>[icon] : null);
   }

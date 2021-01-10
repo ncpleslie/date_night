@@ -22,11 +22,12 @@ class CustomFAB extends StatelessWidget {
       children: <Widget>[
         FloatingActionButton(
           heroTag: tag,
-          backgroundColor: CupertinoColors.activeBlue,
-          elevation: 0,
+          backgroundColor:
+              Theme.of(context).floatingActionButtonTheme.backgroundColor,
+          elevation: Theme.of(context).floatingActionButtonTheme.elevation,
           child: Icon(
             icon,
-            size: 30,
+            size: Theme.of(context).iconTheme.size,
           ),
           onPressed: onTap,
         ),

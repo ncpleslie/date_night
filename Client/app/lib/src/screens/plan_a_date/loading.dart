@@ -32,15 +32,12 @@ class _LoadingState extends State<Loading> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const <Widget>[
+                        children: <Widget>[
                           // Getting results text
                           Text(
                             'Calculating...',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 40.0,
-                              color: Colors.white,
-                            ),
+                            style: Theme.of(context).primaryTextTheme.headline5,
                           ),
                         ],
                       ),

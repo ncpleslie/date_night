@@ -1,3 +1,4 @@
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/screens/plan_a_date/pick_date_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,6 +65,7 @@ class _IndexState extends State<Index> {
           child: TickerMode(
             enabled: currentPage == 0,
             child: MaterialApp(
+                theme: ThemeConfig.theme,
                 home: DatesAroundPage(),
                 onGenerateRoute: RouteGenerator.routes),
           ),
@@ -73,7 +75,9 @@ class _IndexState extends State<Index> {
           child: TickerMode(
             enabled: currentPage == 1,
             child: MaterialApp(
-                home: PickDateType(), onGenerateRoute: RouteGenerator.routes),
+                theme: ThemeConfig.theme,
+                home: PickDateType(),
+                onGenerateRoute: RouteGenerator.routes),
           ),
         ),
       ],
