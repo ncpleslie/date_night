@@ -47,7 +47,10 @@ class SelectionButton extends StatelessWidget {
                         Icons.person_add,
                         color: Theme.of(context).iconTheme.color,
                       ),
-                Text(text)
+                Text(
+                  text,
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                )
               ],
             ),
           ),

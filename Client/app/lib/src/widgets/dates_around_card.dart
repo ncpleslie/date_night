@@ -1,10 +1,6 @@
 import 'dart:ui';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:date_night/src/config/theme_data.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -70,7 +66,7 @@ class DatesAroundCard extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black38,
+                          color: Theme.of(context).cardTheme.shadowColor,
                           offset: Offset(0, 5),
                           blurRadius: 8)
                     ]),

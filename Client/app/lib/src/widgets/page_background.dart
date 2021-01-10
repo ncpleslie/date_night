@@ -1,3 +1,4 @@
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -27,8 +28,10 @@ class _PageBackgroundState extends State<PageBackground>
 
   @override
   Widget build(BuildContext context) {
-    final Color gradientStart = Theme.of(context).scaffoldBackgroundColor;
-    final Color gradientEnd = Theme.of(context).backgroundColor;
+    final Color gradientStart = ThemeConfig.backgroundThreeLight;
+    final Color gradientMiddle = ThemeConfig.backgroundTwoLight;
+    final Color gradientEnd = ThemeConfig.backgroundOneLight;
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {
@@ -38,9 +41,15 @@ class _PageBackgroundState extends State<PageBackground>
             gradient: LinearGradient(
                 begin: const FractionalOffset(0.0, 0.5),
                 end: const FractionalOffset(0.5, 0.0),
-                stops: const <double>[0.0, 1.0],
+                stops: const <double>[0.0, 0.2, 0.3, 0.7, 0.9],
                 colors: !widget.animated
-                    ? <Color>[gradientStart, gradientEnd]
+                    ? <Color>[
+                        gradientEnd,
+                        gradientStart,
+                        gradientStart,
+                        gradientMiddle,
+                        gradientEnd,
+                      ]
                     : <Color>[
                         _colorTween(gradientStart, gradientEnd),
                         _colorTween(gradientEnd, gradientStart),

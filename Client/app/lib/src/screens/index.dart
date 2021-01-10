@@ -41,8 +41,10 @@ class _IndexState extends State<Index> {
         TabData(iconData: Icons.location_city, title: 'Dates Around You'),
         TabData(iconData: Icons.people, title: 'Plan A Date'),
       ],
-      circleColor: Theme.of(context).accentColor,
-      inactiveIconColor: Theme.of(context).accentColor,
+      circleColor:
+          Theme.of(context).bottomNavigationBarTheme.selectedIconTheme.color,
+      inactiveIconColor:
+          Theme.of(context).bottomNavigationBarTheme.unselectedIconTheme.color,
       initialSelection: 0,
       textColor: Theme.of(context).primaryTextTheme.subtitle1.color,
       onTabChangedListener: (int position) {

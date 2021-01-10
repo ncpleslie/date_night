@@ -106,7 +106,10 @@ class _PickDateTypeState extends State<PickDateType> {
                           softWrap: true,
                           maxLines: 3,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .subtitle1
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -203,14 +206,24 @@ class _PickDateTypeState extends State<PickDateType> {
               child: Text('Room code'),
             ),
             content: TextField(
-              style: TextStyle(fontSize: 20.0),
+              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
               autofocus: true,
+              textAlignVertical: TextAlignVertical.center,
               textAlign: TextAlign.center,
               controller: _roomTextController,
               enableInteractiveSelection: true,
               readOnly: true,
-              decoration:
-                  InputDecoration(filled: true, fillColor: Colors.white),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 10),
+                filled: true,
+                fillColor: Colors.white,
+                suffix: Container(
+                  child: Icon(
+                    Icons.copy,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: roomCode));
                 Flushbar(
