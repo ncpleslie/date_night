@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:model/main.dart';
@@ -13,18 +15,23 @@ import 'package:timeline_tile/timeline_tile.dart';
 /// other users that are currently happening.
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
-  DatesAroundCard({@required this.date, @required this.model}) {
+  DatesAroundCard(
+      {@required this.date,
+      @required this.model,
+      this.isFirst = false,
+      this.isLast = false}) {
     _chosenDate = date.chosenIdea;
-
-    _datePosted =
-        DateFormat.EEEE().addPattern('@').add_jm().format(date.date).toString();
 
     _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
         ? date.otherIdeas.join(', ')
         : null;
-
-    _randomEmoji = _emojis[model.generateRandomInt(_emojis.length)];
   }
+
+  /// If its the first card
+  final bool isFirst;
+
+  /// If its the last card
+  final bool isLast;
 
   /// The dates of other users.
   final DateAroundModel date;
@@ -32,107 +39,74 @@ class DatesAroundCard extends StatelessWidget {
   /// The winning date idea.
   String _chosenDate;
 
-  /// When the date was posted.
-  String _datePosted;
-
-  /// Possible emojis that can be displayed over the date card
-  final List<String> _emojis = <String>[
-    ':heart:',
-    ':tada:',
-    ':heart_eyes:',
-    ':champagne:',
-    ':beers:'
-  ];
-
   /// The Scoped Model model.
   final MainModel model;
 
   /// The other date ideas.
   String _otherDates;
 
-  /// The emoji that will be displayed over the card.
-  String _randomEmoji;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 155, // Increase this to change the padding
-      child: Stack(
-        children: <Widget>[
-          // Words in card
-          Positioned(
-            left: 20.0,
-            child: _cardWithWords(context),
-          ),
-          Positioned(
-              left: 20.0,
-              child: Container(
-                  height: 175.0,
-                  width: 150,
-                  child: TimelineTile(
-                    indicatorStyle: IndicatorStyle(
-                      color: Colors.white,
-                      width: 75,
-                      height: 75,
-                      indicator: Container(
-                        margin: EdgeInsets.all(0),
-                        padding: EdgeInsets.all(12.5),
-                        color: Theme.of(context).accentColor,
-                        child: Text(
-                          timeago.format(this.date.date),
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
-                        ),
-                      ),
-                    ),
-                    afterLineStyle: LineStyle(color: Colors.white),
-                    beforeLineStyle: LineStyle(color: Colors.white),
-                  ))
-              // Text(
-              //   EmojiParser().emojify(_randomEmoji),
-              //   style: const TextStyle(fontSize: 90.0),
-              // ),
-              )
-        ],
+      height: 125, // Increase this to change the padding
+      child: Container(
+        padding: EdgeInsets.only(left: 20.0),
+        height: 125.0,
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: TimelineTile(
+            isFirst: isFirst,
+            isLast: isLast,
+            indicatorStyle: IndicatorStyle(
+              drawGap: true,
+              color: Colors.white,
+              width: 75,
+              height: 75,
+              indicator: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                        width: 5, color: Theme.of(context).accentColor),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black38,
+                          offset: Offset(0, 5),
+                          blurRadius: 8)
+                    ]),
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  timeago.format(this.date.date),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+            ),
+            afterLineStyle: LineStyle(color: Colors.white),
+            beforeLineStyle: LineStyle(color: Colors.white),
+            endChild: _cardWithWords(context)),
       ),
     );
   }
 
-  // Widget _cardWithWords2(BuildContext context) {
-  //   return Card(
-  //     elevation: 0,
-  //     margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0.0),
-  //     child: Container(
-  //       decoration: BoxDecoration(color: Theme.of(context).cardColor),
-  //       child: Stack(
-  //         children: <Widget>[_buildPodcastTile(), _buildImage()],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildImage() {
-  //   return Container(
-  //     height: 70.0,
-  //     width: 70.0,
-  //     child: Text(
-  //       EmojiParser().emojify(_randomEmoji),
-  //       style: const TextStyle(fontSize: 90.0),
-  //     ),
-  //   );
-  // }
-
   /// Build the card.
   Widget _cardWithWords(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: 175.0,
-      child: Card(
+    return Stack(children: <Widget>[
+      Positioned(
+        top: 60,
+        child: Container(
+            height: 5,
+            width: 12,
+            decoration: BoxDecoration(color: Colors.white)),
+      ),
+      Card(
+        elevation: Theme.of(context).cardTheme.elevation,
+        margin: EdgeInsets.fromLTRB(12, 6, 18, 6),
         shape: Theme.of(context).cardTheme.shape,
         color: Theme.of(context).cardTheme.color,
-        margin: const EdgeInsets.all(20.0),
-        child: Padding(
-          padding: const EdgeInsets.only(
-              top: 8.0, bottom: 8.0, left: 100.0, right: 8.0),
+        shadowColor: Theme.of(context).cardTheme.shadowColor,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,40 +122,36 @@ class DatesAroundCard extends StatelessWidget {
                       style: Theme.of(context).primaryTextTheme.bodyText1),
                 ],
               ),
-              _otherDates.isNotEmpty
-                  ? const SizedBox(
-                      height: 10.0,
-                    )
-                  : Container(),
-              _otherDates.isNotEmpty
-                  ? Column(
+              Container(
+                margin: const EdgeInsets.all(8.0),
+                height: 1,
+                color: Colors.black38,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(EmojiParser().emojify(':broken_heart: ')),
-                              Text(
-                                'Other Ideas: ',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle2,
-                              ),
-                            ]),
-                        AutoSizeText(
-                          _otherDates,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          maxLines: 1,
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                        Text(EmojiParser().emojify(':broken_heart: ')),
+                        Text(
+                          'Other Ideas: ',
+                          style: Theme.of(context).primaryTextTheme.subtitle2,
                         ),
-                      ],
-                    )
-                  : Container(),
+                      ]),
+                  AutoSizeText(
+                    _otherDates.isNotEmpty ? _otherDates : ':(',
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    maxLines: 1,
+                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                  ),
+                ],
+              )
             ],
           ),
         ),
       ),
-    );
+    ]);
   }
 }

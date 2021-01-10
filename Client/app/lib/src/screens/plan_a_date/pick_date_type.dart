@@ -73,7 +73,7 @@ class _PickDateTypeState extends State<PickDateType> {
               width: MediaQuery.of(context).size.width * 0.9,
               height: 175.0,
               child: Card(
-                elevation: Theme.of(context).cardTheme.elevation,
+                elevation: 0,
                 shape: Theme.of(context).cardTheme.shape,
                 color: Theme.of(context).cardTheme.color,
                 margin: const EdgeInsets.all(20.0),
@@ -90,11 +90,16 @@ class _PickDateTypeState extends State<PickDateType> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         AutoSizeText(
-                          title,
+                          title.toUpperCase(),
                           softWrap: true,
                           maxLines: 1,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).primaryTextTheme.bodyText1,
+                          style: Theme.of(context).primaryTextTheme.bodyText2,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(8.0),
+                          height: 1,
+                          color: Colors.black38,
                         ),
                         AutoSizeText(
                           subtitle,
@@ -204,6 +209,8 @@ class _PickDateTypeState extends State<PickDateType> {
               controller: _roomTextController,
               enableInteractiveSelection: true,
               readOnly: true,
+              decoration:
+                  InputDecoration(filled: true, fillColor: Colors.white),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: roomCode));
                 Flushbar(
@@ -214,8 +221,6 @@ class _PickDateTypeState extends State<PickDateType> {
                   duration: Duration(seconds: 3),
                 )..show(context);
               },
-              decoration:
-                  InputDecoration(filled: true, fillColor: Colors.white),
             ),
             actions: <Widget>[
               DateAddDialogButton(

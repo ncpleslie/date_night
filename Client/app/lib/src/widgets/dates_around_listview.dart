@@ -72,7 +72,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   Widget _list(
       BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 25.0),
       controller: scrollController,
       itemCount: snapshot.data.length + 1,
       itemBuilder: (BuildContext context, int index) {
@@ -86,7 +86,10 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         }
         if (index < snapshot.data.length) {
           return DatesAroundCard(
-              date: snapshot.data[index], model: widget.model);
+              date: snapshot.data[index],
+              model: widget.model,
+              isFirst: index == 0,
+              isLast: index == snapshot.data.length - 1);
         }
         return Container();
       },
@@ -120,7 +123,10 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         break;
 
       default:
-        return _padding(const Text('No more for you'));
+        return _padding(Text(
+          'No more for you',
+          style: Theme.of(context).primaryTextTheme.subtitle1,
+        ));
         break;
     }
   }

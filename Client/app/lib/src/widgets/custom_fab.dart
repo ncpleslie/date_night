@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 /// A custom floating action button element.
 class CustomFAB extends StatelessWidget {
-  const CustomFAB(
-      {@required this.tag, @required this.icon, @required this.onTap});
+  CustomFAB({@required this.tag, @required this.icon, @required this.onTap}) {
+    disabled = onTap == null;
+  }
 
   /// Icon to be displayed.
   final IconData icon;
@@ -15,6 +16,8 @@ class CustomFAB extends StatelessWidget {
   /// The tooltip tag this element will have.
   final String tag;
 
+  bool disabled;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,8 +25,12 @@ class CustomFAB extends StatelessWidget {
       children: <Widget>[
         FloatingActionButton(
           heroTag: tag,
-          backgroundColor:
-              Theme.of(context).floatingActionButtonTheme.backgroundColor,
+          backgroundColor: disabled
+              ? Theme.of(context)
+                  .floatingActionButtonTheme
+                  .backgroundColor
+                  .withOpacity(0.2)
+              : Theme.of(context).floatingActionButtonTheme.backgroundColor,
           elevation: Theme.of(context).floatingActionButtonTheme.elevation,
           child: Icon(
             icon,

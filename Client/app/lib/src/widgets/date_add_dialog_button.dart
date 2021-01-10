@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Custom button displayed on the add date dialog.
 class DateAddDialogButton extends StatelessWidget {
-  const DateAddDialogButton({this.context, this.icon, this.onTap});
-
-  final BuildContext context;
+  const DateAddDialogButton({this.icon, this.onTap});
 
   /// The icon to be displayed
   final IconData icon;
@@ -16,8 +14,8 @@ class DateAddDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      shape: Theme.of(this.context).buttonTheme.shape,
-      color: Theme.of(this.context).buttonColor,
+      shape: Theme.of(context).buttonTheme.shape,
+      color: Theme.of(context).buttonColor,
       child: Icon(icon),
       onPressed: onTap,
     );

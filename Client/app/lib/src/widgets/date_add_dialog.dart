@@ -29,14 +29,13 @@ class DateAddDialog extends StatelessWidget {
           maxLines: 1,
           controller: _textController,
           autofocus: true,
+          style: TextStyle(fontSize: 20.0),
+          decoration: InputDecoration(filled: true, fillColor: Colors.white),
         ),
         actions: <Widget>[
           DateAddDialogButton(
-              context: context,
-              icon: Icons.delete,
-              onTap: () => _discard(context)),
-          DateAddDialogButton(
-              context: context, icon: Icons.add, onTap: () => _addIdea(context))
+              icon: Icons.delete, onTap: () => _discard(context)),
+          DateAddDialogButton(icon: Icons.add, onTap: () => _addIdea(context))
         ],
       ),
     );

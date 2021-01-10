@@ -30,24 +30,19 @@ class DateAddSingle extends StatelessWidget {
 
           // FAB
           floatingActionButton: Row(
-            mainAxisAlignment: !model.isCurrentEditorsListValid()
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CustomFAB(
                   tag: 'Add More',
                   icon: Icons.add,
                   onTap: () => _showInput(context, model)),
-              !model.isCurrentEditorsListValid()
-                  ? Container(
-                      width: 0.0,
-                      height: 0.0,
-                    )
-                  : CustomFAB(
-                      tag: 'Continue',
-                      icon: CupertinoIcons.check_mark,
-                      onTap: () => _finish(context, model),
-                    )
+              CustomFAB(
+                tag: 'Continue',
+                icon: CupertinoIcons.check_mark,
+                onTap: model.isCurrentEditorsListValid()
+                    ? () => _finish(context, model)
+                    : null,
+              )
             ],
           ),
           floatingActionButtonLocation:

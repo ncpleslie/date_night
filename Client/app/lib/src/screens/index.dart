@@ -44,13 +44,14 @@ class _IndexState extends State<Index> {
       circleColor: Theme.of(context).accentColor,
       inactiveIconColor: Theme.of(context).accentColor,
       initialSelection: 0,
-      textColor: Colors.white,
+      textColor: Theme.of(context).primaryTextTheme.subtitle1.color,
       onTabChangedListener: (int position) {
         setState(() {
           currentPage = position;
         });
       },
-      barBackgroundColor: Colors.deepPurple,
+      barBackgroundColor:
+          Theme.of(context).bottomNavigationBarTheme.backgroundColor,
     );
   }
 
@@ -66,7 +67,7 @@ class _IndexState extends State<Index> {
             enabled: currentPage == 0,
             child: MaterialApp(
                 theme: ThemeConfig.theme,
-                home: DatesAroundPage(),
+                home: SafeArea(child: DatesAroundPage()),
                 onGenerateRoute: RouteGenerator.routes),
           ),
         ),
@@ -76,7 +77,7 @@ class _IndexState extends State<Index> {
             enabled: currentPage == 1,
             child: MaterialApp(
                 theme: ThemeConfig.theme,
-                home: PickDateType(),
+                home: SafeArea(child: PickDateType()),
                 onGenerateRoute: RouteGenerator.routes),
           ),
         ),
