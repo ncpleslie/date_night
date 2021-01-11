@@ -18,8 +18,9 @@ class DatesAroundPage extends StatelessWidget {
       builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(name: '', icon: _settingsIcon(context))
-              .build(context),
+          appBar:
+              CustomAppBar(name: 'Dates Around', icon: _settingsIcon(context))
+                  .build(context),
           body: PageBackground(
             child: DatesAroundListView(
               model: model,

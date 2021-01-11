@@ -25,7 +25,7 @@ class ThemeConfig {
 
   static final ThemeData iOSThemeLight = ThemeData(
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.white.withOpacity(0.2),
+          backgroundColor: Colors.white,
           unselectedIconTheme: IconThemeData(color: Colors.purple[100]),
           selectedIconTheme: IconThemeData(color: Colors.purple[300])),
       backgroundColor: Colors.lightBlue[100],
@@ -37,12 +37,13 @@ class ThemeConfig {
       accentColor: _accentLight,
       buttonColor: _primaryLight,
       cardTheme: CardTheme(
-          elevation: 10,
-          shadowColor: Colors.black38,
-          color: Colors.white.withOpacity(0.6),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          )),
+        elevation: 10,
+        shadowColor: Colors.black38,
+        color: Colors.white.withOpacity(0.7),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+      ),
       dialogBackgroundColor: _accentLight,
       primaryTextTheme: TextTheme(
         subtitle1: TextStyle(color: _textLight, fontSize: 12.0),
@@ -51,6 +52,8 @@ class ThemeConfig {
         bodyText1: TextStyle(color: Colors.black, fontSize: 24.0),
         bodyText2: TextStyle(
             color: _textLight, fontSize: 24.0, fontWeight: FontWeight.w300),
+        headline1: TextStyle(
+            color: _textLight, fontSize: 18.0, fontWeight: FontWeight.bold),
         headline6: TextStyle(color: _textLight, fontSize: 25.0),
         headline5: TextStyle(color: _textLight, fontSize: 40.0),
       ),
@@ -66,8 +69,10 @@ class ThemeConfig {
       appBarTheme: AppBarTheme(color: Colors.white, elevation: 0));
 
   static final ThemeData iOSThemeDark = ThemeData(
-      bottomNavigationBarTheme:
-          BottomNavigationBarThemeData(backgroundColor: Colors.grey[900]),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.grey[900],
+          unselectedIconTheme: IconThemeData(color: Colors.purple[100]),
+          selectedIconTheme: IconThemeData(color: Colors.purple[300])),
       backgroundColor: Colors.purple[500],
       scaffoldBackgroundColor: Colors.grey[900],
       iconTheme: IconThemeData(color: Colors.white, size: 30),

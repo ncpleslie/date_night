@@ -26,6 +26,7 @@ dependencies:
 
   firebase_core: 0.5.3
   cloud_firestore: 0.14.4
+  firebase_auth: 0.18.4+1
   scoped_model: 1.1.0
   api:
     path: ../api
