@@ -1,10 +1,12 @@
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/screens/plan_a_date/pick_date_type.dart';
+import 'package:date_night/src/screens/plan_a_date/single/plan_a_date_single.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../routes/route_generator.dart';
 import './dates_around/dates_around.dart';
 
@@ -19,7 +21,15 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
+  PersistentTabController _controller;
+
   int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +38,63 @@ class _IndexState extends State<Index> {
         return Scaffold(
           body: _getPage(model),
           resizeToAvoidBottomPadding: false,
-          bottomNavigationBar: _buildTabBar(),
+          bottomNavigationBar: _buildTabBar(context),
         );
       },
     );
   }
 
+  Widget _buildTabBar(BuildContext context) {
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: [
+        MaterialApp(
+            theme: ThemeConfig.theme,
+            home: SafeArea(child: DatesAroundPage()),
+            onGenerateRoute: RouteGenerator.routes),
+        MaterialApp(
+            theme: ThemeConfig.theme,
+            home: SafeArea(child: PickDateType()),
+            onGenerateRoute: RouteGenerator.routes),
+        MaterialApp(
+            theme: ThemeConfig.theme,
+            home: SafeArea(child: PlanADateSingle()),
+            onGenerateRoute: RouteGenerator.routes),
+      ],
+      items: [
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.location_city),
+          title: "Dates Around You",
+          activeColor: Colors.blue,
+          inactiveColor: Colors.grey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.people),
+          title: ("Plan A Date"),
+          activeColor: Colors.teal,
+          inactiveColor: Colors.grey,
+        ),
+        PersistentBottomNavBarItem(
+          icon: Icon(Icons.search),
+          title: ("Search"),
+          activeColor: Colors.teal,
+          inactiveColor: Colors.grey,
+        ),
+      ],
+      backgroundColor: Colors.transparent,
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.transparent,
+      ),
+      navBarStyle: NavBarStyle.simple,
+      handleAndroidBackButtonPress: true,
+      confineInSafeArea: true,
+    );
+  }
+
   /// Returns the bottom navigation bar
-  Widget _buildTabBar() {
+  Widget _buildTabBar2() {
     return FancyBottomNavigation(
       tabs: <TabData>[
         TabData(iconData: Icons.location_city, title: 'Dates Around You'),

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -44,6 +44,8 @@ dependencies:
   flushbar: 1.10.4
   timeline_tile: 1.0.0
   simple_tooltip: 0.1.16
+  modal_bottom_sheet: 1.0.0+1
+  persistent_bottom_nav_bar: 3.1.0
 
 dev_dependencies:
   flutter_test:

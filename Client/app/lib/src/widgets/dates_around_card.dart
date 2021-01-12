@@ -1,10 +1,13 @@
 import 'dart:ui';
+import 'dart:core';
+import 'package:date_night/src/widgets/custom_toast.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:timeline_tile/timeline_tile.dart';
 import '../extensions/string_extensions.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
@@ -12,11 +15,10 @@ import '../extensions/string_extensions.dart';
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
   DatesAroundCard(
-      {@required this.date,
+      {@required this.id,
+      @required this.date,
       @required this.model,
-      this.index,
-      this.isFirst = false,
-      this.isLast = false}) {
+      this.index}) {
     _chosenDate = date.chosenIdea;
 
     _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
@@ -24,14 +26,38 @@ class DatesAroundCard extends StatelessWidget {
         : null;
   }
 
-  /// Position of the card
+  final List<List<Color>> colors = [
+    // [
+    //   Colors.purpleAccent[100],
+    //   Colors.purpleAccent[200],
+    // ],
+    // [
+    //   Colors.red[100],
+    //   Colors.red[200],
+    // ],
+    // [
+    //   Colors.redAccent[100],
+    //   Colors.redAccent[200],
+    // ],
+    // [
+    //   Colors.orange[100],
+    //   Colors.orange[200],
+    // ],
+    // [
+    //   Colors.orangeAccent[100],
+    //   Colors.orangeAccent[200],
+    // ],
+    [
+      Colors.white70,
+      Colors.white,
+    ],
+  ];
+
+  /// Card and inputs id.
+  final String id;
+
+  /// Position of the card.
   final int index;
-
-  /// If its the first card
-  final bool isFirst;
-
-  /// If its the last card
-  final bool isLast;
 
   /// The dates of other users.
   final DateAroundModel date;
@@ -50,60 +76,7 @@ class DatesAroundCard extends StatelessWidget {
     return _cardWithWords(context);
   }
 
-  @override
-  Widget build2(BuildContext context) {
-    return Container(
-      height: 125, // Increase this to change the padding
-      child: Container(
-        padding: EdgeInsets.only(left: 20.0),
-        height: 125.0,
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: TimelineTile(
-            isFirst: isFirst,
-            isLast: isLast,
-            indicatorStyle: IndicatorStyle(
-              drawGap: true,
-              color: Colors.white,
-              width: 25,
-              height: 25,
-              indicator: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(
-                      width: 5, color: Theme.of(context).accentColor),
-                  shape: BoxShape.circle,
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  timeago.format(date.date),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-            ),
-            afterLineStyle: LineStyle(color: Colors.white),
-            beforeLineStyle: LineStyle(color: Colors.white),
-            endChild: _cardWithWords(context)),
-      ),
-    );
-  }
-
   Widget _createPill(BuildContext context) {
-    final List<List<Color>> colors = [
-      [
-        Colors.pink[100],
-        Colors.pink[200],
-      ],
-      [
-        Colors.pink[200],
-        Colors.pink[300],
-      ],
-      [
-        Colors.pink[300],
-        Colors.pink[400],
-      ]
-    ];
     int colorIndex = index % colors.length;
 
     final Gradient pillColor = LinearGradient(
@@ -116,7 +89,6 @@ class DatesAroundCard extends StatelessWidget {
       elevation: Theme.of(context).cardTheme.elevation,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.pink[100],
             gradient: pillColor,
             border: Border.all(color: Colors.transparent),
             borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -128,7 +100,7 @@ class DatesAroundCard extends StatelessWidget {
           maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -151,13 +123,48 @@ class DatesAroundCard extends StatelessWidget {
               minHeight: buttonSize,
               minWidth: buttonSize),
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () => _optionsPopupMenu(context),
           icon: Icon(
             Icons.more_horiz,
             color: Colors.black26,
           ),
         ),
       ),
+    );
+  }
+
+  void _optionsPopupMenu(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ScopedModelDescendant(
+          builder: (BuildContext context, Widget child, MainModel model) {
+            return Material(
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 30),
+                      title: Text('Report'),
+                      leading: Icon(Icons.report),
+                      onTap: () => {
+                        model.reportDate(id),
+                        Navigator.of(context).pop(),
+                        CustomToast(
+                          title: "Reported",
+                          message: "Thank you. This date has been reported",
+                        ).build(context),
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -199,12 +206,23 @@ class DatesAroundCard extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
-              child: AutoSizeText(
-                'Other Ideas: ${_otherDates.isNotEmpty ? _otherDates : ':('}',
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                maxLines: 1,
-                style: Theme.of(context).primaryTextTheme.subtitle1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Other Ideas: ',
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .subtitle1
+                          .copyWith(fontWeight: FontWeight.bold)),
+                  AutoSizeText(
+                    _otherDates.isNotEmpty ? _otherDates : ':(',
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    maxLines: 1,
+                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                  ),
+                ],
               ),
             )
           ],

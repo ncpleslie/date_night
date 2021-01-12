@@ -22,6 +22,7 @@ mixin DatesAroundModel on IdeasModel {
             .toList());
     hasMore = true;
     refresh();
+    notifyListeners();
   }
 
   Future<void> refresh() {
@@ -60,5 +61,9 @@ mixin DatesAroundModel on IdeasModel {
       hasMore = true;
       _controller.add(_data);
     });
+  }
+
+  void reportDate(String id) {
+    print('Date Reported: $id');
   }
 }

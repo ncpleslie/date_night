@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/src/routes/routes.dart';
 import 'package:date_night/src/widgets/custom_app_bar.dart';
+import 'package:date_night/src/widgets/custom_toast.dart';
 import 'package:date_night/src/widgets/date_add_dialog_button.dart';
 import 'package:date_night/src/widgets/page_background.dart';
 import 'package:flutter/cupertino.dart';
@@ -226,13 +227,10 @@ class _PickDateTypeState extends State<PickDateType> {
               ),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: roomCode));
-                Flushbar(
-                  margin: EdgeInsets.all(8),
-                  borderRadius: 8,
-                  title: 'Copied!',
-                  message: 'Room code copied to clipboard',
-                  duration: Duration(seconds: 3),
-                )..show(context);
+                CustomToast(
+                        title: 'Copied!',
+                        message: 'Room code copied to clipboard')
+                    .build(context);
               },
             ),
             actions: <Widget>[
