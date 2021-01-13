@@ -1,12 +1,12 @@
 import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/screens/plan_a_date/pick_date_type.dart';
+import 'package:date_night/src/screens/plan_a_date/multi/pick_date_type.dart';
 import 'package:date_night/src/screens/plan_a_date/single/plan_a_date_single.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../routes/route_generator.dart';
 import './dates_around/dates_around.dart';
 
@@ -36,9 +36,9 @@ class _IndexState extends State<Index> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
-          body: _getPage(model),
+          body: _buildTabBar(context),
           resizeToAvoidBottomPadding: false,
-          bottomNavigationBar: _buildTabBar(context),
+          // bottomNavigationBar: ,
         );
       },
     );
@@ -47,102 +47,58 @@ class _IndexState extends State<Index> {
   Widget _buildTabBar(BuildContext context) {
     return PersistentTabView(
       context,
+      padding: NavBarPadding.symmetric(vertical: 10),
       controller: _controller,
-      screens: [
-        MaterialApp(
-            theme: ThemeConfig.theme,
-            home: SafeArea(child: DatesAroundPage()),
-            onGenerateRoute: RouteGenerator.routes),
-        MaterialApp(
-            theme: ThemeConfig.theme,
-            home: SafeArea(child: PickDateType()),
-            onGenerateRoute: RouteGenerator.routes),
-        MaterialApp(
-            theme: ThemeConfig.theme,
-            home: SafeArea(child: PlanADateSingle()),
-            onGenerateRoute: RouteGenerator.routes),
-      ],
-      items: [
-        PersistentBottomNavBarItem(
-          icon: Icon(Icons.location_city),
-          title: "Dates Around You",
-          activeColor: Colors.blue,
-          inactiveColor: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: Icon(Icons.people),
-          title: ("Plan A Date"),
-          activeColor: Colors.teal,
-          inactiveColor: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          icon: Icon(Icons.search),
-          title: ("Search"),
-          activeColor: Colors.teal,
-          inactiveColor: Colors.grey,
-        ),
-      ],
-      backgroundColor: Colors.transparent,
+      screens: _getPage(),
+      items: _getTabIcons(),
       decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
         colorBehindNavBar: Colors.transparent,
+        adjustScreenBottomPaddingOnCurve: true,
       ),
-      navBarStyle: NavBarStyle.simple,
+      navBarStyle: NavBarStyle.style3,
       handleAndroidBackButtonPress: true,
       confineInSafeArea: true,
     );
   }
 
   /// Returns the bottom navigation bar
-  Widget _buildTabBar2() {
-    return FancyBottomNavigation(
-      tabs: <TabData>[
-        TabData(iconData: Icons.location_city, title: 'Dates Around You'),
-        TabData(iconData: Icons.people, title: 'Plan A Date'),
-      ],
-      circleColor:
-          Theme.of(context).bottomNavigationBarTheme.selectedIconTheme.color,
-      inactiveIconColor:
-          Theme.of(context).bottomNavigationBarTheme.unselectedIconTheme.color,
-      initialSelection: 0,
-      textColor: Theme.of(context).primaryTextTheme.subtitle1.color,
-      onTabChangedListener: (int position) {
-        setState(() {
-          currentPage = position;
-        });
-      },
-      barBackgroundColor:
-          Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-    );
+  List<PersistentBottomNavBarItem> _getTabIcons() {
+    return [
+      PersistentBottomNavBarItem(
+          icon: FaIcon(FontAwesomeIcons.city),
+          activeColor: Colors.blue,
+          inactiveColor: Colors.grey,
+          opacity: 0.3),
+      PersistentBottomNavBarItem(
+          icon: FaIcon(FontAwesomeIcons.male),
+          activeColor: Colors.teal,
+          inactiveColor: Colors.grey,
+          opacity: 0.7),
+      PersistentBottomNavBarItem(
+          icon: FaIcon(FontAwesomeIcons.peopleArrows),
+          activeColor: Colors.purple,
+          inactiveColor: Colors.grey,
+          opacity: 0.3),
+    ];
   }
 
-  /// Returns the a page. They are stored in a stack
-  /// to ensure their state is kept even when the user
-  /// navigates to another page.
-  Widget _getPage(MainModel model) {
-    return Stack(
-      children: <Offstage>[
-        Offstage(
-          offstage: currentPage != 0,
-          child: TickerMode(
-            enabled: currentPage == 0,
-            child: MaterialApp(
-                theme: ThemeConfig.theme,
-                home: SafeArea(child: DatesAroundPage()),
-                onGenerateRoute: RouteGenerator.routes),
-          ),
-        ),
-        Offstage(
-          offstage: currentPage != 1,
-          child: TickerMode(
-            enabled: currentPage == 1,
-            child: MaterialApp(
-                theme: ThemeConfig.theme,
-                home: SafeArea(child: PickDateType()),
-                onGenerateRoute: RouteGenerator.routes),
-          ),
-        ),
-      ],
-    );
+  /// Returns the tab pages
+  List<Widget> _getPage() {
+    return [
+      MaterialApp(
+          theme: ThemeConfig.theme,
+          home: SafeArea(child: DatesAroundPage()),
+          onGenerateRoute: RouteGenerator.routes),
+      MaterialApp(
+          theme: ThemeConfig.theme,
+          home: SafeArea(child: PlanADateSingle()),
+          onGenerateRoute: RouteGenerator.routes),
+      MaterialApp(
+          theme: ThemeConfig.theme,
+          home: SafeArea(child: PickDateType()),
+          onGenerateRoute: RouteGenerator.routes),
+    ];
   }
 }

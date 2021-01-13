@@ -54,6 +54,8 @@ class ThemeConfig {
             color: _textLight, fontSize: 24.0, fontWeight: FontWeight.w300),
         headline1: TextStyle(
             color: _textLight, fontSize: 18.0, fontWeight: FontWeight.bold),
+        headline2: TextStyle(
+            color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.w300),
         headline6: TextStyle(color: _textLight, fontSize: 25.0),
         headline5: TextStyle(color: _textLight, fontSize: 40.0),
       ),

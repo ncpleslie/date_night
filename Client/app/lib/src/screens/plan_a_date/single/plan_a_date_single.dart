@@ -73,6 +73,9 @@ class _PlanADateState extends State<PlanADateSingle> {
             text: 'Person Two',
             disabled: model.isSelectedEditorsListValid(1),
             onTap: () => _navigateToEdit(model, 1)),
+        const SizedBox(
+          height: 45.0,
+        ),
       ],
     );
   }

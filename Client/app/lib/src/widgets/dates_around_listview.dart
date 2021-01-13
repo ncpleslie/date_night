@@ -11,7 +11,10 @@ import 'dates_around_card.dart';
 /// The list of Dates of other users.
 // ignore: must_be_immutable
 class DatesAroundListView extends StatefulWidget {
-  DatesAroundListView({@required this.model});
+  DatesAroundListView({@required this.controller, @required this.model});
+
+  // Scroll controller
+  final ScrollController controller;
 
   /// The Scoped model.
   MainModel model;
@@ -25,7 +28,7 @@ class DatesAroundListView extends StatefulWidget {
 class _DatesAroundListViewState extends State<DatesAroundListView> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
-  final ScrollController scrollController = ScrollController();
+  //final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +63,9 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
     super.initState();
     widget.model.init();
     // Add Scroll listener to load more data
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+    widget.controller.addListener(() {
+      if (widget.controller.position.maxScrollExtent ==
+          widget.controller.offset) {
         widget.model.loadMore();
       }
     });
@@ -72,8 +75,8 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   Widget _list(
       BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 25.0),
-      controller: scrollController,
+      padding: const EdgeInsets.symmetric(vertical: 40.0),
+      controller: widget.controller,
       itemCount: snapshot.data.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (snapshot.hasError || snapshot.data.isEmpty) {
@@ -124,7 +127,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
 
       default:
         return _padding(Text(
-          'No more for you',
+          '',
           style: Theme.of(context).primaryTextTheme.subtitle1,
         ));
         break;
@@ -134,7 +137,7 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   /// Padding put around most elements of the list.
   Widget _padding(Widget child) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32.0),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Center(
         child: child,
       ),

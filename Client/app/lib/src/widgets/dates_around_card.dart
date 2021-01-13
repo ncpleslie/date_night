@@ -1,12 +1,10 @@
 import 'dart:ui';
 import 'dart:core';
 import 'package:date_night/src/widgets/custom_toast.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../extensions/string_extensions.dart';
 
@@ -26,27 +24,7 @@ class DatesAroundCard extends StatelessWidget {
         : null;
   }
 
-  final List<List<Color>> colors = [
-    // [
-    //   Colors.purpleAccent[100],
-    //   Colors.purpleAccent[200],
-    // ],
-    // [
-    //   Colors.red[100],
-    //   Colors.red[200],
-    // ],
-    // [
-    //   Colors.redAccent[100],
-    //   Colors.redAccent[200],
-    // ],
-    // [
-    //   Colors.orange[100],
-    //   Colors.orange[200],
-    // ],
-    // [
-    //   Colors.orangeAccent[100],
-    //   Colors.orangeAccent[200],
-    // ],
+  final List<List<Color>> pillColors = [
     [
       Colors.white70,
       Colors.white,
@@ -77,13 +55,13 @@ class DatesAroundCard extends StatelessWidget {
   }
 
   Widget _createPill(BuildContext context) {
-    int colorIndex = index % colors.length;
+    int colorIndex = index % pillColors.length;
 
     final Gradient pillColor = LinearGradient(
         begin: const FractionalOffset(0.0, 0.5),
         end: const FractionalOffset(0.5, 0.0),
         stops: const <double>[0.0, 0.8],
-        colors: colors[colorIndex]);
+        colors: pillColors[colorIndex]);
 
     return Card(
       elevation: Theme.of(context).cardTheme.elevation,
@@ -115,57 +93,56 @@ class DatesAroundCard extends StatelessWidget {
         decoration:
             BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
         alignment: Alignment.center,
-        child: IconButton(
-          splashRadius: 21,
-          constraints: BoxConstraints(
-              maxHeight: buttonSize,
-              maxWidth: buttonSize,
-              minHeight: buttonSize,
-              minWidth: buttonSize),
-          padding: EdgeInsets.all(0),
-          onPressed: () => _optionsPopupMenu(context),
-          icon: Icon(
-            Icons.more_horiz,
-            color: Colors.black26,
+        child: InkWell(
+          customBorder: new CircleBorder(),
+          splashColor: Colors.black26,
+          onTap: () {},
+          onTapDown: (TapDownDetails details) {
+            _optionsPopupMenu(context, details.globalPosition);
+          },
+          child: Container(
+            constraints: BoxConstraints(
+                maxHeight: buttonSize,
+                maxWidth: buttonSize,
+                minHeight: buttonSize,
+                minWidth: buttonSize),
+            padding: EdgeInsets.all(0),
+            child: Icon(
+              Icons.more_horiz,
+              color: Colors.black26,
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _optionsPopupMenu(BuildContext context) async {
-    await showModalBottomSheet(
+  void _optionsPopupMenu(BuildContext context, Offset offset) async {
+    int result = await showMenu(
+      shape: Theme.of(context).cardTheme.shape,
       context: context,
-      builder: (BuildContext context) {
-        return ScopedModelDescendant(
-          builder: (BuildContext context, Widget child, MainModel model) {
-            return Material(
-              child: SafeArea(
-                top: false,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      contentPadding: EdgeInsets.fromLTRB(20, 0, 20, 30),
-                      title: Text('Report'),
-                      leading: Icon(Icons.report),
-                      onTap: () => {
-                        model.reportDate(id),
-                        Navigator.of(context).pop(),
-                        CustomToast(
-                          title: "Reported",
-                          message: "Thank you. This date has been reported",
-                        ).build(context),
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
+      position: RelativeRect.fromLTRB(offset.dx, offset.dy, 0, 0),
+      items: [
+        PopupMenuItem<int>(
+          value: 0,
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              'Report',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+      elevation: 8.0,
     );
+    if (result == 0) {
+      model.reportDate(id);
+      CustomToast(
+        title: "Reported",
+        message: "Thank you. This date has been reported",
+      ).build(context);
+    }
   }
 
   /// Build the card.

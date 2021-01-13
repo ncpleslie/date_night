@@ -33,16 +33,17 @@ class _PickDateTypeState extends State<PickDateType> {
           ).build(context),
           body: PageBackground(
             child: Container(
+              padding: EdgeInsets.only(top: 70.0),
               alignment: Alignment.center,
               child: _isLoading
                   ? CircularProgressIndicator()
                   : ListView(
                       children: [
-                        _button(
-                            title: 'Plan a date',
-                            subtitle:
-                                'Enter your ideas then hand your phone to someone else',
-                            onPressed: () => _navigateToSingle(model)),
+                        // _button(
+                        //     title: 'Plan a date',
+                        //     subtitle:
+                        //         'Enter your ideas then hand your phone to someone else',
+                        //     onPressed: () => _navigateToSingle(model)),
                         _button(
                             title: 'Create a room',
                             subtitle:
@@ -51,7 +52,7 @@ class _PickDateTypeState extends State<PickDateType> {
                         _button(
                             title: 'Enter a room',
                             subtitle:
-                                'If your friend has set up a room, you can enter their code and join them',
+                                'If your friend has set up a room,\nyou can enter their code and join them',
                             onPressed: () => _enterARoom(model)),
                       ],
                     ),
@@ -86,32 +87,40 @@ class _PickDateTypeState extends State<PickDateType> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                         top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                    child: Column(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        AutoSizeText(
-                          title.toUpperCase(),
-                          softWrap: true,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).primaryTextTheme.bodyText2,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              title.toUpperCase(),
+                              softWrap: true,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText2,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(8.0),
+                              height: 1,
+                              color: Colors.black38,
+                            ),
+                            AutoSizeText(
+                              subtitle,
+                              softWrap: true,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .subtitle1
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(8.0),
-                          height: 1,
-                          color: Colors.black38,
-                        ),
-                        AutoSizeText(
-                          subtitle,
-                          softWrap: true,
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .primaryTextTheme
-                              .subtitle1
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
+                        Container(width: 30, height: 10),
                       ],
                     ),
                   ),
