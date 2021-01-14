@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 /// Dialog box for adding new date ideas on the Add Date page.
 class DateAddDialog extends StatelessWidget {
-  DateAddDialog({@required this.model});
+  DateAddDialog(this.context, {@required this.model});
+
+  final BuildContext context;
 
   /// The main model
   final MainModel model;
@@ -16,10 +18,12 @@ class DateAddDialog extends StatelessWidget {
     return GestureDetector(
       // If the user taps outside form boxes then the keyboard is minimized
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(this.context).requestFocus(FocusNode());
       },
       child: AlertDialog(
-        shape: Theme.of(context).dialogTheme.shape,
+        // TODO: Fix this coloring
+        backgroundColor: Theme.of(this.context).cardTheme.color,
+        shape: Theme.of(this.context).dialogTheme.shape,
         title: const Center(
           child: Text('Date Ideas?'),
         ),
@@ -33,9 +37,10 @@ class DateAddDialog extends StatelessWidget {
           decoration: InputDecoration(filled: true, fillColor: Colors.white),
         ),
         actions: <Widget>[
-          DateAddDialogButton(
-              icon: Icons.delete, onTap: () => _discard(context)),
-          DateAddDialogButton(icon: Icons.add, onTap: () => _addIdea(context))
+          DateAddDialogButton(this.context,
+              icon: Icons.delete, onTap: () => _discard(this.context)),
+          DateAddDialogButton(this.context,
+              icon: Icons.add, onTap: () => _addIdea(this.context))
         ],
       ),
     );

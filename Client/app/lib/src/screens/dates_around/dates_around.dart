@@ -36,12 +36,9 @@ class _DatesAroundPageState extends State<DatesAroundPage> {
                   scrollController: controller)
               .build(context),
           body: PageBackground(
-            child: Snap(
-              controller: controller.appBar,
-              child: DatesAroundListView(
-                controller: controller,
-                model: model,
-              ),
+            child: DatesAroundListView(
+              controller: controller,
+              model: model,
             ),
           ),
         );

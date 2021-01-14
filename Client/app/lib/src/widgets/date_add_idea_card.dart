@@ -54,6 +54,8 @@ class DateAddIdeaCard extends StatelessWidget {
                     name,
                     minFontSize: 20.0,
                     maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2,
                   )
                 ]),
           ),
@@ -61,7 +63,11 @@ class DateAddIdeaCard extends StatelessWidget {
             data: const ButtonBarThemeData(),
             child: ButtonBar(children: <IconButton>[
               IconButton(
-                icon: const Icon(Icons.delete),
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).primaryIconTheme.color,
+                  size: Theme.of(context).primaryIconTheme.size,
+                ),
                 onPressed: () => onDelete(model, index),
               ),
             ]),

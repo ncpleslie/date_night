@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../routes/routes.dart';
-import '../../widgets/page_background.dart';
+import '../../../routes/routes.dart';
+import '../../../widgets/page_background.dart';
 
 /// Displays the loading screen to the user.
 /// This creates a buffer screen to allow the client to

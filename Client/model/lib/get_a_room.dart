@@ -88,6 +88,7 @@ mixin GetARoomModel on IdeasModel {
     return completer.future;
   }
 
+  // TODO: Convert this to backend code
   void deleteRoom() async {
     await FirebaseFirestore.instance
         .collection('get_a_room')

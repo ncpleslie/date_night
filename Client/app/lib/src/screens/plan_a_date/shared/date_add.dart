@@ -15,17 +15,24 @@ import '../../../widgets/page_background.dart';
 /// They can swipe away bad ideas, or tap delete.
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
-class DateAddMulti extends StatelessWidget {
+// ignore: must_be_immutable
+class DateAdd extends StatelessWidget {
+  bool isListValid(model) {
+    return model.isMultiEditing
+        ? model.isMultiEditorsListValid()
+        : model.isCurrentEditorsListValid();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget widget, MainModel model) {
-        _getRandomDate(model);
         return Scaffold(
           // Build Appbar
+          extendBodyBehindAppBar: model.isMultiEditing ? false : true,
           appBar: CustomAppBar(
-            name: 'Room code: ${model.roomId}',
-            transparent: false,
+            name: model.isMultiEditing ? 'Room code: ${model.roomId}' : '',
+            transparent: model.isMultiEditing ? false : true,
           ).build(context),
           resizeToAvoidBottomPadding: false,
 
@@ -34,23 +41,23 @@ class DateAddMulti extends StatelessWidget {
 
           // FAB
           floatingActionButton: Row(
-            mainAxisAlignment: !model.isMultiEditorsListValid()
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.spaceAround,
+            mainAxisAlignment: isListValid(model)
+                ? MainAxisAlignment.spaceAround
+                : MainAxisAlignment.center,
             children: <Widget>[
               CustomFAB(
                   tag: 'Add More',
                   icon: Icons.add,
                   onTap: () => _showInput(context, model)),
-              !model.isMultiEditorsListValid()
-                  ? Container(
-                      width: 0.0,
-                      height: 0.0,
-                    )
-                  : CustomFAB(
+              isListValid(model)
+                  ? CustomFAB(
                       tag: 'Continue',
                       icon: CupertinoIcons.check_mark,
                       onTap: () => _finish(context, model),
+                    )
+                  : Container(
+                      width: 0.0,
+                      height: 0.0,
                     )
             ],
           ),
@@ -75,33 +82,49 @@ class DateAddMulti extends StatelessWidget {
           emptyIconString = 'No ideas yet?\nHow about ${snapshot.data}?';
         }
         return Center(
-          child: !model.isMultiEditorsListValid()
-              ? EmptyScreenIcon(emptyIconString, CupertinoIcons.search)
-              : ListView.builder(
-                  itemCount: model.getMultiEditorsIdeasList().length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return DateAddIdeaCard(
-                        model: model,
-                        index: index,
-                        name: model.getMultiEditorsIdeasList()[index],
-                        onDelete: _remove);
-                  },
-                ),
-        );
+            child: isListValid(model)
+                ? ListView.builder(
+                    itemCount: _editorsList(model).length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return DateAddIdeaCard(
+                          model: model,
+                          index: index,
+                          name: _editorsList(model)[index],
+                          onDelete: _remove);
+                    },
+                  )
+                : EmptyScreenIcon(emptyIconString, CupertinoIcons.search));
       },
     );
   }
 
+  List<String> _editorsList(MainModel model) {
+    if (model.isMultiEditing) {
+      return model.getMultiEditorsIdeasList();
+    }
+    return model.getCurrentEditorsIdeasList();
+  }
+
   /// Moves the user back a screen.
   void _finish(BuildContext context, MainModel model) {
-    if (model.isMultiEditorsListValid()) {
-      Navigator.of(context).popAndPushNamed(Routes.WaitingRoom);
+    if (model.isMultiEditing) {
+      if (model.isMultiEditorsListValid()) {
+        Navigator.of(context).popAndPushNamed(Routes.WaitingRoom);
+      }
+    } else {
+      if (model.isCurrentEditorsListValid()) {
+        Navigator.pop(context);
+      }
     }
   }
 
   /// Removes the date idea from potential dates.
   void _remove(MainModel model, int index) {
-    model.removeMultiEditorsItemAt(index);
+    if (model.isMultiEditing) {
+      model.removeMultiEditorsItemAt(index);
+    } else {
+      model.removeItemAt(index);
+    }
   }
 
   /// Shows the dialog box to allow the user to enter their ideas.
@@ -110,6 +133,7 @@ class DateAddMulti extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return DateAddDialog(
+          context,
           model: model,
         );
       },

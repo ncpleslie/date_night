@@ -1,5 +1,5 @@
 import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/screens/plan_a_date/multi/pick_date_type.dart';
+import 'package:date_night/src/screens/plan_a_date/multi/plan_a_date_multi.dart';
 import 'package:date_night/src/screens/plan_a_date/single/plan_a_date_single.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,7 +97,7 @@ class _IndexState extends State<Index> {
           onGenerateRoute: RouteGenerator.routes),
       MaterialApp(
           theme: ThemeConfig.theme,
-          home: SafeArea(child: PickDateType()),
+          home: SafeArea(child: PlanADateMulti()),
           onGenerateRoute: RouteGenerator.routes),
     ];
   }

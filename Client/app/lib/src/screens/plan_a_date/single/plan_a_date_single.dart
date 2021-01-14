@@ -1,7 +1,10 @@
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
 import 'package:date_night/src/widgets/page_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:model/main.dart';
 import '../../../widgets/custom_app_bar.dart';
@@ -36,7 +39,9 @@ class _PlanADateState extends State<PlanADateSingle> {
                       : Container())
               .build(context),
           body: PageBackground(child: _buildSelectionButtons(model)),
-          floatingActionButton: _buildFinishButton(model),
+          floatingActionButton: Padding(
+              padding: EdgeInsets.only(bottom: 50),
+              child: _buildFinishButton(model)),
         );
       },
     );
@@ -83,7 +88,12 @@ class _PlanADateState extends State<PlanADateSingle> {
   /// Will navigate to the correct editting page based on is currently editing
   void _navigateToEdit(MainModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
-    Navigator.of(context).pushNamed(Routes.DateAdd);
+    pushNewScreen(
+      context,
+      screen: DateAdd(),
+      withNavBar: false,
+      pageTransitionAnimation: ThemeConfig.pageTransition,
+    );
   }
 
   /// Navigate to the next stage

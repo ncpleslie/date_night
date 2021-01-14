@@ -1,22 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
 import 'package:date_night/src/widgets/custom_app_bar.dart';
 import 'package:date_night/src/widgets/custom_toast.dart';
 import 'package:date_night/src/widgets/date_add_dialog_button.dart';
 import 'package:date_night/src/widgets/page_background.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:model/main.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
-import 'package:flushbar/flushbar.dart';
 
-class PickDateType extends StatefulWidget {
+class PlanADateMulti extends StatefulWidget {
   @override
-  _PickDateTypeState createState() => _PickDateTypeState();
+  _PlanADateMultiState createState() => _PlanADateMultiState();
 }
 
-class _PickDateTypeState extends State<PickDateType> {
+class _PlanADateMultiState extends State<PlanADateMulti> {
   bool _isLoading = false;
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _roomTextController = TextEditingController();
@@ -39,11 +42,6 @@ class _PickDateTypeState extends State<PickDateType> {
                   ? CircularProgressIndicator()
                   : ListView(
                       children: [
-                        // _button(
-                        //     title: 'Plan a date',
-                        //     subtitle:
-                        //         'Enter your ideas then hand your phone to someone else',
-                        //     onPressed: () => _navigateToSingle(model)),
                         _button(
                             title: 'Create a room',
                             subtitle:
@@ -91,36 +89,40 @@ class _PickDateTypeState extends State<PickDateType> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            AutoSizeText(
-                              title.toUpperCase(),
-                              softWrap: true,
-                              maxLines: 1,
-                              textAlign: TextAlign.center,
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText2,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(8.0),
-                              height: 1,
-                              color: Colors.black38,
-                            ),
-                            AutoSizeText(
-                              subtitle,
-                              softWrap: true,
-                              maxLines: 3,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .subtitle1
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Container(
+                          width: 220,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              AutoSizeText(
+                                title.toUpperCase(),
+                                softWrap: true,
+                                maxLines: 1,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText2,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(8.0),
+                                height: 1,
+                                color: Colors.black38,
+                              ),
+                              AutoSizeText(
+                                subtitle,
+                                softWrap: true,
+                                maxLines: 3,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .subtitle1
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
-                        Container(width: 30, height: 10),
+                        _createChevron(context, onPressed)
                       ],
                     ),
                   ),
@@ -129,6 +131,38 @@ class _PickDateTypeState extends State<PickDateType> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _createChevron(BuildContext context, Function onPressed) {
+    final double buttonSize = 35;
+    return Card(
+      elevation: Theme.of(context).cardTheme.elevation,
+      child: Container(
+        padding: EdgeInsets.all(3),
+        decoration:
+            BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
+        alignment: Alignment.center,
+        child: InkWell(
+          customBorder: new CircleBorder(),
+          splashColor: Colors.black26,
+          onTap: onPressed,
+          onTapDown: (TapDownDetails details) {},
+          child: Container(
+            alignment: Alignment.center,
+            constraints: BoxConstraints(
+                maxHeight: buttonSize,
+                maxWidth: buttonSize,
+                minHeight: buttonSize,
+                minWidth: buttonSize),
+            padding: EdgeInsets.all(0),
+            child: FaIcon(
+              FontAwesomeIcons.chevronRight,
+              color: Colors.black26,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -145,8 +179,8 @@ class _PickDateTypeState extends State<PickDateType> {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            backgroundColor: Theme.of(context).cardTheme.color.withOpacity(0.9),
+            shape: Theme.of(context).cardTheme.shape,
             title: const Center(
               child: Text('Enter a room code'),
             ),
@@ -158,7 +192,7 @@ class _PickDateTypeState extends State<PickDateType> {
               autofocus: true,
             ),
             actions: <Widget>[
-              DateAddDialogButton(
+              DateAddDialogButton(context,
                   icon: Icons.chevron_right,
                   onTap: () => {
                         Navigator.pop(context),
@@ -182,14 +216,14 @@ class _PickDateTypeState extends State<PickDateType> {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            backgroundColor: Theme.of(context).cardTheme.color,
+            shape: Theme.of(context).cardTheme.shape,
             title: const Center(
               child: Text('Unable to enter that room'),
             ),
             content: Text('Are you sure that\'s the right room code?'),
             actions: <Widget>[
-              DateAddDialogButton(
+              DateAddDialogButton(context,
                   icon: Icons.chevron_right,
                   onTap: () => {Navigator.pop(context)})
             ],
@@ -210,8 +244,8 @@ class _PickDateTypeState extends State<PickDateType> {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            backgroundColor: Theme.of(context).cardTheme.color,
+            shape: Theme.of(context).cardTheme.shape,
             title: const Center(
               child: Text('Room code'),
             ),
@@ -243,11 +277,15 @@ class _PickDateTypeState extends State<PickDateType> {
               },
             ),
             actions: <Widget>[
-              DateAddDialogButton(
+              DateAddDialogButton(context,
                   icon: Icons.chevron_right,
                   onTap: () => {
-                        Navigator.of(context)
-                            .popAndPushNamed(Routes.PlanADateMulti),
+                        pushNewScreen(
+                          context,
+                          screen: DateAdd(),
+                          withNavBar: false,
+                          pageTransitionAnimation: ThemeConfig.pageTransition,
+                        ),
                         model.isMultiEditing = true,
                         model.isRoomHost = true
                       })
@@ -256,11 +294,6 @@ class _PickDateTypeState extends State<PickDateType> {
         );
       },
     );
-  }
-
-  void _navigateToSingle(MainModel model) {
-    model.isMultiEditing = false;
-    Navigator.of(context).pushNamed(Routes.PlanADateSingle);
   }
 
   void _navigateToMulti(MainModel model) async {
@@ -273,7 +306,7 @@ class _PickDateTypeState extends State<PickDateType> {
       _textController.text = '';
 
       if (isValidRoom) {
-        Navigator.of(context).pushNamed(Routes.PlanADateMulti);
+        Navigator.of(context).pushNamed(Routes.DateAdd);
       } else {
         await _invalidRoomCode();
       }

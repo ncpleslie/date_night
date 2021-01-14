@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:confetti/confetti.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../../config/strings.dart';
-import '../../widgets/page_background.dart';
+import '../../../config/strings.dart';
+import '../../../widgets/page_background.dart';
 
 /// Displays the winning date idea to the user.
 class Results extends StatefulWidget {

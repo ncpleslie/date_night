@@ -18,34 +18,39 @@ class _WaitingRoomState extends State<WaitingRoom> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget widget, MainModel model) {
-      return Scaffold(
-        appBar: CustomAppBar(
-          name: 'Room code: ${model.roomId}',
-          transparent: false,
-        ).build(context),
-        body: PageBackground(
+      builder: (BuildContext context, Widget widget, MainModel model) {
+        return Scaffold(
+          appBar: CustomAppBar(
+            name: 'Room code: ${model.roomId}',
+            transparent: false,
+          ).build(context),
+          body: PageBackground(
             child: Container(
-          child: !_ideasChanged
-              ? Text('Waiting for your partner to enter their ideas')
-              : model.isRoomHost
-                  ? Column(
-                      children: <Widget>[
-                        Text(
-                            'Some ideas have been added. Want to find out the winning idea?'),
-                        RaisedButton(
-                          onPressed: () => {
-                            Navigator.of(context)
-                                .pushReplacementNamed(Routes.Loading)
-                          },
-                          child: Text('And the winner is...'),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: !_ideasChanged
+                  ? Text('Waiting for your partner to enter their ideas')
+                  : model.isRoomHost
+                      ? Column(
+                          children: <Widget>[
+                            Text(
+                                'Some ideas have been added. Want to find out the winning idea?'),
+                            RaisedButton(
+                              onPressed: () => {
+                                Navigator.of(context)
+                                    .pushReplacementNamed(Routes.Loading)
+                              },
+                              child: Text('Continue'),
+                            )
+                          ],
                         )
-                      ],
-                    )
-                  : Container(),
-        )),
-      );
-    });
+                      : Container(),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
