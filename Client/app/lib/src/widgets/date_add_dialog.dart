@@ -21,7 +21,6 @@ class DateAddDialog extends StatelessWidget {
         FocusScope.of(this.context).requestFocus(FocusNode());
       },
       child: AlertDialog(
-        // TODO: Fix this coloring
         backgroundColor: Theme.of(this.context).cardTheme.color,
         shape: Theme.of(this.context).dialogTheme.shape,
         title: const Center(

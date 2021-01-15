@@ -30,9 +30,20 @@ class _WaitingRoomState extends State<WaitingRoom> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: !_ideasChanged
-                  ? Text('Waiting for your partner to enter their ideas')
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                          Text('Waiting for your partner to enter their ideas'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          LinearProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                          )
+                        ])
                   : model.isRoomHost
                       ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
                                 'Some ideas have been added. Want to find out the winning idea?'),
@@ -57,6 +68,10 @@ class _WaitingRoomState extends State<WaitingRoom> {
   void initState() {
     super.initState();
     MainModel model = ScopedModel.of(context);
+
+    if (model.roomId == null) {
+      Navigator.of(context).popAndPushNamed(Routes.PlanADateMulti);
+    }
     if (model.isRoomHost) {
       _otherUserEntered(model);
     } else {

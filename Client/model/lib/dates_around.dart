@@ -12,6 +12,7 @@ mixin DatesAroundModel on IdeasModel {
   StreamController<List<Map<String, dynamic>>> _controller;
 
   void init() {
+    print('Querying external source 1');
     _data = List<Map<String, dynamic>>();
     _controller = StreamController<List<Map<String, dynamic>>>.broadcast();
     _isLoading = false;
@@ -30,6 +31,8 @@ mixin DatesAroundModel on IdeasModel {
   }
 
   Future<void> loadMore({bool clearCacheData = false}) {
+    print('Querying external source 2');
+
     if (clearCacheData) {
       _data = List<Map<String, dynamic>>();
       hasMore = true;
@@ -40,7 +43,6 @@ mixin DatesAroundModel on IdeasModel {
     }
     _isLoading = true;
 
-    // TODO: Refactor this
     if (_data.isNotEmpty) {
       return ApiSdk.getDatesAround(_data[_data.length - 1]['id'])
           .then((Map<String, dynamic> datesAroundData) {

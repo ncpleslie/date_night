@@ -4,6 +4,7 @@ import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
 import 'package:date_night/src/widgets/page_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:model/main.dart';
@@ -24,18 +25,12 @@ class _PlanADateState extends State<PlanADateSingle> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget widget, MainModel model) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: CustomAppBar(
-                  name: 'Plan A Date',
-                  transparent: false,
+                  name: '',
+                  transparent: true,
                   icon: model.isAnyEditorsListValid()
-                      ? IconButton(
-                          icon: const Icon(CupertinoIcons.delete),
-                          tooltip: 'Delete',
-                          onPressed: () {
-                            model.clearAllLists();
-                            setState(() {});
-                          },
-                        )
+                      ? _deleteAllButton(model)
                       : Container())
               .build(context),
           body: PageBackground(child: _buildSelectionButtons(model)),
@@ -44,6 +39,43 @@ class _PlanADateState extends State<PlanADateSingle> {
               child: _buildFinishButton(model)),
         );
       },
+    );
+  }
+
+  Widget _deleteAllButton(MainModel model) {
+    final double buttonSize = 35;
+    return Card(
+      elevation: Theme.of(context).cardTheme.elevation,
+      child: Container(
+        height: 50,
+        width: 50,
+        padding: EdgeInsets.all(3),
+        decoration:
+            BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
+        alignment: Alignment.center,
+        child: InkWell(
+          customBorder: new CircleBorder(),
+          splashColor: Colors.black26,
+          onTap: () {
+            model.clearAllLists();
+            setState(() {});
+          },
+          onTapDown: (TapDownDetails details) {},
+          child: Container(
+            alignment: Alignment.center,
+            constraints: BoxConstraints(
+                maxHeight: buttonSize,
+                maxWidth: buttonSize,
+                minHeight: buttonSize,
+                minWidth: buttonSize),
+            padding: EdgeInsets.all(0),
+            child: FaIcon(
+              FontAwesomeIcons.trash,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+      ),
     );
   }
 

@@ -6,7 +6,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 mixin IdeasModel on Model {
   /// List of all the current date ideas.
-  // TODO: Refactor this so it is a single list
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
   /// For Final Selection
@@ -77,6 +76,8 @@ mixin IdeasModel on Model {
 
   /// Determine the final result.
   Future<void> calculateResults() async {
+    print('Querying external source 10');
+
     // Determine result
     // Combine lists
     // If value in there twice, that is the answer

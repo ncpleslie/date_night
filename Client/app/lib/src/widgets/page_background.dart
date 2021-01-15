@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,6 @@ class _PageBackgroundState extends State<PageBackground>
           SvgPicture.asset(
             ThemeConfig.backgroundImage,
             fit: BoxFit.cover,
-            alignment: Alignment(0.95, 0.5),
           ),
           widget.child,
         ],

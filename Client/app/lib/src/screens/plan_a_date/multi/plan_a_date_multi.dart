@@ -63,7 +63,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
 
   Widget _button({String title, String subtitle, Function onPressed}) {
     return Container(
-      height: 155, // Increase this to change the padding
+      height: 175, // Increase this to change the padding
       child: Stack(
         children: <Widget>[
           // Words in card
@@ -73,7 +73,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
               width: MediaQuery.of(context).size.width * 0.9,
               height: 175.0,
               child: Card(
-                elevation: 0,
+                elevation: Theme.of(context).cardTheme.elevation,
                 shape: Theme.of(context).cardTheme.shape,
                 color: Theme.of(context).cardTheme.color,
                 margin: const EdgeInsets.all(20.0),
@@ -140,6 +140,8 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
     return Card(
       elevation: Theme.of(context).cardTheme.elevation,
       child: Container(
+        height: 40,
+        width: 40,
         padding: EdgeInsets.all(3),
         decoration:
             BoxDecoration(color: Colors.white12, shape: BoxShape.circle),

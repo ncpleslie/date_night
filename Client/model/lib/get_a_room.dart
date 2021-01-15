@@ -41,6 +41,8 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<void> calculateMultiResults() async {
+    print('Querying external source 3');
+
     // Determine result
     // Combine lists
     // If value in there twice, that is the answer
@@ -74,7 +76,17 @@ mixin GetARoomModel on IdeasModel {
     clearAllLists();
   }
 
+  void clearAllLists() {
+    usersChosenIdeas.clear();
+    usersChosenIdeas.clear();
+    isMultiEditing = false;
+    isRoomHost = false;
+    roomId = null;
+  }
+
   Future<void> waitForResults() {
+    print('Querying external source 4');
+
     print('Waiting for results');
     final completer = Completer<bool>();
     roomSnapshot.listen((querySnapshot) {
@@ -90,6 +102,8 @@ mixin GetARoomModel on IdeasModel {
 
   // TODO: Convert this to backend code
   void deleteRoom() async {
+    print('Querying external source');
+
     await FirebaseFirestore.instance
         .collection('get_a_room')
         .doc(roomId)
@@ -97,7 +111,10 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<void> waitForHost() async {
+    print('Querying external source 5');
+
     final completer = Completer<bool>();
+
     roomSnapshot.listen((querySnapshot) {
       if (querySnapshot.data()['gettingResults'] != null &&
           querySnapshot.data()['gettingResults'] == true) {
@@ -124,6 +141,8 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<void> commitMultiIdeas() async {
+    print('Querying external source 6');
+
     DocumentSnapshot results = await FirebaseFirestore.instance
         .collection('get_a_room')
         .doc(roomId)
@@ -140,6 +159,8 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<String> getARoom() async {
+    print('Querying external source 7');
+
     roomId = null;
     final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom();
     GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
@@ -150,6 +171,8 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<bool> setARoom(String roomId) async {
+    print('Querying external source 8');
+
     this.roomId = roomId;
     await initFirebase();
     DocumentSnapshot results = await FirebaseFirestore.instance
@@ -170,6 +193,8 @@ mixin GetARoomModel on IdeasModel {
   }
 
   Future<void> queryARoom() async {
+    print('Querying external source 9');
+
     roomSnapshot = FirebaseFirestore.instance
         .collection('get_a_room')
         .doc(roomId)

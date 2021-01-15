@@ -40,26 +40,29 @@ class DateAdd extends StatelessWidget {
           body: PageBackground(child: _buildPage(model)),
 
           // FAB
-          floatingActionButton: Row(
-            mainAxisAlignment: isListValid(model)
-                ? MainAxisAlignment.spaceAround
-                : MainAxisAlignment.center,
-            children: <Widget>[
-              CustomFAB(
-                  tag: 'Add More',
-                  icon: Icons.add,
-                  onTap: () => _showInput(context, model)),
-              isListValid(model)
-                  ? CustomFAB(
-                      tag: 'Continue',
-                      icon: CupertinoIcons.check_mark,
-                      onTap: () => _finish(context, model),
-                    )
-                  : Container(
-                      width: 0.0,
-                      height: 0.0,
-                    )
-            ],
+          floatingActionButton: Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Row(
+              mainAxisAlignment: isListValid(model)
+                  ? MainAxisAlignment.spaceAround
+                  : MainAxisAlignment.center,
+              children: <Widget>[
+                CustomFAB(
+                    tag: 'Add More',
+                    icon: Icons.add,
+                    onTap: () => _showInput(context, model)),
+                isListValid(model)
+                    ? CustomFAB(
+                        tag: 'Continue',
+                        icon: CupertinoIcons.check_mark,
+                        onTap: () => _finish(context, model),
+                      )
+                    : Container(
+                        width: 0.0,
+                        height: 0.0,
+                      )
+              ],
+            ),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,

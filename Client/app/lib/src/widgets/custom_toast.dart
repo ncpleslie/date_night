@@ -8,8 +8,8 @@ class CustomToast extends StatelessWidget {
   @override
   Flushbar build(BuildContext context) {
     return Flushbar(
-      backgroundColor: Theme.of(context).cardTheme.color,
-      margin: EdgeInsets.fromLTRB(8, 8, 8, 30),
+      backgroundColor: Theme.of(context).cardTheme.color.withOpacity(0.9),
+      margin: EdgeInsets.fromLTRB(8, 8, 8, 60),
       borderRadius: 8,
       titleText: Text(
         title,
