@@ -8,9 +8,10 @@ class DateAroundModel {
 
   factory DateAroundModel.fromServerMap(dynamic data) {
     return DateAroundModel(
-        chosenIdea: data['chosenIdea'],
-        otherIdeas: data['otherIdeas'],
-        date: DateTime.parse(data['date']).toLocal(),
-        id: data['id']);
+      chosenIdea: data['chosenIdea'] ?? 'Server Error',
+      otherIdeas: data['otherIdeas'] ?? [''],
+      date: DateTime.parse(data['date']).toLocal() ?? DateTime.now(),
+      id: data['id'] ?? null,
+    );
   }
 }

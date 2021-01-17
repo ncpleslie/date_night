@@ -1,11 +1,12 @@
 import 'package:date_night/src/routes/route_generator.dart';
 import 'package:date_night/src/routes/routes.dart';
 import 'package:date_night/src/screens/index.dart';
-import 'package:model/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'
     show BuildContext, MaterialApp, StatelessWidget, Widget;
-import 'package:flutter/cupertino.dart';
+import 'package:model/main.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import './config/theme_data.dart';
 
 /// This is not the main App.

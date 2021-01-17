@@ -26,39 +26,38 @@ class _LoadingState extends State<Loading> {
       return Scaffold(
           body: PageBackground(
               child: Stack(
+        children: <Widget>[
+          Positioned(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Positioned(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          // Getting results text
-                          Text(
-                            'Calculating...',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).primaryTextTheme.headline5,
-                          ),
-                        ],
-                      ),
-                    ),
+                  // Getting results text
+                  Text(
+                    'Thinking...',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).primaryTextTheme.headline5,
                   ),
-
-                  // Animated 'Thinking' bubble
-                  const Positioned(
-                      child: Center(
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: SpinKitDoubleBounce(
-                        size: 300.0,
-                        duration: Duration(seconds: 3),
-                        color: Colors.white,
-                      ),
-                    ),
-                  )),
                 ],
               ),
-              animated: true));
+            ),
+          ),
+
+          // Animated 'Thinking' bubble
+          const Positioned(
+              child: Center(
+            child: Opacity(
+              opacity: 0.5,
+              child: SpinKitDoubleBounce(
+                size: 300.0,
+                duration: Duration(seconds: 3),
+                color: Colors.white,
+              ),
+            ),
+          )),
+        ],
+      )));
     });
   }
 

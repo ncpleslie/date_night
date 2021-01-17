@@ -1,11 +1,14 @@
-import 'dart:ui';
 import 'dart:core';
+import 'dart:ui';
+
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/widgets/custom_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
-import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
 import '../extensions/string_extensions.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
@@ -24,12 +27,7 @@ class DatesAroundCard extends StatelessWidget {
         : null;
   }
 
-  final List<List<Color>> pillColors = [
-    [
-      Colors.white70,
-      Colors.white,
-    ],
-  ];
+  final List<List<Color>> pillColors = ThemeConfig.pillColors;
 
   /// Card and inputs id.
   final String id;
@@ -60,7 +58,7 @@ class DatesAroundCard extends StatelessWidget {
     final Gradient pillColor = LinearGradient(
         begin: const FractionalOffset(0.0, 0.5),
         end: const FractionalOffset(0.5, 0.0),
-        stops: const <double>[0.0, 0.8],
+        stops: const <double>[0.0, 1],
         colors: pillColors[colorIndex]);
 
     return Card(
@@ -78,7 +76,9 @@ class DatesAroundCard extends StatelessWidget {
           maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+              color: Theme.of(context).primaryTextTheme.bodyText1.color,
+              fontSize: 12,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -90,8 +90,14 @@ class DatesAroundCard extends StatelessWidget {
       elevation: Theme.of(context).cardTheme.elevation,
       child: Container(
         padding: EdgeInsets.all(3),
-        decoration:
-            BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: const <double>[0.0, 1],
+              colors: ThemeConfig.pillColors[0]),
+        ),
         alignment: Alignment.center,
         child: InkWell(
           customBorder: new CircleBorder(),
@@ -109,7 +115,7 @@ class DatesAroundCard extends StatelessWidget {
             padding: EdgeInsets.all(0),
             child: Icon(
               Icons.more_horiz,
-              color: Colors.black26,
+              color: Theme.of(context).iconTheme.color
             ),
           ),
         ),
@@ -139,8 +145,8 @@ class DatesAroundCard extends StatelessWidget {
     if (result == 0) {
       model.reportDate(id);
       CustomToast(
-        title: "Reported",
-        message: "Thank you. This date has been reported",
+        title: "Thank you",
+        message: "This date has been reported",
       ).build(context);
     }
   }

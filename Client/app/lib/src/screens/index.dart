@@ -1,14 +1,15 @@
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/screens/plan_a_date/multi/plan_a_date_multi.dart';
 import 'package:date_night/src/screens/plan_a_date/single/plan_a_date_single.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:model/main.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../routes/route_generator.dart';
+import 'package:model/main.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import './dates_around/dates_around.dart';
+import '../routes/route_generator.dart';
 
 /// The Index page displays the bottom navigation bar.
 /// Allows the navigation to other pages while still persisting over those pages.
@@ -38,7 +39,6 @@ class _IndexState extends State<Index> {
         return Scaffold(
           body: _buildTabBar(context),
           resizeToAvoidBottomPadding: false,
-          // bottomNavigationBar: ,
         );
       },
     );
@@ -51,6 +51,7 @@ class _IndexState extends State<Index> {
       controller: _controller,
       screens: _getPage(),
       items: _getTabIcons(),
+      backgroundColor: Theme.of(context).appBarTheme.color,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
@@ -60,6 +61,17 @@ class _IndexState extends State<Index> {
       navBarStyle: NavBarStyle.style3,
       handleAndroidBackButtonPress: true,
       confineInSafeArea: true,
+      // itemAnimationProperties: ItemAnimationProperties(
+      //   // Navigation Bar's items animation properties.
+      //   duration: Duration(milliseconds: 200),
+      //   curve: Curves.ease,
+      // ),
+      screenTransitionAnimation: ScreenTransitionAnimation(
+        // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
     );
   }
 
@@ -72,10 +84,11 @@ class _IndexState extends State<Index> {
           inactiveColor: Colors.grey,
           opacity: 0.3),
       PersistentBottomNavBarItem(
-          icon: FaIcon(FontAwesomeIcons.male),
-          activeColor: Colors.teal,
-          inactiveColor: Colors.grey,
-          opacity: 0.7),
+        icon: FaIcon(FontAwesomeIcons.male),
+        activeColor: Colors.teal,
+        inactiveColor: Colors.grey,
+        opacity: 0.7,
+      ),
       PersistentBottomNavBarItem(
           icon: FaIcon(FontAwesomeIcons.peopleArrows),
           activeColor: Colors.purple,
