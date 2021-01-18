@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// Custom button displayed on the add date dialog.
-class DateAddDialogButton extends StatelessWidget {
-  const DateAddDialogButton(this.context, {this.icon, this.onTap});
+class CustomDialogButton extends StatelessWidget {
+  const CustomDialogButton(this.context, {this.icon, this.onTap});
 
   final BuildContext context;
 

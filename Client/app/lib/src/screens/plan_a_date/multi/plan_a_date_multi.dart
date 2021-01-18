@@ -3,16 +3,17 @@ import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/routes/routes.dart';
 import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
 import 'package:date_night/src/widgets/custom_app_bar.dart';
+import 'package:date_night/src/widgets/custom_dialog.dart';
+import 'package:date_night/src/widgets/custom_dialog_button.dart';
 import 'package:date_night/src/widgets/custom_toast.dart';
-import 'package:date_night/src/widgets/date_add_dialog_button.dart';
 import 'package:date_night/src/widgets/page_background.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:model/main.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter/services.dart';
 
 class PlanADateMulti extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
                             title: 'Enter a room',
                             subtitle:
                                 'If your friend has set up a room,\nyou can enter their code and join them',
-                            onPressed: () => _enterARoom(model)),
+                            onPressed: () => _enterARoom(context, model)),
                       ],
                     ),
             ),
@@ -169,131 +170,91 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
     );
   }
 
-  Future<void> _enterARoom(MainModel model) async {
+  Future<void> _enterARoom(BuildContext context, MainModel model) async {
     // Remove stored text when they reopen
-    _textController.text = '';
+    final List<CustomDialogButton> buttons = [
+      CustomDialogButton(
+        context,
+        icon: Icons.chevron_right,
+        onTap: () => {
+          Navigator.of(context, rootNavigator: true).pop('Continue'),
+          _navigateToMulti(model),
+          model.isMultiEditing = true,
+        },
+      )
+    ];
+
+    _textController.clear();
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return GestureDetector(
-          // If the user taps outside form boxes then the keyboard is minimized
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: AlertDialog(
-            backgroundColor: Theme.of(context).cardTheme.color.withOpacity(0.9),
-            shape: Theme.of(context).cardTheme.shape,
-            title: const Center(
-              child: Text('Enter a room code'),
-            ),
-            content: TextField(
-              textCapitalization: TextCapitalization.sentences,
-              autocorrect: true,
-              maxLines: 1,
-              controller: _textController,
-              autofocus: true,
-            ),
-            actions: <Widget>[
-              DateAddDialogButton(context,
-                  icon: Icons.chevron_right,
-                  onTap: () => {
-                        Navigator.pop(context),
-                        _navigateToMulti(model),
-                        model.isMultiEditing = true,
-                      })
-            ],
-          ),
+        return CustomDialog(
+          context,
+          controller: _textController,
+          title: 'Enter a room code',
+          dialogButtons: buttons,
         );
       },
     );
   }
 
   Future<void> _invalidRoomCode() async {
+    final List<CustomDialogButton> buttons = [
+      CustomDialogButton(
+        context,
+        icon: Icons.chevron_right,
+        onTap: () => Navigator.of(context, rootNavigator: true).pop('Continue'),
+      )
+    ];
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return GestureDetector(
-          // If the user taps outside form boxes then the keyboard is minimized
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: AlertDialog(
-            backgroundColor: Theme.of(context).cardTheme.color,
-            shape: Theme.of(context).cardTheme.shape,
-            title: const Center(
-              child: Text('Unable to enter that room'),
-            ),
-            content: Text('Are you sure that\'s the right room code?'),
-            actions: <Widget>[
-              DateAddDialogButton(context,
-                  icon: Icons.chevron_right,
-                  onTap: () => {Navigator.pop(context)})
-            ],
-          ),
+        return CustomDialog(
+          context,
+          title: 'Unable to enter that room',
+          content: Text('Are you sure that\'s the right room code?'),
+          dialogButtons: buttons,
         );
       },
     );
   }
 
+  void _onCopy(BuildContext context, String roomCode) {
+    Clipboard.setData(ClipboardData(text: roomCode));
+    CustomToast(title: 'Copied!', message: 'Room code copied to clipboard')
+        .build(context);
+  }
+
   Future<void> _newRoomCode(String roomCode, MainModel model) async {
     _roomTextController.text = roomCode;
+
+    final List<CustomDialogButton> buttons = [
+      CustomDialogButton(
+        context,
+        icon: Icons.chevron_right,
+        onTap: () => {
+          pushNewScreen(
+            context,
+            screen: DateAdd(),
+            withNavBar: false,
+            pageTransitionAnimation: ThemeConfig.pageTransition,
+          ),
+          model.isMultiEditing = true,
+          model.isRoomHost = true,
+          _roomTextController.clear(),
+        },
+      )
+    ];
+
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return GestureDetector(
-          // If the user taps outside form boxes then the keyboard is minimized
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: AlertDialog(
-            backgroundColor: Theme.of(context).cardTheme.color,
-            shape: Theme.of(context).cardTheme.shape,
-            title: const Center(
-              child: Text('Room code'),
-            ),
-            content: TextField(
-              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-              autofocus: true,
-              textAlignVertical: TextAlignVertical.center,
-              textAlign: TextAlign.center,
-              controller: _roomTextController,
-              enableInteractiveSelection: true,
-              readOnly: true,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 10),
-                filled: true,
-                fillColor: Colors.white,
-                suffix: Container(
-                  child: Icon(
-                    Icons.copy,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: roomCode));
-                CustomToast(
-                        title: 'Copied!',
-                        message: 'Room code copied to clipboard')
-                    .build(context);
-              },
-            ),
-            actions: <Widget>[
-              DateAddDialogButton(context,
-                  icon: Icons.chevron_right,
-                  onTap: () => {
-                        pushNewScreen(
-                          context,
-                          screen: DateAdd(),
-                          withNavBar: false,
-                          pageTransitionAnimation: ThemeConfig.pageTransition,
-                        ),
-                        model.isMultiEditing = true,
-                        model.isRoomHost = true
-                      })
-            ],
-          ),
-        );
+        return RoomCodeDialog(context,
+            controller: _roomTextController,
+            title: 'Room Code',
+            content: Container(),
+            dialogButtons: buttons,
+            onTap: () => _onCopy(context, roomCode));
       },
     );
   }

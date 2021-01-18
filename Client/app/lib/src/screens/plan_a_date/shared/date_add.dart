@@ -1,11 +1,13 @@
 import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/src/widgets/custom_dialog.dart';
+import 'package:date_night/src/widgets/custom_dialog_button.dart';
 import 'package:date_night/src/widgets/custom_fab.dart';
-import 'package:date_night/src/widgets/date_add_dialog.dart';
 import 'package:date_night/src/widgets/date_add_idea_card.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 import 'package:model/main.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/empty_screen_icon.dart';
 import '../../../widgets/page_background.dart';
@@ -17,6 +19,8 @@ import '../../../widgets/page_background.dart';
 /// return back to the 'Plan A Date' screen.
 // ignore: must_be_immutable
 class DateAdd extends StatelessWidget {
+  final TextEditingController _textController = TextEditingController();
+
   bool isListValid(model) {
     return model.isMultiEditing
         ? model.isMultiEditorsListValid()
@@ -135,11 +139,46 @@ class DateAdd extends StatelessWidget {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return DateAddDialog(
+        return CustomDialog(
           context,
-          model: model,
+          controller: _textController,
+          title: 'Date Idea?',
+          dialogButtons: _getDialogButtons(context, model),
         );
       },
     );
+  }
+
+  List<CustomDialogButton> _getDialogButtons(
+      BuildContext context, MainModel model) {
+    return [
+      CustomDialogButton(context,
+          icon: Icons.delete, onTap: () => _discard(context)),
+      CustomDialogButton(context,
+          icon: Icons.add, onTap: () => _addIdea(context, model))
+    ];
+  }
+
+  /// Add the idea to list of possible dates
+  void _addIdea(BuildContext context, MainModel model) {
+    if (_textController.text.isNotEmpty) {
+      if (model.isMultiEditing) {
+        model.addMultiIdea(_textController.text);
+      } else {
+        model.addIdea(_textController.text);
+      }
+
+      // Clear text from dialog.
+      // Otherwise text will remain next time.
+      _textController.text = '';
+
+      // Remove the dialog box.
+      Navigator.of(context, rootNavigator: true).pop('Continue');
+    }
+  }
+
+  /// Discard the date and remove the dialog box
+  void _discard(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('Discard');
   }
 }

@@ -3,7 +3,7 @@ export class FirestoreConstants {
         DB_NAME: 'dates',
         ORDER_BY: 'date',
         ORDER: "desc" as const,
-        LIMIT: 15,
+        LIMIT: 6,
     }
 
     public static readonly RANDOM_IDEAS = {

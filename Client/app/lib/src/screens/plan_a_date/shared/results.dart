@@ -132,8 +132,8 @@ class ResultsCard extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
                   child: AutoSizeText(
                     model.isMultiEditing
-                        ? model.dateMultiResponse.chosenIdea
-                        : model.dateResponse.chosenIdea,
+                        ? model.dateMultiResponse.chosenIdea.toUpperCase()
+                        : model.dateResponse.chosenIdea.toUpperCase(),
                     softWrap: true,
                     maxLines: 1,
                     textAlign: TextAlign.center,

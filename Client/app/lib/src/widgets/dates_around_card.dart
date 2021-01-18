@@ -113,10 +113,8 @@ class DatesAroundCard extends StatelessWidget {
                 minHeight: buttonSize,
                 minWidth: buttonSize),
             padding: EdgeInsets.all(0),
-            child: Icon(
-              Icons.more_horiz,
-              color: Theme.of(context).iconTheme.color
-            ),
+            child: Icon(Icons.more_horiz,
+                color: Theme.of(context).primaryIconTheme.color),
           ),
         ),
       ),
@@ -153,62 +151,68 @@ class DatesAroundCard extends StatelessWidget {
 
   /// Build the card.
   Widget _cardWithWords(BuildContext context) {
-    return Card(
-      elevation: Theme.of(context).cardTheme.elevation,
-      margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
-      shape: Theme.of(context).cardTheme.shape,
-      color: Theme.of(context).cardTheme.color,
-      shadowColor: Theme.of(context).cardTheme.shadowColor,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(18, 18, 18, 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25.0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Card(
+          elevation: Theme.of(context).cardTheme.elevation,
+          margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
+          shape: Theme.of(context).cardTheme.shape,
+          color: Theme.of(context).cardTheme.color,
+          shadowColor: Theme.of(context).cardTheme.shadowColor,
+          child: Container(
+            padding: EdgeInsets.fromLTRB(18, 18, 18, 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(bottom: 12),
-                  child: _createPill(context),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(bottom: 12),
+                      child: _createPill(context),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 12),
+                      child: _createOptions(context),
+                    )
+                  ],
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 12),
-                  child: _createOptions(context),
+                  padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
+                  child: AutoSizeText(
+                    _chosenDate.capitalize(),
+                    softWrap: true,
+                    maxLines: 2,
+                    style: Theme.of(context).primaryTextTheme.headline1,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Other Ideas: ',
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .subtitle1
+                              .copyWith(fontWeight: FontWeight.bold)),
+                      AutoSizeText(
+                        _otherDates.isNotEmpty ? _otherDates : ':(',
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        maxLines: 1,
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
-              child: AutoSizeText(
-                _chosenDate.capitalize(),
-                softWrap: true,
-                maxLines: 2,
-                style: Theme.of(context).primaryTextTheme.headline1,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Other Ideas: ',
-                      style: Theme.of(context)
-                          .primaryTextTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  AutoSizeText(
-                    _otherDates.isNotEmpty ? _otherDates : ':(',
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                    maxLines: 1,
-                    style: Theme.of(context).primaryTextTheme.subtitle1,
-                  ),
-                ],
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-const bool LIGHT_MODE = false;
+const bool LIGHT_MODE = true;
 
 class ThemeConfig {
   static PageTransitionAnimation get pageTransition => Platform.isIOS
@@ -23,7 +23,8 @@ class ThemeConfig {
       : 'assets/images/background_dark.svg';
 
   // Pill Colours
-  static List<List<Color>> get pillColors => LIGHT_MODE ? _pillColorsLight : _pillColorsDark;
+  static List<List<Color>> get pillColors =>
+      LIGHT_MODE ? _pillColorsLight : _pillColorsDark;
 
   static final List<List<Color>> _pillColorsLight = [
     [
@@ -85,9 +86,10 @@ class ThemeConfig {
     buttonColor: _primaryLight,
     cardTheme: CardTheme(
       elevation: 10,
-      shadowColor: Colors.black38,
-      color: Colors.white.withOpacity(0.7),
+      shadowColor: Colors.black38.withOpacity(0.2),
+      color: Colors.white.withOpacity(0.5),
       shape: RoundedRectangleBorder(
+        side: BorderSide(width: 1.5, color: Colors.white.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(25.0),
       ),
     ),
@@ -107,8 +109,10 @@ class ThemeConfig {
       headline5: TextStyle(color: _textLight, fontSize: 40.0),
     ),
     dialogTheme: DialogTheme(
+        elevation: 10,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(6.0)))),
+            side: BorderSide(width: 1.5, color: Colors.white.withOpacity(0.5)),
+            borderRadius: BorderRadius.all(Radius.circular(25.0)))),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         elevation: 0, backgroundColor: _accentLight),
     buttonTheme: ButtonThemeData(

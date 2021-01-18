@@ -1,7 +1,10 @@
-import 'package:model/main.dart';
-import 'package:date_night/src/widgets/date_add_dialog_button.dart';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:model/main.dart';
+
+import 'custom_dialog_button.dart';
 
 /// Dialog box for adding new date ideas on the Add Date page.
 class DateAddDialog extends StatelessWidget {
@@ -20,27 +23,33 @@ class DateAddDialog extends StatelessWidget {
       onTap: () {
         FocusScope.of(this.context).requestFocus(FocusNode());
       },
-      child: AlertDialog(
-        backgroundColor: Theme.of(this.context).cardTheme.color,
-        shape: Theme.of(this.context).dialogTheme.shape,
-        title: const Center(
-          child: Text('Date Ideas?'),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25.0),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+          child: AlertDialog(
+            backgroundColor: Theme.of(this.context).cardTheme.color,
+            shape: Theme.of(this.context).dialogTheme.shape,
+            title: const Center(
+              child: Text('Date Ideas?'),
+            ),
+            content: TextField(
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              maxLines: 1,
+              controller: _textController,
+              autofocus: true,
+              style: TextStyle(fontSize: 20.0),
+              decoration: InputDecoration(filled: true, fillColor: Colors.white),
+            ),
+            actions: <Widget>[
+              CustomDialogButton(this.context,
+                  icon: Icons.delete, onTap: () => _discard(this.context)),
+              CustomDialogButton(this.context,
+                  icon: Icons.add, onTap: () => _addIdea(this.context))
+            ],
+          ),
         ),
-        content: TextField(
-          textCapitalization: TextCapitalization.sentences,
-          autocorrect: true,
-          maxLines: 1,
-          controller: _textController,
-          autofocus: true,
-          style: TextStyle(fontSize: 20.0),
-          decoration: InputDecoration(filled: true, fillColor: Colors.white),
-        ),
-        actions: <Widget>[
-          DateAddDialogButton(this.context,
-              icon: Icons.delete, onTap: () => _discard(this.context)),
-          DateAddDialogButton(this.context,
-              icon: Icons.add, onTap: () => _addIdea(this.context))
-        ],
       ),
     );
   }
