@@ -4,33 +4,32 @@ import './rest/rest_api_handler_data.dart';
 /// For querying a production API.
 class ApiSdk {
   /// Fetch other current dates
-  static Future<Map<String, dynamic>> getDatesAround([String lastId]) async {
-    String url = '${apiConstants["dateNight"]}/dates_around';
+  static Future<Map<String, dynamic>> getDatesAround(String token,
+      [String lastId]) async {
+    String url = '${apiUrl}dates_around';
     if (lastId != null) {
       url = '$url/?lastId=$lastId';
     }
-    final response = await RestApiHandlerData.getData(url);
+    final response = await RestApiHandlerData.getData(
+        url, {'Authorization': 'Bearer $token'});
     return response;
   }
 
   /// Get a random date idea
-  static Future<Map<String, dynamic>> getRandomDate() async {
-    final response =
-        await RestApiHandlerData.getData('${apiConstants["dateNight"]}/random');
+  static Future<Map<String, dynamic>> getRandomDate(String token) async {
+    final response = await RestApiHandlerData.getData('${apiUrl}random', {'Authorization': 'Bearer $token'});
     return response;
   }
 
   /// Get the winning date idea
-  static Future<Map<String, dynamic>> postDate(
+  static Future<Map<String, dynamic>> postDate(String token,
       Map<String, dynamic> body) async {
-    final response = await RestApiHandlerData.postData(
-        '${apiConstants["dateNight"]}/date', body);
+    final response = await RestApiHandlerData.postData('${apiUrl}date', body, {'Authorization': 'Bearer $token'});
     return response;
   }
 
-  static Future<Map<String, dynamic>> getARoom() async {
-    final respone = await RestApiHandlerData.getData(
-        '${apiConstants["dateNight"]}/get_a_room');
+  static Future<Map<String, dynamic>> getARoom(String token) async {
+    final respone = await RestApiHandlerData.getData('${apiUrl}get_a_room', {'Authorization': 'Bearer $token'});
     return respone;
   }
 }

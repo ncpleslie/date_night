@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:api/main.dart';
-import './ideas.dart';
+import 'package:model/base.dart';
 import './models/date_around_model.dart';
 
-mixin DatesAroundModel on IdeasModel {
-  Stream<List<DateAroundModel>> stream;
+mixin DatesAroundModel on BaseModel {
+  Stream<List<DateAroundModel>> datesAroundStream;
   bool hasMore;
 
   bool _isLoading = false;
@@ -16,7 +16,7 @@ mixin DatesAroundModel on IdeasModel {
     _data = List<Map<String, dynamic>>();
     _controller = StreamController<List<Map<String, dynamic>>>.broadcast();
     _isLoading = false;
-    stream = _controller.stream.map(
+    datesAroundStream = _controller.stream.map(
         (List<Map<String, dynamic>> datesAroundData) => datesAroundData
             .map((Map<String, dynamic> dateAround) =>
                 DateAroundModel.fromServerMap(dateAround))
@@ -30,7 +30,7 @@ mixin DatesAroundModel on IdeasModel {
     return loadMore(clearCacheData: true);
   }
 
-  Future<void> loadMore({bool clearCacheData = false}) {
+  Future<void> loadMore({bool clearCacheData = false}) async {
     print('Querying external source 2');
 
     if (clearCacheData) {
@@ -43,26 +43,23 @@ mixin DatesAroundModel on IdeasModel {
     }
     _isLoading = true;
 
-    if (_data.isNotEmpty) {
-      return ApiSdk.getDatesAround(_data[_data.length - 1]['id'])
-          .then((Map<String, dynamic> datesAroundData) {
-        final List<Map<String, dynamic>> datesAround =
-            datesAroundData["datesAround"].cast<Map<String, dynamic>>();
-        _isLoading = false;
-        _data.addAll(datesAround);
-        hasMore = true;
-        _controller.add(_data);
-      });
-    }
+    try {
+      final Map<String, dynamic> response = _data.isNotEmpty
+          ? await ApiSdk.getDatesAround(
+              super.userToken, _data[_data.length - 1]['id'])
+          : await ApiSdk.getDatesAround(super.userToken);
 
-    return ApiSdk.getDatesAround().then((Map<String, dynamic> datesAroundData) {
       final List<Map<String, dynamic>> datesAround =
-          datesAroundData["datesAround"].cast<Map<String, dynamic>>();
+          response["datesAround"].cast<Map<String, dynamic>>();
+          
       _isLoading = false;
       _data.addAll(datesAround);
       hasMore = true;
       _controller.add(_data);
-    });
+    } catch (e) {
+      _isLoading = false;
+      _controller.addError(e);
+    }
   }
 
   void reportDate(String id) {

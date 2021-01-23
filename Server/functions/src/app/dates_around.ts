@@ -1,8 +1,9 @@
 import * as functions from 'firebase-functions';
-import Admin from './admin';
+import Admin, { authorizeUser } from './admin';
 import { FirestoreConstants } from '../constants/firestore.constants';
 import { DatesAroundDTO } from '../models/dates_around_dto.model';
 import { DateAround } from '../models/date_around.model';
+import ErrorDTO from '../models/error_dto.model';
 const firestore = Admin.firestore;
 /**
  * Dates of other user.
@@ -11,9 +12,16 @@ const firestore = Admin.firestore;
  */
 export const datesAround = async (request: functions.Request, response: functions.Response) => {
     functions.logger.info('Dates Around queried');
+
+    if (!await authorizeUser(request)) {
+        response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
+        return;
+    }
+
     let snapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>;
+
     try {
-        if (!request.query || !request.query.lastId) {
+        if (!request?.query?.lastId) {
             snapshot = await getDatesAroundQuery.get();
         } else {
             const queryCursor = await firestore.collection(FirestoreConstants.DATES.DB_NAME).doc(request.query.lastId as string).get();
@@ -25,7 +33,7 @@ export const datesAround = async (request: functions.Request, response: function
 
     } catch (e) {
         functions.logger.error(e);
-        response.status(500).send('Internal Server Error. Something went wrong on our end but it could\'ve been something in your request.');
+        response.status(500).send(new ErrorDTO('Internal Server Error. Something went wrong on our end but it could\'ve been something in your request.'));
     }
 }
 

@@ -1,6 +1,6 @@
 import 'package:date_night/src/routes/route_generator.dart';
 import 'package:date_night/src/routes/routes.dart';
-import 'package:date_night/src/screens/index.dart';
+import 'package:date_night/src/screens/boot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'
     show BuildContext, MaterialApp, StatelessWidget, Widget;
@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         theme: ThemeConfig.theme,
         onGenerateRoute: RouteGenerator.routes,
         routes: <String, WidgetBuilder>{
-          Routes.Index: (BuildContext context) => Index(),
+          Routes.Index: (BuildContext context) => Boot(),
         },
       ),
     );

@@ -2,9 +2,9 @@ import 'dart:math';
 import 'package:api/main.dart';
 import 'package:model/models/date_request_model.dart';
 import 'package:model/models/date_response_model.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'base.dart';
 
-mixin IdeasModel on Model {
+mixin IdeasModel on BaseModel {
   /// List of all the current date ideas.
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
@@ -87,15 +87,14 @@ mixin IdeasModel on Model {
     final Map<String, dynamic> dateReq =
         DateRequest(dateIdeas: flatList).toJson();
     try {
-      final Map<String, dynamic> response = await ApiSdk.postDate(dateReq);
+      final Map<String, dynamic> response =
+          await ApiSdk.postDate(super.userToken, dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);
       dateResponse = date;
     } catch (_) {
-      await Future<void>.delayed(const Duration(seconds: 2), () {
-        dateResponse = DateResponse(
-            chosenIdea: dateReq['dateIdeas']
-                [Random().nextInt(dateReq['dateIdeas'].length)]);
-      });
+      dateResponse = DateResponse(
+          chosenIdea: dateReq['dateIdeas']
+              [Random().nextInt(dateReq['dateIdeas'].length)]);
     }
     clearAllLists();
   }

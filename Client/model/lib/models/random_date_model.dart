@@ -4,6 +4,6 @@ class RandomDate {
   String date;
 
   factory RandomDate.fromServerMap(dynamic data) {
-    return RandomDate(date: data['idea'] ?? 'bake something');
+    return RandomDate(date: data['idea'] ?? 'baking something');
   }
 }

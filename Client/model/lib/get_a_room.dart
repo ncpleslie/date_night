@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:api/main.dart';
-import './ideas.dart';
+import 'package:model/base.dart';
 import 'models/date_request_model.dart';
 import 'models/date_response_model.dart';
 import 'models/get_a_room_model.dart';
 import 'models/get_a_room_response_model.dart';
 
-/// Requires that a Firestore emulator is running locally.
-/// See https://firebase.flutter.dev/docs/firestore/usage#emulator-usage
-const bool USE_FIRESTORE_EMULATOR = false;
-
-mixin GetARoomModel on IdeasModel {
+mixin GetARoomModel on BaseModel {
   bool isMultiEditing = false;
   bool isRoomHost = false;
   String roomId;
@@ -58,7 +53,7 @@ mixin GetARoomModel on IdeasModel {
       final Map<String, dynamic> dateReq =
           DateRequest(dateIdeas: chosenIdeas).toJson();
       try {
-        final Map<String, dynamic> response = await ApiSdk.postDate(dateReq);
+        final Map<String, dynamic> response = await ApiSdk.postDate(super.userToken, dateReq);
         dateMultiResponse = DateResponse.fromServerMap(response);
         print(dateMultiResponse.chosenIdea);
         print(dateMultiResponse.imageURL);
@@ -162,10 +157,10 @@ mixin GetARoomModel on IdeasModel {
     print('Querying external source 7');
 
     roomId = null;
-    final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom();
+    final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom(super.userToken);
     GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
     roomId = roomResponse.roomId;
-    await initFirebase();
+    await super.initFirebase();
     await queryARoom();
     return roomId;
   }
@@ -174,22 +169,13 @@ mixin GetARoomModel on IdeasModel {
     print('Querying external source 8');
 
     this.roomId = roomId;
-    await initFirebase();
+    await super.initFirebase();
     DocumentSnapshot results = await FirebaseFirestore.instance
         .collection('get_a_room')
         .doc(roomId)
         .get();
     await queryARoom();
     return results.exists;
-  }
-
-  Future<void> initFirebase() async {
-    await Firebase.initializeApp();
-
-    if (USE_FIRESTORE_EMULATOR) {
-      FirebaseFirestore.instance.settings = Settings(
-          host: 'localhost:8080', sslEnabled: false, persistenceEnabled: false);
-    }
   }
 
   Future<void> queryARoom() async {

@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:model/base.dart';
 import 'package:model/get_a_room.dart';
 import 'package:model/random_idea.dart';
 import 'package:model/system.dart';
@@ -10,14 +9,9 @@ import './ideas.dart';
 
 class MainModel extends Model
     with
+        BaseModel,
         IdeasModel,
         DatesAroundModel,
         RandomIdeaModel,
         GetARoomModel,
-        SystemModel {
-  /// Will generate a random int to a maximum of
-  /// what was passed through as a param.
-  int generateRandomInt(int maxNumber) {
-    return Random().nextInt(maxNumber);
-  }
-}
+        SystemModel {}

@@ -1,6 +1,6 @@
-import 'ideas.dart';
+import 'package:model/base.dart';
 
-mixin SystemModel on IdeasModel {
+mixin SystemModel on BaseModel {
   bool _isLightMode = true;
   bool _isSystemLightDarkMode = false;
   bool get isLightMode => _isLightMode;

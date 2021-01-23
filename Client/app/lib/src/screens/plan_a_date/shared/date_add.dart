@@ -100,7 +100,7 @@ class DateAdd extends StatelessWidget {
                           onDelete: _remove);
                     },
                   )
-                : EmptyScreenIcon(emptyIconString, CupertinoIcons.search));
+                : EmptyScreenIcon(emptyIconString, icon: CupertinoIcons.search));
       },
     );
   }

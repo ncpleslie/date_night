@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'api_exception.dart';
 
 class ApiBaseHelper {
-  Future<dynamic> get(String url) async {
+  Future<dynamic> get(String url, [Map<String, String> headers] ) async {
     var responseJson;
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -16,12 +16,13 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(String url, dynamic body) async {
+  Future<dynamic> post(String url, dynamic body, [Map<String, String> headers] ) async {
     try {
       final response = await http.post(url,
           headers: {
             'Content-type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            ...headers
           },
           body: json.encode(body));
       return _returnResponse(response);

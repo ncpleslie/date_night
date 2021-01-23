@@ -33,10 +33,10 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<DateAroundModel>>(
-      stream: widget.model.stream,
+      stream: widget.model.datesAroundStream,
       builder: (BuildContext context,
           AsyncSnapshot<List<DateAroundModel>> snapshot) {
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData && !snapshot.hasError) {
           return ShimmerDatesAroundListView();
         }
         return SmartRefresher(
@@ -52,11 +52,29 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
           controller: refreshController,
           onRefresh: _refresh,
           onLoading: _loading,
-          child: _list(context, snapshot),
+          child: !snapshot.hasError
+              ? _list(context, snapshot)
+              : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
         );
       },
     );
   }
+
+  // Widget _failedToLoad() {
+  //   return Container(
+  //     alignment: Alignment.center,
+  //     child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             'Failed to load.\nPull down to refresh.',
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           FaIcon(FontAwesomeIcons.angleDoubleDown)
+  //         ]),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -80,11 +98,8 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
       itemCount: snapshot.data.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (snapshot.hasError || snapshot.data.isEmpty) {
-          return _padding(
-            const EmptyScreenIcon(
-              'No Dates Found.',
-              CupertinoIcons.refresh,
-            ),
+          return EmptyScreenIcon(
+            'No Dates Found. Pull down to refresh',
           );
         }
         if (index < snapshot.data.length) {
