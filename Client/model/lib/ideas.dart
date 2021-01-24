@@ -96,11 +96,11 @@ mixin IdeasModel on BaseModel {
           chosenIdea: dateReq['dateIdeas']
               [Random().nextInt(dateReq['dateIdeas'].length)]);
     }
-    clearAllLists();
+    clearAllSingleLists();
   }
 
   /// Deletes all dates from all lists.
-  void clearAllLists() {
+  void clearAllSingleLists() {
     for (List<String> ideas in dateIdeas) {
       ideas.clear();
     }

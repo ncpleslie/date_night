@@ -52,11 +52,13 @@ mixin GetARoomModel on BaseModel {
 
       final Map<String, dynamic> dateReq =
           DateRequest(dateIdeas: chosenIdeas).toJson();
+
       try {
-        final Map<String, dynamic> response = await ApiSdk.postDate(super.userToken, dateReq);
+        final Map<String, dynamic> response =
+            await ApiSdk.postDate(super.userToken, dateReq);
         dateMultiResponse = DateResponse.fromServerMap(response);
-        print(dateMultiResponse.chosenIdea);
-        print(dateMultiResponse.imageURL);
+
+        // TODO: Make model
         await FirebaseFirestore.instance
             .collection('get_a_room')
             .doc(roomId)
@@ -64,19 +66,19 @@ mixin GetARoomModel on BaseModel {
           'chosenIdea': dateMultiResponse.chosenIdea,
           'imageUrl': dateMultiResponse.imageURL
         });
+
+        // deletion now automated
+        // deleteRoom();
       } catch (error) {
         print(error);
       }
     }
-    clearAllLists();
+    clearAllMultiLists();
   }
 
-  void clearAllLists() {
+  void clearAllMultiLists() {
     usersChosenIdeas.clear();
-    usersChosenIdeas.clear();
-    isMultiEditing = false;
     isRoomHost = false;
-    roomId = null;
   }
 
   Future<void> waitForResults() {
@@ -87,23 +89,21 @@ mixin GetARoomModel on BaseModel {
     roomSnapshot.listen((querySnapshot) {
       if (querySnapshot.data()['chosenIdea'] != null) {
         dateMultiResponse = DateResponse.fromServerMap(querySnapshot.data());
-        deleteRoom();
-        clearAllLists();
+        clearAllMultiLists();
         completer.complete();
       }
     });
     return completer.future;
   }
 
-  // TODO: Convert this to backend code
-  void deleteRoom() async {
-    print('Querying external source');
+  // // TODO: Convert this to backend code
+  // void deleteRoom() async {
+  //   print('Querying external source');
 
-    await FirebaseFirestore.instance
-        .collection('get_a_room')
-        .doc(roomId)
-        .delete();
-  }
+  //   final Map<String, dynamic> deleteARoomResponse =
+  //       await ApiSdk.deleteARoom(super.userToken, roomId);
+  //   print(deleteARoomResponse);
+  // }
 
   Future<void> waitForHost() async {
     print('Querying external source 5');
@@ -142,6 +142,7 @@ mixin GetARoomModel on BaseModel {
         .collection('get_a_room')
         .doc(roomId)
         .get();
+    print(results.data());
     GetARoomResponse getARoomResponse =
         GetARoomResponse.fromServerMap(results.data());
     chosenIdeas = getARoomResponse.chosenIdeas;
@@ -157,12 +158,19 @@ mixin GetARoomModel on BaseModel {
     print('Querying external source 7');
 
     roomId = null;
-    final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom(super.userToken);
-    GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
-    roomId = roomResponse.roomId;
-    await super.initFirebase();
-    await queryARoom();
-    return roomId;
+    try {
+      final Map<String, dynamic> getARoomResponse =
+          await ApiSdk.getARoom(super.userToken);
+
+      GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
+
+      roomId = roomResponse.roomId;
+      await super.initFirebase();
+      await queryARoom();
+      return roomId;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<bool> setARoom(String roomId) async {

@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import Admin, { authorizeUser } from './admin';
+import Admin from './admin';
 import RandomDateDTO from '../models/random_date_dto.model';
 import { FirestoreConstants } from '../constants/firestore.constants';
 import ErrorDTO from '../models/error_dto.model';
@@ -12,12 +12,12 @@ const firestore = Admin.firestore;
  * @param response 
  */
 export const randomIdea = async (request: functions.Request, response: functions.Response) => {
-    if (!await authorizeUser(request)) {
+    if (!await Admin.isAuthorizedUser(request)) {
         response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
         return;
     }
 
-    const db = firestore.collection(FirestoreConstants.RANDOM_IDEAS.DB_NAME);
+    const db = firestore().collection(FirestoreConstants.RANDOM_IDEAS.DB_NAME);
     const snapshot = await getRandomIdea(db);
     const randomDateDTO = snapshot.docs.map(doc => new RandomDateDTO(doc.data().idea))[0];
     functions.logger.info(`Random Idea successfully queried: ${randomDateDTO.idea}`);

@@ -198,7 +198,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
     );
   }
 
-  Future<void> _invalidRoomCode() async {
+  Future<void> _multiDateError(String title, String message) async {
     final List<CustomDialogButton> buttons = [
       CustomDialogButton(
         context,
@@ -211,8 +211,8 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
       builder: (BuildContext context) {
         return CustomDialog(
           context,
-          title: 'Unable to enter that room',
-          content: Text('Are you sure that\'s the right room code?'),
+          title: title,
+          content: Text(message, textAlign: TextAlign.center,),
           dialogButtons: buttons,
         );
       },
@@ -271,11 +271,17 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
       if (isValidRoom) {
         Navigator.of(context).pushNamed(Routes.DateAdd);
       } else {
-        await _invalidRoomCode();
+        await _multiDateError('Unable to enter that room',
+            'Are you sure that\'s the right room code?');
       }
     } else {
-      await model.getARoom();
-      await _newRoomCode(model.roomId, model);
+      try {
+        await model.getARoom();
+        await _newRoomCode(model.roomId, model);
+      } catch (e) {
+        await _multiDateError('Unable to create a room',
+            'Due to an unknown error we are unable to create a room.\nRestart the application and try again.');
+      }
     }
 
     // Give the route change animation time to finish

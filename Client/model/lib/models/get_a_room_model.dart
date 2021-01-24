@@ -6,6 +6,7 @@ class GetARoom {
   final String roomId;
 
   factory GetARoom.fromServerMap(dynamic data) {
-    return GetARoom(roomId: data['roomId'] ?? null);
+    assert(data['roomId'] != null);
+    return GetARoom(roomId: data['roomId']);
   }
 }

@@ -16,7 +16,7 @@ mixin BaseModel on Model {
 
     if (USE_FIRESTORE_EMULATOR) {
       FirebaseFirestore.instance.settings = Settings(
-          host: 'localhost:8080', sslEnabled: false, persistenceEnabled: false);
+          host: 'localhost:8083', sslEnabled: false, persistenceEnabled: false);
     }
   }
 
@@ -40,7 +40,6 @@ mixin BaseModel on Model {
 
   void signOut() {
     print('Querying external source 13');
-
     _firebaseAuth.signOut();
   }
 

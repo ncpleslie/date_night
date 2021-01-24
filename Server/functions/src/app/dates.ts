@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { authorizeUser } from './admin';
+import Admin from './admin';
 import DateRequest from '../models/date_request.model';
 import DateDTO from '../models/date_dto.model';
 import { StoredDate } from '../models/stored_date.model';
@@ -14,7 +14,7 @@ import ErrorDTO from '../models/error_dto.model';
  */
 // TODO: Implement fuzzy matching
 export const dates = async (request: functions.Request, response: functions.Response) => {
-    if (!await authorizeUser(request)) {
+    if (!await Admin.isAuthorizedUser(request)) {
         response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
         return;
     }

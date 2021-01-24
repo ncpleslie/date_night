@@ -32,6 +32,11 @@ class ApiSdk {
     final respone = await RestApiHandlerData.getData('${apiUrl}get_a_room', {'Authorization': 'Bearer $token'});
     return respone;
   }
+
+  static Future<Map<String, dynamic>> deleteARoom(String token, String roomId) async {
+    final respone = await RestApiHandlerData.deleteData('${apiUrl}get_a_room/?roomId=$roomId', {'Authorization': 'Bearer $token'});
+    return respone;
+  }
 }
 
 /// A mock API for on device testing.

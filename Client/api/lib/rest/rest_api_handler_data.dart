@@ -12,4 +12,9 @@ class RestApiHandlerData {
     final response = await _apiBaseHelper.post('$path', body, headers);
     return response;
   }
+
+    static deleteData(String path, [Map<String, String> headers]) async {
+    final response = await _apiBaseHelper.delete('$path', headers);
+    return response;
+  }
 }

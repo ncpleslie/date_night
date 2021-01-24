@@ -57,7 +57,7 @@ class _PlanADateState extends State<PlanADateSingle> {
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
           onTap: () {
-            model.clearAllLists();
+            model.clearAllSingleLists();
             setState(() {});
           },
           onTapDown: (TapDownDetails details) {},
@@ -120,6 +120,7 @@ class _PlanADateState extends State<PlanADateSingle> {
   /// Will navigate to the correct editting page based on is currently editing
   void _navigateToEdit(MainModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
+    model.isMultiEditing = false;
     pushNewScreen(
       context,
       screen: DateAdd(),

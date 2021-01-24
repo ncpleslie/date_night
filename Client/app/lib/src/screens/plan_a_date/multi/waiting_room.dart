@@ -33,7 +33,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                          Text('Waiting for your partner to enter their ideas'),
+                          Text('Waiting for your partner to enter their ideas', style: Theme.of(context).textTheme.bodyText2),
                           SizedBox(
                             height: 10,
                           ),
@@ -45,8 +45,10 @@ class _WaitingRoomState extends State<WaitingRoom> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                                'Some ideas have been added. Want to find out the winning idea?'),
+                            Text('Your partner has entered their ideas', style: Theme.of(context).textTheme.bodyText2),
+                            SizedBox(
+                              height: 10,
+                            ),
                             RaisedButton(
                               onPressed: () => {
                                 Navigator.of(context)
