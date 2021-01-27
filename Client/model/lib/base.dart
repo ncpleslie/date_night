@@ -31,7 +31,7 @@ mixin BaseModel on Model {
 
     try {
       _userCredential = await _firebaseAuth.signInAnonymously();
-      _idToken = await _userCredential.user.getIdToken();
+      //_idToken = await _userCredential.user.getIdToken();
       return _userCredential.user;
     } catch (e) {
       throw e;

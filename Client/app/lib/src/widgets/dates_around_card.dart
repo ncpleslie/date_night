@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/widgets/custom_toast.dart';
+import 'package:date_night/ui/views/dates_around/dates_around_model.dart';
 import 'package:flutter/material.dart';
 import 'package:model/main.dart';
-import 'package:model/models/date_around_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../extensions/string_extensions.dart';
@@ -18,7 +18,7 @@ class DatesAroundCard extends StatelessWidget {
   DatesAroundCard(
       {@required this.id,
       @required this.date,
-      @required this.model,
+     // @required this.model,
       this.index}) {
     _chosenDate = date.chosenIdea;
 
@@ -42,7 +42,7 @@ class DatesAroundCard extends StatelessWidget {
   String _chosenDate;
 
   /// The Scoped Model model.
-  final MainModel model;
+  //final MainModel model;
 
   /// The other date ideas.
   String _otherDates;
@@ -141,7 +141,7 @@ class DatesAroundCard extends StatelessWidget {
       elevation: 8.0,
     );
     if (result == 0) {
-      model.reportDate(id);
+      // model.reportDate(id);
       CustomToast(
         title: "Thank you",
         message: "This date has been reported",

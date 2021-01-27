@@ -105,8 +105,8 @@ class _DatesAroundListViewState extends State<DatesAroundListView> {
         if (index < snapshot.data.length) {
           return DatesAroundCard(
               id: snapshot.data[index].id,
-              date: snapshot.data[index],
-              model: widget.model,
+              //date: snapshot.data[index],
+              //model: widget.model,
               index: index);
         }
         return Container();

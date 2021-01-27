@@ -1,6 +1,7 @@
 import 'package:date_night/src/config/theme_data.dart';
 import 'package:date_night/src/screens/plan_a_date/multi/plan_a_date_multi.dart';
 import 'package:date_night/src/screens/plan_a_date/single/plan_a_date_single.dart';
+import 'package:date_night/ui/views/dates_around/dates_around_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +9,6 @@ import 'package:model/main.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import './dates_around/dates_around.dart';
 import '../routes/route_generator.dart';
 
 /// The Index page displays the bottom navigation bar.
@@ -102,7 +102,7 @@ class _IndexState extends State<Index> {
     return [
       MaterialApp(
           theme: ThemeConfig.theme,
-          home: SafeArea(child: DatesAroundPage()),
+          home: SafeArea(child: DatesAroundView()),
           onGenerateRoute: RouteGenerator.routes),
       MaterialApp(
           theme: ThemeConfig.theme,

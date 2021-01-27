@@ -38,10 +38,12 @@ class ApiSdk {
     return respone;
   }
 }
-
+int counter = 0;
 /// A mock API for on device testing.
 class MockApiSdk {
+  
   static Future<Map<String, dynamic>> getDatesAround() {
+    counter++;
     print('Getting example dates from Mock API service.');
     print('This service should only be used for development.');
     const int length = 2;
@@ -51,9 +53,9 @@ class MockApiSdk {
         "datesAround": List<Map<String, Object>>.generate(
           length,
           (int index) => <String, Object>{
-            'chosenIdea': 'Null',
+            'chosenIdea': 'Null $counter',
             'otherIdeas': <Object>['Null', 'Null'],
-            'date': DateTime.now(),
+            'date': DateTime.now().toString(),
             'id': '123'
           },
         )
