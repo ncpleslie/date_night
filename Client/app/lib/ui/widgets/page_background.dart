@@ -1,10 +1,7 @@
-import 'dart:typed_data';
-import 'dart:ui';
-
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/material.dart';
+import 'package:date_night/config/theme_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// The custom background that will be displayed on most screens.
 /// It can be animiated with the background fading between colors.

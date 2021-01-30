@@ -2,14 +2,16 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/widgets/custom_toast.dart';
+import 'package:date_night/config/theme_data.dart';
+import 'package:date_night/models/date_around_model.dart';
 import 'package:flutter/material.dart';
 import 'package:model/main.dart';
 import 'package:model/models/date_around_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../extensions/string_extensions.dart';
+import '../../extensions/string_extensions.dart';
+import 'custom_toast.dart';
+
 
 /// CustomCard
 // ignore: must_be_immutable

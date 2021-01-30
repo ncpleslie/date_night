@@ -1,11 +1,10 @@
 import 'package:date_night/app/locator.dart';
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:flutter/material.dart';
+import 'package:date_night/config/theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:model/main.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:stacked_services/stacked_services.dart';
+
 import 'app/router.gr.dart' as routes;
 
 void main() async {
@@ -25,14 +24,11 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<MainModel>(
-      model: MainModel(),
-      child: MaterialApp(
-          title: 'Date Night',
-          theme: ThemeConfig.theme,
-          initialRoute: routes.Routes.datesAroundView,
-          onGenerateRoute: routes.Router().onGenerateRoute,
-          navigatorKey: StackedService.navigatorKey),
-    );
+    return MaterialApp(
+        title: 'Date Night',
+        theme: ThemeConfig.theme,
+        initialRoute: routes.Routes.bootView,
+        onGenerateRoute: routes.Router().onGenerateRoute,
+        navigatorKey: StackedService.navigatorKey);
   }
 }

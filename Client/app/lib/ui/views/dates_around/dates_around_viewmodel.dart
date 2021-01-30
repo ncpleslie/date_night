@@ -1,9 +1,16 @@
 import 'dart:async';
+
 import 'package:api/main.dart';
+import 'package:date_night/app/locator.dart';
+import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/models/date_around_model.dart';
 import 'package:stacked/stacked.dart';
-import 'dates_around_model.dart';
+import 'package:stacked_services/stacked_services.dart';
+
 
 class DatesAroundViewModel extends StreamViewModel<List<DateAroundModel>> {
+  final NavigationService _navigationService = locator<NavigationService>();
+  
   StreamController<List<Map<String, dynamic>>> _controller;
   Stream<List<DateAroundModel>> _stream;
 
@@ -69,5 +76,9 @@ class DatesAroundViewModel extends StreamViewModel<List<DateAroundModel>> {
 
   void reportDate(String id) {
     print('Date Reported: $id');
+  }
+
+  Future navigateToSettings() async {
+    await _navigationService.navigateTo(Routes.bootView);
   }
 }

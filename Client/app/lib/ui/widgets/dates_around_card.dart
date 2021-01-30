@@ -2,14 +2,13 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/widgets/custom_toast.dart';
-import 'package:date_night/ui/views/dates_around/dates_around_model.dart';
+import 'package:date_night/config/theme_data.dart';
+import 'package:date_night/models/date_around_model.dart';
 import 'package:flutter/material.dart';
-import 'package:model/main.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../extensions/string_extensions.dart';
+import '../../extensions/string_extensions.dart';
+import 'custom_toast.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.
@@ -18,7 +17,7 @@ class DatesAroundCard extends StatelessWidget {
   DatesAroundCard(
       {@required this.id,
       @required this.date,
-     // @required this.model,
+      // @required this.model,
       this.index}) {
     _chosenDate = date.chosenIdea;
 
