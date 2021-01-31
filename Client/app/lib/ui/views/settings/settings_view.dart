@@ -1,7 +1,7 @@
-import 'package:date_night/config/about.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_viewmodel.dart';
@@ -10,65 +10,44 @@ import 'settings_viewmodel.dart';
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SettingsViewModel>.nonReactive(
+    return ViewModelBuilder<SettingsViewModel>.reactive(
       viewModelBuilder: () => SettingsViewModel(),
       builder: (BuildContext context, SettingsViewModel model, Widget child) =>
           Scaffold(
         appBar: CustomAppBar(name: 'Settings').build(context),
-        body: FutureBuilder(
-            future: _getAppInfo(),
-            builder:
-                (BuildContext context, AsyncSnapshot<AboutModel> snapshot) {
-              return ListView(
+        body: 
+               ListView(
                 children: [
-                  // Removed as dark mode not yet supported
+                  // Disable because there is no theme switching yet
 
                   // ListTile(
-                  //   title: Text('Toggle Light/Dark Mode'),
+                  //   leading: FaIcon(FontAwesomeIcons.adjust),
+                  //   title: Text('Light/Dark Mode'),
                   //   trailing: Switch.adaptive(
-                  //     activeTrackColor: Colors.green,
-                  //     activeColor: Colors.white,
-                  //     value: model.isLightMode,
-                  //     onChanged: (bool state) =>
-                  //         _toggleLightMode(model, state),
-                  //   ),
+                  //       activeTrackColor: Colors.green,
+                  //       activeColor: Colors.white,
+                  //       value: model.isLightMode,
+                  //       onChanged: (bool state) => model.toggleLightMode()),
                   // ),
-                  // ListTile(
-                  //   title: Text('Use System Light/Dark Mode'),
-                  //   trailing: Switch.adaptive(
-                  //     activeTrackColor: Colors.green,
-                  //     activeColor: Colors.white,
-                  //     value: model.isSystemLightDarkMode,
-                  //     onChanged: (bool state) =>
-                  //         _toggleSystemLightDarkMode(model, state),
-                  //   ),
-                  // ),
-                  if (snapshot.data != null)
+
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.trash),
+                    title: Text('Delete stored data'),
+                    subtitle: Text(
+                        'This will remove any data this app has stored on your device. This is good to use when you are having issue with this application.'),
+                    onTap: () => model.deleteDeviceData(),
+                  ),
+                  if (model.about != null)
                     AboutListTile(
-                      applicationName: snapshot.data.appName,
-                      applicationVersion: snapshot.data.version,
-                      applicationLegalese: snapshot.data.appLegalese,
+                      icon: FaIcon(FontAwesomeIcons.handPointRight),
+                      applicationName: model.about.appName,
+                      applicationVersion: model.about.version,
+                      applicationLegalese: model.about.appLegalese,
                     ),
                 ],
-              );
-            }),
+              ),
+        
       ),
     );
   }
-
-  Future<AboutModel> _getAppInfo() async {
-    return About.packageInfo();
-  }
-
-  // void _toggleLightMode(MainModel model, bool state) {
-  //   setState(() {
-  //     model.toggleIsLightMode(state);
-  //   });
-  // }
-
-  // void _toggleSystemLightDarkMode(MainModel model, bool state) {
-  //   setState(() {
-  //     model.toggleIsSystemLightDarkMode(state);
-  //   });
-  // }
 }

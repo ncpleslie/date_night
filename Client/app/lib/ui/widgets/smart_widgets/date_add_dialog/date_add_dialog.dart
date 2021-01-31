@@ -25,7 +25,7 @@ class DateAddDialog extends StatelessWidget {
       viewModelBuilder: () => DateAddDialogViewModel(),
       builder:
           (BuildContext context, DateAddDialogViewModel model, Widget child) {
-        if (_model != null) _model = model;
+        if (_model == null) _model = model;
         return GestureDetector(
           // If the user taps outside form boxes then the keyboard is minimized
           onTap: () {

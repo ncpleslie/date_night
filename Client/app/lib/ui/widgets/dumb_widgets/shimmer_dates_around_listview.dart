@@ -12,7 +12,7 @@ class ShimmerDatesAroundListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 40.0),
+      padding: const EdgeInsets.only(top: 65.0),
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
         offset += 10;

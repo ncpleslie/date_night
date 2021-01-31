@@ -7,6 +7,7 @@ class ApiSdk {
   static Future<Map<String, dynamic>> getDatesAround(String token,
       [String lastId]) async {
     String url = '${apiUrl}dates_around';
+    print(url);
     if (lastId != null) {
       url = '$url/?lastId=$lastId';
     }

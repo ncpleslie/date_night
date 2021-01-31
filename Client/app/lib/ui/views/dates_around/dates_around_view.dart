@@ -59,7 +59,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                     }),
                     controller: refreshController,
                     onRefresh: () async => {
-                      await model.refresh(),
+                      await model.loadMore(clearCacheData: true),
                       refreshController.refreshCompleted(),
                     },
                     onLoading: () => refreshController.loadComplete(),
@@ -67,7 +67,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                         ? _list(context, model.dates)
                         : EmptyScreenIcon(
                             'Failed to load.\nPull down to refresh.'),
-                  )),
+                  ),),
       ),
     );
   }
@@ -84,20 +84,14 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   /// Creates the list of dates around.
   Widget _list(BuildContext context, List<DateAroundModel> dates) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 40.0),
+      padding: const EdgeInsets.only(top: 65.0),
       controller: controller,
       itemCount: dates.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        if (dates.isEmpty) {
-          return EmptyScreenIcon(
-            'No Dates Found. Pull down to refresh',
-          );
-        }
         if (index < dates.length) {
           return DatesAroundCard(
               id: dates[index].id,
               date: dates[index],
-              // model: widget.model,
               index: index);
         }
         return Container();
@@ -109,7 +103,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   Widget _loadingState(LoadStatus status) {
     switch (status) {
       case LoadStatus.loading:
-        return _padding(const CupertinoActivityIndicator());
+        return ShimmerDatesAroundListView();
         break;
 
       case LoadStatus.failed:

@@ -16,10 +16,7 @@ import 'dates_around_card_viewmodel.dart';
 /// other users that are currently happening.
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
-  DatesAroundCard(
-      {@required this.id,
-      @required this.date,
-      this.index}) {
+  DatesAroundCard({@required this.id, @required this.date, this.index}) {
     _chosenDate = date.chosenIdea;
 
     _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
@@ -49,11 +46,13 @@ class DatesAroundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<DatesAroundCardViewModel>.nonReactive(viewModelBuilder: () => DatesAroundCardViewModel(),
-      builder: (BuildContext context, DatesAroundCardViewModel model, Widget child) { 
-        if (_model != null) _model = model;
-        return _cardWithWords(context); }
-    ) ;
+    return ViewModelBuilder<DatesAroundCardViewModel>.reactive(
+        viewModelBuilder: () => DatesAroundCardViewModel(),
+        builder: (BuildContext context, DatesAroundCardViewModel model,
+            Widget child) {
+          if (_model == null) _model = model;
+          return !model.isReported ? _cardWithWords(context) : Container();
+        });
   }
 
   Widget _createPill(BuildContext context) {
@@ -146,10 +145,6 @@ class DatesAroundCard extends StatelessWidget {
     );
     if (result == 0) {
       _model.reportDate(id);
-      CustomToast(
-        title: "Thank you",
-        message: "This date has been reported",
-      ).build(context);
     }
   }
 

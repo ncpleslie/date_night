@@ -28,14 +28,10 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    print('Hello');
-
-    return Scaffold(
-      body: _buildTabBar(context),
-      resizeToAvoidBottomPadding: false,
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: _buildTabBar(context),
+        resizeToAvoidBottomPadding: false,
+      );
 
   Widget _buildTabBar(BuildContext context) {
     return PersistentTabView(
