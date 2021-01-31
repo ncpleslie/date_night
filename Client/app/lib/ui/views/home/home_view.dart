@@ -1,4 +1,6 @@
 import 'package:date_night/ui/views/dates_around/dates_around_view.dart';
+import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_view.dart';
+import 'package:date_night/ui/views/plan_a_date/single/plan_a_date_single_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -104,8 +106,8 @@ class _HomeViewState extends State<HomeView> {
       //   home: SafeArea(child: DatesAroundView()),
       // ),
       DatesAroundView(),
-      DatesAroundView(),
-      DatesAroundView(),
+      PlanADateSingleView(),
+      PlanADateMultiView(),
       // MaterialApp(
       //     theme: ThemeConfig.theme,
       //     home: SafeArea(child: PlanADateSingle()),

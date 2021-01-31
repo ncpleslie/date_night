@@ -1,9 +1,8 @@
 import 'dart:ui';
 
+import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'custom_dialog_button.dart';
 
 /// Dialog box for adding new date ideas on the Add Date page.
 class CustomDialog extends StatelessWidget {

@@ -1,48 +1,48 @@
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/routes/routes.dart';
-import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
-import 'package:date_night/src/widgets/page_background.dart';
-import 'package:flutter/material.dart';
+import 'package:date_night/config/theme_data.dart';
+import 'package:date_night/ui/views/plan_a_date/shared/add_date/add_date_view.dart';
+import 'package:date_night/ui/views/plan_a_date/single/plan_a_date_single_viewmodel.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/selection_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:model/main.dart';
-import '../../../widgets/custom_app_bar.dart';
-import '../../../widgets/selection_button.dart';
+import 'package:stacked/stacked.dart';
 
 /// The Plan a Date page.
-class PlanADateSingle extends StatefulWidget {
+class PlanADateSingleView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _PlanADateState();
+    return _PlanADateSingleViewState();
   }
 }
 
-class _PlanADateState extends State<PlanADateSingle> {
+class _PlanADateSingleViewState extends State<PlanADateSingleView> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget widget, MainModel model) {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(
-                  name: '',
-                  transparent: true,
-                  icon: model.isAnyEditorsListValid()
-                      ? _deleteAllButton(model)
-                      : Container())
-              .build(context),
-          body: PageBackground(child: _buildSelectionButtons(model)),
-          floatingActionButton: Padding(
-              padding: EdgeInsets.only(bottom: 50),
-              child: _buildFinishButton(model)),
-        );
-      },
+    return ViewModelBuilder<PlanADateSingleViewModel>.reactive(
+      viewModelBuilder: () => PlanADateSingleViewModel(),
+      builder: (BuildContext context, PlanADateSingleViewModel model,
+              Widget child) =>
+          Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: CustomAppBar(
+                name: '',
+                transparent: true,
+                icon: model.isAnyEditorsListValid()
+                    ? _deleteAllButton(model)
+                    : Container())
+            .build(context),
+        body: PageBackground(child: _buildSelectionButtons(model)),
+        floatingActionButton: Padding(
+            padding: EdgeInsets.only(bottom: 50),
+            child: _buildFinishButton(model)),
+      ),
     );
   }
 
-  Widget _deleteAllButton(MainModel model) {
+  Widget _deleteAllButton(PlanADateSingleViewModel model) {
     final double buttonSize = 35;
     return Card(
       elevation: Theme.of(context).cardTheme.elevation,
@@ -81,7 +81,7 @@ class _PlanADateState extends State<PlanADateSingle> {
 
   /// Create the finish button to take the user to the loading page
   /// so their date can be calculated.
-  Widget _buildFinishButton(MainModel model) {
+  Widget _buildFinishButton(PlanADateSingleViewModel model) {
     return model.isAnyEditorsListValid()
         ? FloatingActionButton(
             child: Icon(
@@ -94,7 +94,7 @@ class _PlanADateState extends State<PlanADateSingle> {
   }
 
   /// Create the selectin buttons
-  Widget _buildSelectionButtons(MainModel model) {
+  Widget _buildSelectionButtons(PlanADateSingleViewModel model) {
     return Column(
       children: <Widget>[
         SelectionButton(
@@ -118,12 +118,12 @@ class _PlanADateState extends State<PlanADateSingle> {
   }
 
   /// Will navigate to the correct editting page based on is currently editing
-  void _navigateToEdit(MainModel model, int whoIsEditing) {
+  void _navigateToEdit(PlanADateSingleViewModel model, int whoIsEditing) {
     model.setCurrentEditor(whoIsEditing);
-    model.isMultiEditing = false;
+    // model.isMultiEditing = false;
     pushNewScreen(
       context,
-      screen: DateAdd(),
+      screen: AddDateView(),
       withNavBar: false,
       pageTransitionAnimation: ThemeConfig.pageTransition,
     );
@@ -131,6 +131,6 @@ class _PlanADateState extends State<PlanADateSingle> {
 
   /// Navigate to the next stage
   Future<void> _navigateToNext() async {
-    Navigator.of(context).pushNamed(Routes.Loading);
+    // Navigator.of(context).pushNamed(Routes.Loading);
   }
 }

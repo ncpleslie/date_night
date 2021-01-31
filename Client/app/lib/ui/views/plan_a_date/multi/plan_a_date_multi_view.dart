@@ -1,64 +1,64 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_night/src/config/theme_data.dart';
-import 'package:date_night/src/routes/routes.dart';
-import 'package:date_night/src/screens/plan_a_date/shared/date_add.dart';
-import 'package:date_night/src/widgets/custom_app_bar.dart';
-import 'package:date_night/src/widgets/custom_dialog.dart';
-import 'package:date_night/src/widgets/custom_dialog_button.dart';
-import 'package:date_night/src/widgets/custom_toast.dart';
-import 'package:date_night/src/widgets/page_background.dart';
+import 'package:date_night/config/theme_data.dart';
+import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_viewmodel.dart';
+import 'package:date_night/ui/views/plan_a_date/shared/add_date/add_date_view.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog_button.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_toast.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:model/main.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:stacked/stacked.dart';
 
-class PlanADateMulti extends StatefulWidget {
+class PlanADateMultiView extends StatefulWidget {
   @override
-  _PlanADateMultiState createState() => _PlanADateMultiState();
+  _PlanADateMultiViewState createState() => _PlanADateMultiViewState();
 }
 
-class _PlanADateMultiState extends State<PlanADateMulti> {
+class _PlanADateMultiViewState extends State<PlanADateMultiView> {
   bool _isLoading = false;
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _roomTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
-      builder: (BuildContext context, Widget widget, MainModel model) {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(
-            name: '',
-            icon: Container(),
-          ).build(context),
-          body: PageBackground(
-            child: Container(
-              padding: EdgeInsets.only(top: 70.0),
-              alignment: Alignment.center,
-              child: _isLoading
-                  ? CircularProgressIndicator()
-                  : ListView(
-                      children: [
-                        _button(
-                            title: 'Create a room',
-                            subtitle:
-                                'Get a room code and share it will another user.\nYou use your phone and they use theirs',
-                            onPressed: () => _navigateToMulti(model)),
-                        _button(
-                            title: 'Enter a room',
-                            subtitle:
-                                'If your friend has set up a room,\nyou can enter their code and join them',
-                            onPressed: () => _enterARoom(context, model)),
-                      ],
-                    ),
-            ),
+    return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
+      viewModelBuilder: () => PlanADateMultiViewModel(),
+      builder:
+          (BuildContext context, PlanADateMultiViewModel model, Widget child) =>
+              Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: CustomAppBar(
+          name: '',
+          icon: Container(),
+        ).build(context),
+        body: PageBackground(
+          child: Container(
+            padding: EdgeInsets.only(top: 70.0),
+            alignment: Alignment.center,
+            child: _isLoading
+                ? CircularProgressIndicator()
+                : ListView(
+                    children: [
+                      _button(
+                          title: 'Create a room',
+                          subtitle:
+                              'Get a room code and share it will another user.\nYou use your phone and they use theirs',
+                          onPressed: () => _navigateToMulti(model)),
+                      _button(
+                          title: 'Enter a room',
+                          subtitle:
+                              'If your friend has set up a room,\nyou can enter their code and join them',
+                          onPressed: () => _enterARoom(context, model)),
+                    ],
+                  ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -170,7 +170,8 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
     );
   }
 
-  Future<void> _enterARoom(BuildContext context, MainModel model) async {
+  Future<void> _enterARoom(
+      BuildContext context, PlanADateMultiViewModel model) async {
     // Remove stored text when they reopen
     final List<CustomDialogButton> buttons = [
       CustomDialogButton(
@@ -212,7 +213,10 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
         return CustomDialog(
           context,
           title: title,
-          content: Text(message, textAlign: TextAlign.center,),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
           dialogButtons: buttons,
         );
       },
@@ -225,7 +229,8 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
         .build(context);
   }
 
-  Future<void> _newRoomCode(String roomCode, MainModel model) async {
+  Future<void> _newRoomCode(
+      String roomCode, PlanADateMultiViewModel model) async {
     _roomTextController.text = roomCode;
 
     final List<CustomDialogButton> buttons = [
@@ -235,7 +240,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
         onTap: () => {
           pushNewScreen(
             context,
-            screen: DateAdd(),
+            screen: AddDateView(),
             withNavBar: false,
             pageTransitionAnimation: ThemeConfig.pageTransition,
           ),
@@ -259,7 +264,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
     );
   }
 
-  void _navigateToMulti(MainModel model) async {
+  void _navigateToMulti(PlanADateMultiViewModel model) async {
     setState(() {
       _isLoading = true;
     });
@@ -269,7 +274,7 @@ class _PlanADateMultiState extends State<PlanADateMulti> {
       _textController.text = '';
 
       if (isValidRoom) {
-        Navigator.of(context).pushNamed(Routes.DateAdd);
+        // Navigator.of(context).pushNamed(Routes.DateAdd);
       } else {
         await _multiDateError('Unable to enter that room',
             'Are you sure that\'s the right room code?');

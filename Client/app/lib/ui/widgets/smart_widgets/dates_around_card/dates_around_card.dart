@@ -4,11 +4,13 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/models/date_around_model.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../extensions/string_extensions.dart';
-import 'custom_toast.dart';
+import '../../../../extensions/string_extensions.dart';
+import 'dates_around_card_viewmodel.dart';
 
 /// The DatesAroundCard Widget is the card that displays dates other
 /// other users that are currently happening.
@@ -17,7 +19,6 @@ class DatesAroundCard extends StatelessWidget {
   DatesAroundCard(
       {@required this.id,
       @required this.date,
-      // @required this.model,
       this.index}) {
     _chosenDate = date.chosenIdea;
 
@@ -40,15 +41,19 @@ class DatesAroundCard extends StatelessWidget {
   /// The winning date idea.
   String _chosenDate;
 
-  /// The Scoped Model model.
-  //final MainModel model;
-
   /// The other date ideas.
   String _otherDates;
 
+  // ViewModel
+  DatesAroundCardViewModel _model;
+
   @override
   Widget build(BuildContext context) {
-    return _cardWithWords(context);
+    return ViewModelBuilder<DatesAroundCardViewModel>.nonReactive(viewModelBuilder: () => DatesAroundCardViewModel(),
+      builder: (BuildContext context, DatesAroundCardViewModel model, Widget child) { 
+        if (_model != null) _model = model;
+        return _cardWithWords(context); }
+    ) ;
   }
 
   Widget _createPill(BuildContext context) {
@@ -140,7 +145,7 @@ class DatesAroundCard extends StatelessWidget {
       elevation: 8.0,
     );
     if (result == 0) {
-      // model.reportDate(id);
+      _model.reportDate(id);
       CustomToast(
         title: "Thank you",
         message: "This date has been reported",

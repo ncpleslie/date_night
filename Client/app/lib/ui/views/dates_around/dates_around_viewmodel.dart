@@ -14,6 +14,11 @@ class DatesAroundViewModel extends StreamViewModel<List<DateAroundModel>> {
   StreamController<List<Map<String, dynamic>>> _controller;
   Stream<List<DateAroundModel>> _stream;
 
+  List<DateAroundModel> get dates => data;
+  
+    @override
+  Stream<List<DateAroundModel>> get stream => _stream;
+
   DatesAroundViewModel() {
     print('Querying external source 1');
     _data = List<Map<String, dynamic>>();
@@ -30,8 +35,7 @@ class DatesAroundViewModel extends StreamViewModel<List<DateAroundModel>> {
     notifyListeners();
   }
 
-  @override
-  Stream<List<DateAroundModel>> get stream => _stream;
+
 
   bool hasMore;
 
@@ -79,6 +83,6 @@ class DatesAroundViewModel extends StreamViewModel<List<DateAroundModel>> {
   }
 
   Future navigateToSettings() async {
-    await _navigationService.navigateTo(Routes.bootView);
+    await _navigationService.navigateTo(Routes.settingsView);
   }
 }

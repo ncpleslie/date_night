@@ -13,15 +13,18 @@ import 'package:flutter/material.dart';
 import '../ui/views/boot/boot_view.dart';
 import '../ui/views/dates_around/dates_around_view.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/settings/settings_view.dart';
 
 class Routes {
   static const String bootView = '/';
   static const String homeView = '/home-view';
   static const String datesAroundView = '/dates-around-view';
+  static const String settingsView = '/settings-view';
   static const all = <String>{
     bootView,
     homeView,
     datesAroundView,
+    settingsView,
   };
 }
 
@@ -32,6 +35,7 @@ class Router extends RouterBase {
     RouteDef(Routes.bootView, page: BootView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.datesAroundView, page: DatesAroundView),
+    RouteDef(Routes.settingsView, page: SettingsView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -54,6 +58,12 @@ class Router extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => DatesAroundView(key: args.key),
+        settings: data,
+      );
+    },
+    SettingsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SettingsView(),
         settings: data,
       );
     },

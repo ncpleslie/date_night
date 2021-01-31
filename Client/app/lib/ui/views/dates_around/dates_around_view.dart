@@ -1,9 +1,9 @@
 import 'package:date_night/models/date_around_model.dart';
-import 'package:date_night/ui/widgets/custom_app_bar.dart';
-import 'package:date_night/ui/widgets/dates_around_card.dart';
-import 'package:date_night/ui/widgets/empty_screen_icon.dart';
-import 'package:date_night/ui/widgets/page_background.dart';
-import 'package:date_night/ui/widgets/shimmer_dates_around_listview.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/empty_screen_icon.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/shimmer_dates_around_listview.dart';
+import 'package:date_night/ui/widgets/smart_widgets/dates_around_card/dates_around_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
@@ -45,36 +45,29 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                 scrollController: controller)
             .build(context),
         body: PageBackground(
-          child: StreamBuilder<List<DateAroundModel>>(
-            stream: model.stream,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<DateAroundModel>> snapshot) {
-              if (!snapshot.hasData && !snapshot.hasError) {
-                return ShimmerDatesAroundListView();
-              }
-              return SmartRefresher(
-                enablePullDown: true,
-                enablePullUp: true,
-                header: WaterDropHeader(
-                  waterDropColor: Theme.of(context).primaryColor,
-                ),
-                footer: CustomFooter(
-                    builder: (BuildContext context, LoadStatus status) {
-                  return _loadingState(status);
-                }),
-                controller: refreshController,
-                onRefresh: () async => {
-                  await model.refresh(),
-                  refreshController.refreshCompleted(),
-                },
-                onLoading: () => refreshController.loadComplete(),
-                child: !snapshot.hasError
-                    ? _list(context, snapshot)
-                    : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
-              );
-            },
-          ),
-        ),
+            child: model.isBusy
+                ? ShimmerDatesAroundListView()
+                : SmartRefresher(
+                    enablePullDown: true,
+                    enablePullUp: true,
+                    header: WaterDropHeader(
+                      waterDropColor: Theme.of(context).primaryColor,
+                    ),
+                    footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus status) {
+                      return _loadingState(status);
+                    }),
+                    controller: refreshController,
+                    onRefresh: () async => {
+                      await model.refresh(),
+                      refreshController.refreshCompleted(),
+                    },
+                    onLoading: () => refreshController.loadComplete(),
+                    child: !model.hasError && model.dataReady
+                        ? _list(context, model.dates)
+                        : EmptyScreenIcon(
+                            'Failed to load.\nPull down to refresh.'),
+                  )),
       ),
     );
   }
@@ -89,22 +82,21 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   }
 
   /// Creates the list of dates around.
-  Widget _list(
-      BuildContext context, AsyncSnapshot<List<DateAroundModel>> snapshot) {
+  Widget _list(BuildContext context, List<DateAroundModel> dates) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 40.0),
       controller: controller,
-      itemCount: snapshot.data.length + 1,
+      itemCount: dates.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        if (snapshot.hasError || snapshot.data.isEmpty) {
+        if (dates.isEmpty) {
           return EmptyScreenIcon(
             'No Dates Found. Pull down to refresh',
           );
         }
-        if (index < snapshot.data.length) {
+        if (index < dates.length) {
           return DatesAroundCard(
-              id: snapshot.data[index].id,
-              date: snapshot.data[index],
+              id: dates[index].id,
+              date: dates[index],
               // model: widget.model,
               index: index);
         }

@@ -1,32 +1,29 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:confetti/confetti.dart';
-import 'package:date_night/src/routes/routes.dart';
+import 'package:date_night/ui/views/plan_a_date/shared/results/result_viewmodel.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:model/main.dart';
-import 'package:scoped_model/scoped_model.dart';
-
-import '../../../config/strings.dart';
-import '../../../widgets/page_background.dart';
+import 'package:stacked/stacked.dart';
 
 /// Displays the winning date idea to the user.
-class Results extends StatefulWidget {
+class ResultsView extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _ResultsState();
-  }
+  State<StatefulWidget> createState() => _ResultsViewState();
 }
 
-class _ResultsState extends State<Results> with SingleTickerProviderStateMixin {
+class _ResultsViewState extends State<ResultsView>
+    with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationController _animationController;
   ConfettiController _confettiController;
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget child, MainModel model) {
+    return ViewModelBuilder<ResultsViewModel>.nonReactive(
+      viewModelBuilder: () => ResultsViewModel(),
+      builder: (BuildContext context, ResultsViewModel model, Widget child) {
         _confettiController.play();
         return PageBackground(
           child: SafeArea(
@@ -98,7 +95,7 @@ class ContinueButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             child: FaIcon(FontAwesomeIcons.chevronRight),
             onPressed: () {
-              Navigator.of(context).popUntil(ModalRoute.withName(Routes.Index));
+              // Navigator.of(context).popUntil(ModalRoute.withName(Routes.Index));
             },
           )
         ],
@@ -114,52 +111,55 @@ class ResultsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
-      builder: (BuildContext context, Widget child, MainModel model) {
-        return Card(
-          elevation: Theme.of(context).cardTheme.elevation,
-          margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
-          shape: Theme.of(context).cardTheme.shape,
-          color: Theme.of(context).cardTheme.color,
-          shadowColor: Theme.of(context).cardTheme.shadowColor,
-          child: Container(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
-                  child: AutoSizeText(
-                    model.isMultiEditing
-                        ? model.dateMultiResponse.chosenIdea.toUpperCase()
-                        : model.dateResponse.chosenIdea.toUpperCase(),
-                    softWrap: true,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .headline5
-                        .copyWith(fontSize: 60),
-                  ),
+    return ViewModelBuilder.nonReactive(
+      viewModelBuilder: () => ResultsViewModel(),
+      builder: (BuildContext context, ResultsViewModel model, Widget child) =>
+          Card(
+        elevation: Theme.of(context).cardTheme.elevation,
+        margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
+        shape: Theme.of(context).cardTheme.shape,
+        color: Theme.of(context).cardTheme.color,
+        shadowColor: Theme.of(context).cardTheme.shadowColor,
+        child: Container(
+          padding: EdgeInsets.all(30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
+                child: AutoSizeText(
+                  '',
+                  // model.isMultiEditing
+                  //     ? model.dateMultiResponse.chosenIdea.toUpperCase()
+                  //     : model.dateResponse.chosenIdea.toUpperCase(),
+                  softWrap: true,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .primaryTextTheme
+                      .headline5
+                      .copyWith(fontSize: 60),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
-                  child: AutoSizeText(
-                    Strings.ResultsResponses[model
-                        .generateRandomInt(Strings.ResultsResponses.length)],
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).primaryTextTheme.headline6,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                child: AutoSizeText(
+                  // TODO: Make service for this
+                  'Nice!',
+                  // Strings.ResultsResponses[model
+                  //     .generateRandomInt(Strings.ResultsResponses.length)],
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).primaryTextTheme.headline6,
+                ),
+              )
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
