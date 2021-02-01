@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_night/ui/widgets/smart_widgets/date_add_idea_card/date_add_idea_card_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 /// The date idea cards that are listed on the "Add Date" page.
 /// Makes each card for a chosen idea input by the user.
@@ -22,11 +20,7 @@ class DateAddIdeaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<DateAddIdeaCardViewModel>.nonReactive(
-      viewModelBuilder: () => DateAddIdeaCardViewModel(),
-      builder: (BuildContext context, DateAddIdeaCardViewModel model,
-              Widget child) =>
-          Dismissible(
+    return          Dismissible(
         direction: DismissDirection.endToStart,
         key: Key(name),
         background: Container(
@@ -40,7 +34,7 @@ class DateAddIdeaCard extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        onDismissed: (_) => model.onDelete(index),
+        onDismissed: (_) => onDelete(index),
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: Column(children: <Widget>[
@@ -67,13 +61,12 @@ class DateAddIdeaCard extends StatelessWidget {
                     color: Theme.of(context).primaryIconTheme.color,
                     size: Theme.of(context).primaryIconTheme.size,
                   ),
-                  onPressed: () => model.onDelete(index),
+                  onPressed: () => onDelete(index),
                 ),
               ]),
             )
           ]),
         ),
-      ),
     );
   }
 }

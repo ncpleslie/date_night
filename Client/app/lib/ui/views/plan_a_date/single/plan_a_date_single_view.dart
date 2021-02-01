@@ -1,5 +1,3 @@
-import 'package:date_night/config/theme_data.dart';
-import 'package:date_night/ui/views/plan_a_date/shared/add_date/add_date_view.dart';
 import 'package:date_night/ui/views/plan_a_date/single/plan_a_date_single_viewmodel.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
@@ -7,7 +5,6 @@ import 'package:date_night/ui/widgets/dumb_widgets/selection_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:stacked/stacked.dart';
 
 /// The Plan a Date page.
@@ -19,6 +16,7 @@ class PlanADateSingleView extends StatefulWidget {
 }
 
 class _PlanADateSingleViewState extends State<PlanADateSingleView> {
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateSingleViewModel>.reactive(
@@ -57,7 +55,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
           onTap: () {
-            model.clearAllSingleLists();
+            model.clearAllLists();
             setState(() {});
           },
           onTapDown: (TapDownDetails details) {},
@@ -88,7 +86,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
               Icons.keyboard_arrow_right,
               size: Theme.of(context).iconTheme.size,
             ),
-            onPressed: _navigateToNext,
+            onPressed: model.navigateToLoading,
           )
         : Container();
   }
@@ -101,7 +99,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
             context: context,
             text: 'Person One',
             disabled: model.isSelectedEditorsListValid(0),
-            onTap: () => _navigateToEdit(model, 0)),
+            onTap: () => model.navigateToEditScreen(0)),
         const SizedBox(
           height: 1.0,
         ),
@@ -109,28 +107,11 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
             context: context,
             text: 'Person Two',
             disabled: model.isSelectedEditorsListValid(1),
-            onTap: () => _navigateToEdit(model, 1)),
+            onTap: () => model.navigateToEditScreen(1)),
         const SizedBox(
           height: 45.0,
         ),
       ],
     );
-  }
-
-  /// Will navigate to the correct editting page based on is currently editing
-  void _navigateToEdit(PlanADateSingleViewModel model, int whoIsEditing) {
-    model.setCurrentEditor(whoIsEditing);
-    // model.isMultiEditing = false;
-    pushNewScreen(
-      context,
-      screen: AddDateView(),
-      withNavBar: false,
-      pageTransitionAnimation: ThemeConfig.pageTransition,
-    );
-  }
-
-  /// Navigate to the next stage
-  Future<void> _navigateToNext() async {
-    // Navigator.of(context).pushNamed(Routes.Loading);
   }
 }
