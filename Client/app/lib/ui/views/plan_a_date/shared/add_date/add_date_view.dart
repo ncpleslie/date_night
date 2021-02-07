@@ -25,10 +25,10 @@ class AddDateView extends StatelessWidget {
       builder: (BuildContext context, AddDateViewModel model, Widget child) =>
           Scaffold(
         // Build Appbar
-        extendBodyBehindAppBar: model.isMultiEditing ? false : true,
+        extendBodyBehindAppBar: model.isMultiEditing() ? false : true,
         appBar: CustomAppBar(
-          name: model.isMultiEditing ? 'Room code: ${model.roomId}' : '',
-          transparent: model.isMultiEditing ? false : true,
+          name: model.isMultiEditing() ? 'Room code: ${model.roomId}' : '',
+          transparent: model.isMultiEditing() ? false : true,
         ).build(context),
         resizeToAvoidBottomPadding: false,
 

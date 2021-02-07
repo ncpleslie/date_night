@@ -1,4 +1,5 @@
 import 'package:date_night/app/locator.dart';
+import 'package:date_night/services/plan_a_date_base_service.dart';
 import 'package:date_night/services/plan_a_date_single_service.dart';
 import 'package:date_night/services/random_idea_service.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +11,14 @@ class AddDateViewModel extends BaseViewModel {
   final PlanADateSingleService _planADateService =
       locator<PlanADateSingleService>();
   final RandomIdeaService _randomIdeaService = locator<RandomIdeaService>();
+  final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
 
   final TextEditingController _textController = TextEditingController();
   TextEditingController get textController => _textController;
 
-  bool _isMultiEditing = false;
-  bool get isMultiEditing => _isMultiEditing;
+  bool isMultiEditing() {
+    return _planADateBaseService.isMultiEditing;
+  }
 
   String _roomId = '';
   String get roomId => _roomId;
@@ -25,20 +28,20 @@ class AddDateViewModel extends BaseViewModel {
   }
 
   bool isListValid() {
-    return _isMultiEditing
+    return isMultiEditing()
         ? throw Exception()
         : _planADateService.isCurrentEditorsListValid();
   }
 
   List<String> getEditorsList() {
-    return _isMultiEditing
+    return isMultiEditing()
         ? throw Exception()
         : _planADateService.getCurrentEditorsIdeasList();
   }
 
   /// Moves the user back a screen, if they can
   void onFinish() {
-    if (_isMultiEditing) {
+    if (isMultiEditing()) {
       throw Exception();
     } else {
       if (_planADateService.isCurrentEditorsListValid()) {
@@ -51,7 +54,7 @@ class AddDateViewModel extends BaseViewModel {
   Future<void> addIdea() async {
     // TODO: Implement Dialog Service Here
     if (_textController.text.isNotEmpty) {
-      if (_isMultiEditing) {
+      if (isMultiEditing()) {
         throw Exception();
       } else {
         _planADateService.addIdea(_textController.text);
@@ -74,7 +77,7 @@ class AddDateViewModel extends BaseViewModel {
 
   /// Removes the date idea from potential dates.
   void removeIdea(int index) {
-    _isMultiEditing
+    isMultiEditing()
         ? throw Exception() // model.removeMultiEditorsItemAt(index);
         : _planADateService.removeItemAt(index);
     notifyListeners();

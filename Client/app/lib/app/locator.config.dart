@@ -9,6 +9,8 @@ import 'package:injectable/injectable.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../services/dates_around_service.dart';
+import '../services/plan_a_date_base_service.dart';
+import '../services/plan_a_date_multi_service.dart';
 import '../services/plan_a_date_single_service.dart';
 import '../services/random_idea_service.dart';
 import '../services/result_feedback_service.dart';
@@ -30,6 +32,8 @@ GetIt $initGetIt(
   gh.lazySingleton<DialogService>(() => thirdPartyServicesModule.dialogService);
   gh.lazySingleton<NavigationService>(
       () => thirdPartyServicesModule.navigationService);
+  gh.lazySingleton<PlanADateBaseService>(() => PlanADateBaseService());
+  gh.lazySingleton<PlanADateMultiService>(() => PlanADateMultiService());
   gh.lazySingleton<PlanADateSingleService>(() => PlanADateSingleService());
   gh.lazySingleton<RandomIdeaService>(() => RandomIdeaService());
   gh.lazySingleton<ResultFeedbackService>(() => ResultFeedbackService());

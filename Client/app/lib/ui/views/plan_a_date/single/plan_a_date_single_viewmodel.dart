@@ -24,7 +24,6 @@ class PlanADateSingleViewModel extends BaseViewModel {
   /// Will navigate to the correct editing page based on is currently editing
   Future<void> navigateToEditScreen(int editor) async {
     _planADateService.setCurrentEditor(editor);
-    // _planADateService.isMultiEditing = false;
     await _navigationService.navigateTo(Routes.addDateView);
     notifyListeners();
   }

@@ -29,7 +29,7 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: !_ideasChanged
+            child: !model.ideasChanged
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -90,10 +90,6 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
 
   Future<void> _otherUserEntered(PlanADateMultiViewModel model) async {
     await model.commitMultiIdeas();
-    await model.ideasHaveChanged((bool stateChanged) => {
-          setState(() {
-            _ideasChanged = stateChanged;
-          })
-        });
+    await model.ideasHaveChanged();
   }
 }

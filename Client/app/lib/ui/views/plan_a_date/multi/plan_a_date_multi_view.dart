@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_viewmodel.dart';
 import 'package:date_night/ui/views/plan_a_date/shared/add_date/add_date_view.dart';
+import 'package:date_night/ui/views/plan_a_date/single/plan_a_date_single_viewmodel.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog_button.dart';
@@ -20,7 +21,6 @@ class PlanADateMultiView extends StatefulWidget {
 }
 
 class _PlanADateMultiViewState extends State<PlanADateMultiView> {
-  bool _isLoading = false;
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _roomTextController = TextEditingController();
 
@@ -38,9 +38,9 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         ).build(context),
         body: PageBackground(
           child: Container(
-            padding: EdgeInsets.only(top: 70.0),
+            padding: EdgeInsets.only(top: 0.0),
             alignment: Alignment.center,
-            child: _isLoading
+            child: model.isLoading
                 ? CircularProgressIndicator()
                 : ListView(
                     children: [
@@ -48,12 +48,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                           title: 'Create a room',
                           subtitle:
                               'Get a room code and share it will another user.\nYou use your phone and they use theirs',
-                          onPressed: () => _navigateToMulti(model)),
+                          onPressed: () => _createARoom(model)),
                       _button(
                           title: 'Enter a room',
                           subtitle:
                               'If your friend has set up a room,\nyou can enter their code and join them',
-                          onPressed: () => _enterARoom(context, model)),
+                          onPressed: () => _enterARoom(model)),
                     ],
                   ),
           ),
@@ -68,64 +68,60 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
       child: Stack(
         children: <Widget>[
           // Words in card
-          Positioned(
-            left: 20.0,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 175.0,
-              child: Card(
-                elevation: Theme.of(context).cardTheme.elevation,
-                shape: Theme.of(context).cardTheme.shape,
-                color: Theme.of(context).cardTheme.color,
-                margin: const EdgeInsets.all(20.0),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                      primary:
-                          Theme.of(context).primaryTextTheme.headline6.color),
-                  onPressed: onPressed,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 220,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              AutoSizeText(
-                                title.toUpperCase(),
-                                softWrap: true,
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText2,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.all(8.0),
-                                height: 1,
-                                color: Colors.black38,
-                              ),
-                              AutoSizeText(
-                                subtitle,
-                                softWrap: true,
-                                maxLines: 3,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle1
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 175.0,
+            child: Card(
+              elevation: Theme.of(context).cardTheme.elevation,
+              shape: Theme.of(context).cardTheme.shape,
+              color: Theme.of(context).cardTheme.color,
+              margin: const EdgeInsets.all(20.0),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    primary:
+                        Theme.of(context).primaryTextTheme.headline6.color),
+                onPressed: onPressed,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 220,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              title.toUpperCase(),
+                              softWrap: true,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyText2,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(8.0),
+                              height: 1,
+                              color: Colors.black38,
+                            ),
+                            AutoSizeText(
+                              subtitle,
+                              softWrap: true,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .subtitle1
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        _createChevron(context, onPressed)
-                      ],
-                    ),
+                      ),
+                      _createChevron(context, onPressed)
+                    ],
                   ),
                 ),
               ),
@@ -134,6 +130,14 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         ],
       ),
     );
+  }
+
+  void _createARoom(PlanADateMultiViewModel model) async {
+    await model.createARoom();
+  }
+
+  void _enterARoom(PlanADateMultiViewModel model) async {
+    await model.enterARoom();
   }
 
   Widget _createChevron(BuildContext context, Function onPressed) {
@@ -170,133 +174,125 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     );
   }
 
-  Future<void> _enterARoom(
-      BuildContext context, PlanADateMultiViewModel model) async {
-    // Remove stored text when they reopen
-    final List<CustomDialogButton> buttons = [
-      CustomDialogButton(
-        context,
-        icon: Icons.chevron_right,
-        onTap: () => {
-          Navigator.of(context, rootNavigator: true).pop('Continue'),
-          _navigateToMulti(model),
-          model.isMultiEditing = true,
-        },
-      )
-    ];
+  // Future<void> _enterARoom(
+  //     BuildContext context, PlanADateMultiViewModel model) async {
+  //   // Remove stored text when they reopen
+  //   final List<CustomDialogButton> buttons = [
+  //     CustomDialogButton(
+  //       context,
+  //       icon: Icons.chevron_right,
+  //       onTap: model.enterRoom,
+  //     )
+  //   ];
 
-    _textController.clear();
-    await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomDialog(
-          context,
-          controller: _textController,
-          title: 'Enter a room code',
-          dialogButtons: buttons,
-        );
-      },
-    );
-  }
+  //   _textController.clear();
+  //   await showDialog<String>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CustomDialog(
+  //         context,
+  //         controller: _textController,
+  //         title: 'Enter a room code',
+  //         dialogButtons: buttons,
+  //       );
+  //     },
+  //   );
+  // }
 
-  Future<void> _multiDateError(String title, String message) async {
-    final List<CustomDialogButton> buttons = [
-      CustomDialogButton(
-        context,
-        icon: Icons.chevron_right,
-        onTap: () => Navigator.of(context, rootNavigator: true).pop('Continue'),
-      )
-    ];
-    await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomDialog(
-          context,
-          title: title,
-          content: Text(
-            message,
-            textAlign: TextAlign.center,
-          ),
-          dialogButtons: buttons,
-        );
-      },
-    );
-  }
+  // Future<void> _multiDateError(String title, String message) async {
+  //   final List<CustomDialogButton> buttons = [
+  //     CustomDialogButton(
+  //       context,
+  //       icon: Icons.chevron_right,
+  //       onTap: () => Navigator.of(context, rootNavigator: true).pop('Continue'),
+  //     )
+  //   ];
+  //   await showDialog<String>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CustomDialog(
+  //         context,
+  //         title: title,
+  //         content: Text(
+  //           message,
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         dialogButtons: buttons,
+  //       );
+  //     },
+  //   );
+  // }
 
-  void _onCopy(BuildContext context, String roomCode) {
-    Clipboard.setData(ClipboardData(text: roomCode));
-    CustomToast(title: 'Copied!', message: 'Room code copied to clipboard')
-        .build(context);
-  }
+  // void _onCopy(BuildContext context, String roomCode) {
+  //   Clipboard.setData(ClipboardData(text: roomCode));
+  //   CustomToast(title: 'Copied!', message: 'Room code copied to clipboard')
+  //       .build(context);
+  // }
 
-  Future<void> _newRoomCode(
-      String roomCode, PlanADateMultiViewModel model) async {
-    _roomTextController.text = roomCode;
+  // Future<void> _newRoomCode(
+  //     String roomCode, PlanADateMultiViewModel model) async {
+  //   _roomTextController.text = roomCode;
 
-    final List<CustomDialogButton> buttons = [
-      CustomDialogButton(
-        context,
-        icon: Icons.chevron_right,
-        onTap: () => {
-          pushNewScreen(
-            context,
-            screen: AddDateView(),
-            withNavBar: false,
-            pageTransitionAnimation: ThemeConfig.pageTransition,
-          ),
-          model.isMultiEditing = true,
-          model.isRoomHost = true,
-          _roomTextController.clear(),
-        },
-      )
-    ];
+  //   final List<CustomDialogButton> buttons = [
+  //     CustomDialogButton(
+  //       context,
+  //       icon: Icons.chevron_right,
+  //       onTap: () => {
+  //         pushNewScreen(
+  //           context,
+  //           screen: AddDateView(),
+  //           withNavBar: false,
+  //           pageTransitionAnimation: ThemeConfig.pageTransition,
+  //         ),
+  //         model.isMultiEditing = true,
+  //         model.isRoomHost = true,
+  //         _roomTextController.clear(),
+  //       },
+  //     )
+  //   ];
 
-    await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return RoomCodeDialog(context,
-            controller: _roomTextController,
-            title: 'Room Code',
-            content: Container(),
-            dialogButtons: buttons,
-            onTap: () => _onCopy(context, roomCode));
-      },
-    );
-  }
+  //   await showDialog<String>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return RoomCodeDialog(context,
+  //           controller: _roomTextController,
+  //           title: 'Room Code',
+  //           content: Container(),
+  //           dialogButtons: buttons,
+  //           onTap: () => _onCopy(context, roomCode));
+  //     },
+  //   );
+  // }
 
-  void _navigateToMulti(PlanADateMultiViewModel model) async {
-    setState(() {
-      _isLoading = true;
-    });
+  // void _navigateToMulti(PlanADateMultiViewModel model) async {
+  //   if (_textController.text.isNotEmpty) {
+  //     bool isValidRoom = await model.setARoom(_textController.text);
+  //     _textController.text = '';
 
-    if (_textController.text.isNotEmpty) {
-      bool isValidRoom = await model.setARoom(_textController.text);
-      _textController.text = '';
+  //     if (isValidRoom) {
+  //       // Navigator.of(context).pushNamed(Routes.DateAdd);
+  //     } else {
+  //       await _multiDateError('Unable to enter that room',
+  //           'Are you sure that\'s the right room code?');
+  //     }
+  //   } else {
+  //     try {
+  //       await model.getARoom();
+  //       await _newRoomCode(model.roomId, model);
+  //     } catch (e) {
+  //       await _multiDateError('Unable to create a room',
+  //           'Due to an unknown error we are unable to create a room.\nRestart the application and try again.');
+  //     }
+  //   }
 
-      if (isValidRoom) {
-        // Navigator.of(context).pushNamed(Routes.DateAdd);
-      } else {
-        await _multiDateError('Unable to enter that room',
-            'Are you sure that\'s the right room code?');
-      }
-    } else {
-      try {
-        await model.getARoom();
-        await _newRoomCode(model.roomId, model);
-      } catch (e) {
-        await _multiDateError('Unable to create a room',
-            'Due to an unknown error we are unable to create a room.\nRestart the application and try again.');
-      }
-    }
-
-    // Give the route change animation time to finish
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => {
-        setState(() {
-          _isLoading = false;
-        })
-      },
-    );
-  }
+  //   // Give the route change animation time to finish
+  //   Future.delayed(
+  //     const Duration(seconds: 1),
+  //     () => {
+  //       setState(() {
+  //         _isLoading = false;
+  //       })
+  //     },
+  //   );
+  // }
 }

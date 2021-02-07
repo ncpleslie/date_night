@@ -1,12 +1,18 @@
 import 'dart:math';
 
 import 'package:api/main.dart';
+import 'package:date_night/app/locator.dart';
 import 'package:date_night/models/date_request_model.dart';
 import 'package:date_night/models/date_response_model.dart';
+import 'package:date_night/services/plan_a_date_base_service.dart';
+import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PlanADateSingleService {
+  final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
+  final UserService _userService = locator<UserService>();
+
     /// List of all the current date ideas.
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
@@ -18,6 +24,7 @@ class PlanADateSingleService {
 
   /// Set who the current editor is.
   void setCurrentEditor(int editor) {
+    _planADateBaseService.isMultiEditing = false;
     currentEditor = editor;
   }
 
@@ -88,7 +95,7 @@ class PlanADateSingleService {
         DateRequest(dateIdeas: flatList).toJson();
     try {
       final Map<String, dynamic> response =
-          await ApiSdk.postDate('super.userToken', dateReq);
+          await ApiSdk.postDate(_userService.userToken, dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);
       dateResponse = date;
     } catch (_) {
