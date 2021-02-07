@@ -1,12 +1,11 @@
 class DateResponse {
-  DateResponse({this.chosenIdea, this.imageURL});
+  DateResponse({this.chosenIdea});
 
   final String chosenIdea;
-  final String imageURL;
 
   factory DateResponse.fromServerMap(dynamic data) {
+    assert(data['chosenIdea']);
     return DateResponse(
-        chosenIdea: data['chosenIdea'] ?? 'Server Error',
-        imageURL: data['imageUrl'] ?? '');
+        chosenIdea: data['chosenIdea']);
   }
 }

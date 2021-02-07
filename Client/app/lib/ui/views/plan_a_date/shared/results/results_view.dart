@@ -83,22 +83,24 @@ class ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          RaisedButton(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-            shape: Theme.of(context).cardTheme.shape,
-            color: Theme.of(context).primaryColor,
-            child: FaIcon(FontAwesomeIcons.chevronRight),
-            onPressed: () {
-              // Navigator.of(context).popUntil(ModalRoute.withName(Routes.Index));
-            },
-          )
-        ],
+    return ViewModelBuilder<ResultsViewModel>.nonReactive(
+      viewModelBuilder: () => ResultsViewModel(),
+      builder: (BuildContext context, ResultsViewModel model, Widget child) =>
+          Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            RaisedButton(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+              shape: Theme.of(context).cardTheme.shape,
+              color: Theme.of(context).primaryColor,
+              child: FaIcon(FontAwesomeIcons.chevronRight),
+              onPressed: model.removeView,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -129,10 +131,7 @@ class ResultsCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(6, 0, 0, 12),
                 child: AutoSizeText(
-                  '',
-                  // model.isMultiEditing
-                  //     ? model.dateMultiResponse.chosenIdea.toUpperCase()
-                  //     : model.dateResponse.chosenIdea.toUpperCase(),
+                  model.getChosenIdea().toUpperCase(),
                   softWrap: true,
                   maxLines: 1,
                   textAlign: TextAlign.center,
@@ -145,10 +144,7 @@ class ResultsCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
                 child: AutoSizeText(
-                  // TODO: Make service for this
-                  'Nice!',
-                  // Strings.ResultsResponses[model
-                  //     .generateRandomInt(Strings.ResultsResponses.length)],
+                  model.getRandomFeedback(),
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   maxLines: 1,

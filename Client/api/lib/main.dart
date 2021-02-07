@@ -18,31 +18,40 @@ class ApiSdk {
 
   /// Get a random date idea
   static Future<Map<String, dynamic>> getRandomDate(String token) async {
-    final response = await RestApiHandlerData.getData('${apiUrl}random', {'Authorization': 'Bearer $token'});
+    final response = await RestApiHandlerData.getData(
+        '${apiUrl}random', {'Authorization': 'Bearer $token'});
     return response;
   }
 
   /// Get the winning date idea
-  static Future<Map<String, dynamic>> postDate(String token,
-      Map<String, dynamic> body) async {
-    final response = await RestApiHandlerData.postData('${apiUrl}date', body, {'Authorization': 'Bearer $token'});
+  static Future<Map<String, dynamic>> postDate(
+      String token, Map<String, dynamic> body) async {
+    print(body);
+    final response = await RestApiHandlerData.postData(
+        '${apiUrl}date', body, {'Authorization': 'Bearer $token'});
+    print(response);
     return response;
   }
 
   static Future<Map<String, dynamic>> getARoom(String token) async {
-    final respone = await RestApiHandlerData.getData('${apiUrl}get_a_room', {'Authorization': 'Bearer $token'});
+    final respone = await RestApiHandlerData.getData(
+        '${apiUrl}get_a_room', {'Authorization': 'Bearer $token'});
     return respone;
   }
 
-  static Future<Map<String, dynamic>> deleteARoom(String token, String roomId) async {
-    final respone = await RestApiHandlerData.deleteData('${apiUrl}get_a_room/?roomId=$roomId', {'Authorization': 'Bearer $token'});
+  static Future<Map<String, dynamic>> deleteARoom(
+      String token, String roomId) async {
+    final respone = await RestApiHandlerData.deleteData(
+        '${apiUrl}get_a_room/?roomId=$roomId',
+        {'Authorization': 'Bearer $token'});
     return respone;
   }
 }
+
 int counter = 0;
+
 /// A mock API for on device testing.
 class MockApiSdk {
-  
   static Future<Map<String, dynamic>> getDatesAround() {
     counter++;
     print('Getting example dates from Mock API service.');

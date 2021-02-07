@@ -104,6 +104,5 @@ class PlanADateSingleService {
     for (List<String> ideas in dateIdeas) {
       ideas.clear();
     }
-    // notifyListeners();
   }
 }

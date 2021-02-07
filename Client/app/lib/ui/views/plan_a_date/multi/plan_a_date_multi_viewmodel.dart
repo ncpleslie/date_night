@@ -65,7 +65,6 @@ class PlanADateMultiViewModel extends BaseViewModel {
             .doc(roomId)
             .update({
           'chosenIdea': dateMultiResponse.chosenIdea,
-          'imageUrl': dateMultiResponse.imageURL
         });
 
         // deletion now automated
