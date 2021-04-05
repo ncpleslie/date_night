@@ -7,12 +7,14 @@ import 'package:date_night/models/date_request_model.dart';
 import 'package:date_night/models/date_response_model.dart';
 import 'package:date_night/models/get_a_room_model.dart';
 import 'package:date_night/models/get_a_room_response_model.dart';
+import 'package:date_night/services/plan_a_date_base_service.dart';
 import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PlanADateMultiService {
   final UserService _service = locator<UserService>();
+  final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
 
   bool isMultiEditing = false;
   bool isRoomHost = false;
@@ -171,6 +173,7 @@ class PlanADateMultiService {
       roomId = roomResponse.roomId;
       // await super.initFirebase();
       await queryARoom();
+      
       return roomId;
     } catch (e) {
       throw e;
@@ -187,12 +190,14 @@ class PlanADateMultiService {
         .doc(roomId)
         .get();
     await queryARoom();
+
     return results.exists;
   }
 
   Future<void> queryARoom() async {
     print('Querying external source 9');
-
+    _planADateBaseService.isMultiEditing = true;
+    
     roomSnapshot = FirebaseFirestore.instance
         .collection('get_a_room')
         .doc(roomId)

@@ -17,7 +17,6 @@ import 'add_date_viewmodel.dart';
 /// Once they have finished they can tap the finish icon to
 /// return back to the 'Plan A Date' screen.
 class AddDateView extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddDateViewModel>.reactive(
@@ -25,9 +24,9 @@ class AddDateView extends StatelessWidget {
       builder: (BuildContext context, AddDateViewModel model, Widget child) =>
           Scaffold(
         // Build Appbar
-        extendBodyBehindAppBar: model.isMultiEditing() ? false : true,
+        extendBodyBehindAppBar: model.roomId.isNotEmpty ? false : true,
         appBar: CustomAppBar(
-          name: model.isMultiEditing() ? 'Room code: ${model.roomId}' : '',
+          name: model.roomId.isNotEmpty ? '${model.roomId}' : '',
           transparent: model.isMultiEditing() ? false : true,
         ).build(context),
         resizeToAvoidBottomPadding: false,
@@ -39,24 +38,18 @@ class AddDateView extends StatelessWidget {
         floatingActionButton: Container(
           margin: EdgeInsets.only(bottom: 20),
           child: Row(
-            mainAxisAlignment: model.isListValid()
-                ? MainAxisAlignment.spaceAround
-                : MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               CustomFAB(
                   tag: 'Add More',
                   icon: Icons.add,
                   onTap: () => _showInput(context, model)),
-              model.isListValid()
-                  ? CustomFAB(
-                      tag: 'Continue',
-                      icon: CupertinoIcons.check_mark,
-                      onTap: () => model.onFinish(),
-                    )
-                  : Container(
-                      width: 0.0,
-                      height: 0.0,
-                    )
+              CustomFAB(
+                tag: 'Continue',
+                icon: Icons.arrow_forward,
+                onTap: () => model.onFinish(),
+                disabled: !model.isListValid(),
+              )
             ],
           ),
         ),

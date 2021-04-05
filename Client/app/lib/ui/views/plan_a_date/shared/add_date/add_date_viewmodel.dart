@@ -1,5 +1,7 @@
 import 'package:date_night/app/locator.dart';
+import 'package:date_night/app/router.gr.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
+import 'package:date_night/services/plan_a_date_multi_service.dart';
 import 'package:date_night/services/plan_a_date_single_service.dart';
 import 'package:date_night/services/random_idea_service.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +10,10 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AddDateViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  final PlanADateSingleService _planADateService =
+  final PlanADateSingleService _planADateSingleService =
       locator<PlanADateSingleService>();
+    final PlanADateMultiService _planADateMultiService =
+      locator<PlanADateMultiService>();
   final RandomIdeaService _randomIdeaService = locator<RandomIdeaService>();
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
 
@@ -17,7 +21,11 @@ class AddDateViewModel extends BaseViewModel {
   TextEditingController get textController => _textController;
 
   bool isMultiEditing() {
-    return _planADateBaseService.isMultiEditing;
+    if (_planADateBaseService.isMultiEditing) {
+      _roomId = _planADateMultiService.roomId;
+      return true;
+    }
+    return false;
   }
 
   String _roomId = '';
@@ -29,22 +37,24 @@ class AddDateViewModel extends BaseViewModel {
 
   bool isListValid() {
     return isMultiEditing()
-        ? throw Exception()
-        : _planADateService.isCurrentEditorsListValid();
+        ? _planADateMultiService.isMultiEditorsListValid()
+        : _planADateSingleService.isCurrentEditorsListValid();
   }
 
   List<String> getEditorsList() {
     return isMultiEditing()
-        ? throw Exception()
-        : _planADateService.getCurrentEditorsIdeasList();
+        ? _planADateMultiService.getMultiEditorsIdeasList()
+        : _planADateSingleService.getCurrentEditorsIdeasList();
   }
 
-  /// Moves the user back a screen, if they can
+  /// Moves the user back a screen, if they can or to the waiting screen
   void onFinish() {
     if (isMultiEditing()) {
-      throw Exception();
+      if (_planADateMultiService.isMultiEditorsListValid()) {
+        _navigationService.replaceWith(Routes.waitingRoomView);
+      }
     } else {
-      if (_planADateService.isCurrentEditorsListValid()) {
+      if (_planADateSingleService.isCurrentEditorsListValid()) {
         _navigationService.back();
       }
     }
@@ -55,9 +65,9 @@ class AddDateViewModel extends BaseViewModel {
     // TODO: Implement Dialog Service Here
     if (_textController.text.isNotEmpty) {
       if (isMultiEditing()) {
-        throw Exception();
+        _planADateMultiService.addMultiIdea(_textController.text);
       } else {
-        _planADateService.addIdea(_textController.text);
+        _planADateSingleService.addIdea(_textController.text);
       }
 
       // Clear text from dialog.
@@ -78,8 +88,8 @@ class AddDateViewModel extends BaseViewModel {
   /// Removes the date idea from potential dates.
   void removeIdea(int index) {
     isMultiEditing()
-        ? throw Exception() // model.removeMultiEditorsItemAt(index);
-        : _planADateService.removeItemAt(index);
+        ? _planADateMultiService.removeMultiEditorsItemAt(index)
+        : _planADateSingleService.removeItemAt(index);
     notifyListeners();
   }
 }

@@ -42,8 +42,6 @@ class _HomeViewState extends State<HomeView> {
       items: _getTabIcons(),
       backgroundColor: Theme.of(context).appBarTheme.color,
       decoration: NavBarDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
         colorBehindNavBar: Colors.transparent,
         adjustScreenBottomPaddingOnCurve: true,
       ),
@@ -68,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
   List<PersistentBottomNavBarItem> _getTabIcons() {
     return [
       PersistentBottomNavBarItem(
-          icon: FaIcon(FontAwesomeIcons.city),
+          icon: FaIcon(FontAwesomeIcons.globeAmericas),
           activeColor: Colors.blue,
           inactiveColor: Colors.grey,
           opacity: 0.3),
@@ -89,29 +87,9 @@ class _HomeViewState extends State<HomeView> {
   /// Returns the tab pages
   List<Widget> _getPage() {
     return [
-      // MaterialApp(
-      //   theme: ThemeConfig.theme,
-      //   home: SafeArea(child: DatesAroundView()),
-      // ),
-      // MaterialApp(
-      //   theme: ThemeConfig.theme,
-      //   home: SafeArea(child: DatesAroundView()),
-      // ),
-      // MaterialApp(
-      //   theme: ThemeConfig.theme,
-      //   home: SafeArea(child: DatesAroundView()),
-      // ),
       DatesAroundView(),
       PlanADateSingleView(),
       PlanADateMultiView(),
-      // MaterialApp(
-      //     theme: ThemeConfig.theme,
-      //     home: SafeArea(child: PlanADateSingle()),
-      //     onGenerateRoute: RouteGenerator.routes),
-      // MaterialApp(
-      //     theme: ThemeConfig.theme,
-      //     home: SafeArea(child: PlanADateMulti()),
-      //     onGenerateRoute: RouteGenerator.routes),
     ];
   }
 }

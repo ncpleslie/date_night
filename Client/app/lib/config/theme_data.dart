@@ -89,7 +89,6 @@ class ThemeConfig {
       shadowColor: Colors.black38.withOpacity(0.2),
       color: Colors.white.withOpacity(0.5),
       shape: RoundedRectangleBorder(
-        side: BorderSide(width: 1.5, color: Colors.white.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(25.0),
       ),
     ),
@@ -111,7 +110,6 @@ class ThemeConfig {
     dialogTheme: DialogTheme(
         elevation: 10,
         shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1.5, color: Colors.white.withOpacity(0.5)),
             borderRadius: BorderRadius.all(Radius.circular(25.0)))),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         elevation: 0, backgroundColor: _accentLight),

@@ -29,7 +29,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
       builder:
-          (BuildContext context, PlanADateMultiViewModel model, Widget child) =>
+          (BuildContext context, PlanADateMultiViewModel vm, Widget child) =>
               Scaffold(
         extendBodyBehindAppBar: true,
         appBar: CustomAppBar(
@@ -40,7 +40,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
           child: Container(
             padding: EdgeInsets.only(top: 0.0),
             alignment: Alignment.center,
-            child: model.isLoading
+            child: vm.isLoading
                 ? CircularProgressIndicator()
                 : ListView(
                     children: [
@@ -48,12 +48,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                           title: 'Create a room',
                           subtitle:
                               'Get a room code and share it will another user.\nYou use your phone and they use theirs',
-                          onPressed: () => _createARoom(model)),
+                          onPressed: () => _createARoom(vm)),
                       _button(
                           title: 'Enter a room',
                           subtitle:
                               'If your friend has set up a room,\nyou can enter their code and join them',
-                          onPressed: () => _enterARoom(model)),
+                          onPressed: () => _enterARoom(vm)),
                     ],
                   ),
           ),
@@ -132,12 +132,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     );
   }
 
-  void _createARoom(PlanADateMultiViewModel model) async {
-    await model.createARoom();
+  void _createARoom(PlanADateMultiViewModel vm) async {
+    await vm.createARoom();
   }
 
-  void _enterARoom(PlanADateMultiViewModel model) async {
-    await model.enterARoom();
+  void _enterARoom(PlanADateMultiViewModel vm) async {
+    await vm.enterARoom();
   }
 
   Widget _createChevron(BuildContext context, Function onPressed) {

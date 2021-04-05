@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 /// A custom floating action button element.
 class CustomFAB extends StatelessWidget {
-  CustomFAB({@required this.tag, @required this.icon, @required this.onTap}) {
-    disabled = onTap == null;
+  CustomFAB({@required this.tag, @required this.icon, @required this.onTap, this.disabled}) {
+    disabled = disabled == null ? false : disabled;
   }
 
   /// Icon to be displayed.
@@ -30,13 +30,13 @@ class CustomFAB extends StatelessWidget {
                   .floatingActionButtonTheme
                   .backgroundColor
                   .withOpacity(0.2)
-              : Theme.of(context).floatingActionButtonTheme.backgroundColor,
+              : Theme.of(context).floatingActionButtonTheme.backgroundColor.withOpacity(1),
           elevation: Theme.of(context).floatingActionButtonTheme.elevation,
           child: Icon(
             icon,
             size: Theme.of(context).iconTheme.size,
           ),
-          onPressed: onTap,
+          onPressed: disabled ? null : onTap,
         ),
         const SizedBox(
           height: 40.0,

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../ui/views/boot/boot_view.dart';
 import '../ui/views/dates_around/dates_around_view.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/plan_a_date/multi/waiting_room_view.dart';
 import '../ui/views/plan_a_date/shared/add_date/add_date_view.dart';
 import '../ui/views/plan_a_date/shared/loading/loading_view.dart';
 import '../ui/views/plan_a_date/shared/results/results_view.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const String addDateView = '/add-date-view';
   static const String loadingView = '/loading-view';
   static const String resultsView = '/results-view';
+  static const String waitingRoomView = '/waiting-room-view';
   static const all = <String>{
     bootView,
     homeView,
@@ -34,6 +36,7 @@ class Routes {
     addDateView,
     loadingView,
     resultsView,
+    waitingRoomView,
   };
 }
 
@@ -48,6 +51,7 @@ class Router extends RouterBase {
     RouteDef(Routes.addDateView, page: AddDateView),
     RouteDef(Routes.loadingView, page: LoadingView),
     RouteDef(Routes.resultsView, page: ResultsView),
+    RouteDef(Routes.waitingRoomView, page: WaitingRoomView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -94,6 +98,12 @@ class Router extends RouterBase {
     ResultsView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => ResultsView(),
+        settings: data,
+      );
+    },
+    WaitingRoomView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => WaitingRoomView(),
         settings: data,
       );
     },

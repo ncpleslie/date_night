@@ -2,7 +2,6 @@ import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_viewmode
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:stacked/stacked.dart';
 
 class WaitingRoomView extends StatefulWidget {
