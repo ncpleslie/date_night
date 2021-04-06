@@ -21,18 +21,18 @@ class AddDateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddDateViewModel>.reactive(
       viewModelBuilder: () => AddDateViewModel(),
-      builder: (BuildContext context, AddDateViewModel model, Widget child) =>
+      builder: (BuildContext context, AddDateViewModel vm, Widget child) =>
           Scaffold(
         // Build Appbar
-        extendBodyBehindAppBar: model.roomId.isNotEmpty ? false : true,
+        extendBodyBehindAppBar: vm.roomId.isNotEmpty ? false : true,
         appBar: CustomAppBar(
-          name: model.roomId.isNotEmpty ? '${model.roomId}' : '',
-          transparent: model.isMultiEditing() ? false : true,
+          name: vm.isMultiEditing() ? '${vm.roomId}' : '',
+          transparent: vm.isMultiEditing() ? false : true,
         ).build(context),
         resizeToAvoidBottomPadding: false,
 
         // Create body
-        body: PageBackground(child: _buildPage(model)),
+        body: PageBackground(child: _buildPage(vm)),
 
         // FAB
         floatingActionButton: Container(
@@ -43,12 +43,12 @@ class AddDateView extends StatelessWidget {
               CustomFAB(
                   tag: 'Add More',
                   icon: Icons.add,
-                  onTap: () => _showInput(context, model)),
+                  onTap: () => _showInput(context, vm)),
               CustomFAB(
                 tag: 'Continue',
                 icon: Icons.arrow_forward,
-                onTap: () => model.onFinish(),
-                disabled: !model.isListValid(),
+                onTap: () => vm.onFinish(),
+                disabled: !vm.isListValid(),
               )
             ],
           ),

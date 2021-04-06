@@ -4,7 +4,8 @@ class DateResponse {
   final String chosenIdea;
 
   factory DateResponse.fromServerMap(dynamic data) {
-    assert(data['chosenIdea']);
+    assert(data['chosenIdea'] != null);
+    
     return DateResponse(
         chosenIdea: data['chosenIdea']);
   }

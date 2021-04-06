@@ -34,16 +34,14 @@ class PlanADateMultiService {
 
   void removeMultiEditorsItemAt(int index) {
     usersChosenIdeas.removeAt(index);
-    //notifyListeners();
   }
 
   void addMultiIdea(String idea) {
     final String ideaNormalised = idea.replaceFirst(RegExp(r'^\s+'), '');
     usersChosenIdeas.add(ideaNormalised);
-    //notifyListeners();
   }
 
-  Future<void> calculateMultiResults() async {
+  Future<void> calculateResults() async {
     print('Querying external source 3');
 
     // Determine result
@@ -64,7 +62,9 @@ class PlanADateMultiService {
       try {
         final Map<String, dynamic> response =
             await ApiSdk.postDate(_service.userToken, dateReq);
+
         dateMultiResponse = DateResponse.fromServerMap(response);
+
         // TODO: Make model
         await FirebaseFirestore.instance
             .collection('get_a_room')
@@ -74,9 +74,9 @@ class PlanADateMultiService {
         });
 
         // deletion now automated
-        // deleteRoom();
+        deleteRoom();
       } catch (error) {
-        print(error);
+        throw error;
       }
     }
     clearAllMultiLists();
@@ -102,14 +102,14 @@ class PlanADateMultiService {
     return completer.future;
   }
 
-  // // TODO: Convert this to backend code
-  // void deleteRoom() async {
-  //   print('Querying external source');
+  // TODO: Convert this to backend code
+  void deleteRoom() async {
+    print('Querying external source');
 
-  //   final Map<String, dynamic> deleteARoomResponse =
-  //       await ApiSdk.deleteARoom(super.userToken, roomId);
-  //   print(deleteARoomResponse);
-  // }
+    final Map<String, dynamic> deleteARoomResponse =
+        await ApiSdk.deleteARoom(_service.userToken, roomId);
+    print(deleteARoomResponse);
+  }
 
   Future<void> waitForHost() async {
     print('Querying external source 5');

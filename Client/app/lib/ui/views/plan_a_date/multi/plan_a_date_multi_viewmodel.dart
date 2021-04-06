@@ -15,8 +15,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   final TextEditingController _textController = TextEditingController();
   TextEditingController get textController => _textController;
 
-  bool _isRoomHost = false;
-  bool get isRoomHost => _isRoomHost;
+  bool get isRoomHost => _planADateMultiService.isRoomHost;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -24,21 +23,20 @@ class PlanADateMultiViewModel extends BaseViewModel {
   bool _ideasChanged = false;
   bool get ideasChanged => _ideasChanged;
 
-  String get roomId {
-    return _planADateMultiService.roomId;
-  }
+  String get roomId => _planADateMultiService.roomId;
 
   Future<void> createARoom() async {
     _planADateMultiService.clearAllMultiLists();
     _isLoading = true;
     notifyListeners();
+
     try {
       await _planADateMultiService.getARoom();
       DialogResponse response = await _dialogService.showDialog(
           title: 'Room Code', description: _planADateMultiService.roomId);
 
       if (response.confirmed != null && response.confirmed) {
-        _isRoomHost = true;
+        _planADateMultiService.isRoomHost = true;
         _planADateMultiService.isMultiEditing = true;
         _navigationService.navigateTo(Routes.addDateView);
       }
@@ -65,7 +63,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
     _textController.clear();
 
     if (isValidRoom) {
-      _isRoomHost = false;
+      _planADateMultiService.isRoomHost = false;
       _planADateMultiService.isMultiEditing = true;
       _navigationService.navigateTo(Routes.addDateView);
     } else {
@@ -85,5 +83,24 @@ class PlanADateMultiViewModel extends BaseViewModel {
   Future<void> ideasHaveChanged() async {
     await _planADateMultiService.ideasHaveChanged((bool stateChanged) =>
         {_ideasChanged = stateChanged, notifyListeners()});
+  }
+
+  Future<void> waitForHost() async {
+    _planADateMultiService.waitForHost();
+    await navigateToLoading();
+  }
+
+  Future<void> navigateToLoading() async {
+    await _navigationService.replaceWith(Routes.loadingView);
+  }
+
+  Future<void> init() async {
+    if (isRoomHost) {
+      await commitMultiIdeas();
+      await ideasHaveChanged();
+    } else {
+      await commitMultiIdeas();
+      await waitForHost();
+    }
   }
 }

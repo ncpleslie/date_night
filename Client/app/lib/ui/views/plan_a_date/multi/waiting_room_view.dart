@@ -10,17 +10,17 @@ class WaitingRoomView extends StatefulWidget {
 }
 
 class _WaitingRoomViewState extends State<WaitingRoomView> {
-  bool _ideasChanged = false;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
+      onModelReady: (PlanADateMultiViewModel vm) async => init(vm),
       builder:
-          (BuildContext context, PlanADateMultiViewModel model, Widget child) =>
+          (BuildContext context, PlanADateMultiViewModel vm, Widget child) =>
               Scaffold(
         appBar: CustomAppBar(
-          name: 'Room code: ${model.roomId}',
+          name: vm.roomId,
           transparent: false,
         ).build(context),
         body: PageBackground(
@@ -28,20 +28,8 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: !model.ideasChanged
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                        Text('Waiting for your partner to enter their ideas',
-                            style: Theme.of(context).textTheme.bodyText2),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        LinearProgressIndicator(
-                          backgroundColor: Colors.transparent,
-                        )
-                      ])
-                : model.isRoomHost
+            child: vm.ideasChanged
+                ? vm.isRoomHost
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -51,44 +39,32 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
                             height: 10,
                           ),
                           RaisedButton(
-                            onPressed: () => {
-                              // Navigator.of(context)
-                              //     .pushReplacementNamed(Routes.Loading)
-                            },
+                            onPressed: () => vm.navigateToLoading(),
                             child: Text('Continue'),
                           )
                         ],
                       )
-                    : Container(),
+                    : Container()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Waiting for your partner to enter their ideas',
+                          style: Theme.of(context).textTheme.bodyText2),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      LinearProgressIndicator(
+                        backgroundColor: Colors.transparent,
+                      )
+                    ],
+                  ),
           ),
         ),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    PlanADateMultiViewModel model = ScopedModel.of(context);
-
-    if (model.roomId == null) {
-      // Navigator.of(context).popAndPushNamed(Routes.PlanADateMulti);
-    }
-    if (model.isRoomHost) {
-      _otherUserEntered(model);
-    } else {
-      _waitForHost(model);
-    }
-  }
-
-  Future<void> _waitForHost(model) async {
-    await model.commitMultiIdeas();
-    await model.waitForHost();
-    // Navigator.of(context).pushReplacementNamed(Routes.Loading);
-  }
-
-  Future<void> _otherUserEntered(PlanADateMultiViewModel model) async {
-    await model.commitMultiIdeas();
-    await model.ideasHaveChanged();
+  Future<void> init(PlanADateMultiViewModel vm) async {
+    await vm.init();
   }
 }
