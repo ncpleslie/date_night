@@ -16,7 +16,7 @@ import 'dates_around_card_viewmodel.dart';
 /// other users that are currently happening.
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
-  DatesAroundCard({@required this.id, @required this.date, this.index}) {
+  DatesAroundCard({@required this.id, @required this.date, @required this.index}) {
     _chosenDate = date.chosenIdea;
 
     _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
@@ -50,7 +50,10 @@ class DatesAroundCard extends StatelessWidget {
         viewModelBuilder: () => DatesAroundCardViewModel(),
         builder: (BuildContext context, DatesAroundCardViewModel model,
             Widget child) {
-          if (_model == null) _model = model;
+          if (_model == null) {
+            _model = model;
+          }
+
           return !model.isReported ? _cardWithWords(context) : Container();
         });
   }
@@ -79,7 +82,7 @@ class DatesAroundCard extends StatelessWidget {
           maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.bodyText1.color,
+              color: Theme.of(context).primaryTextTheme.bodyText1?.color,
               fontSize: 12,
               fontWeight: FontWeight.bold),
         ),

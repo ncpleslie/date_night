@@ -113,6 +113,7 @@ class ResultsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ViewModelBuilder.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
       builder: (BuildContext context, ResultsViewModel model, Widget child) =>
@@ -135,10 +136,7 @@ class ResultsCard extends StatelessWidget {
                   softWrap: true,
                   maxLines: 1,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .headline5
-                      .copyWith(fontSize: 60),
+                  style: Theme.of(context).primaryTextTheme.headline5?.copyWith(fontSize: 60),
                 ),
               ),
               Container(

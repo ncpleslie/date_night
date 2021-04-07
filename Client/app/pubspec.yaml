@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.9.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,38 +27,39 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: 1.0.0
-  firebase_core: 0.7.0
-  flutter_phoenix: 0.1.0
-  scoped_model: 1.1.0
-  auto_size_text: 2.1.0
-  flutter_spinkit: 4.1.2+1
-  cached_network_image: 2.2.0
-  flutter_emoji: 2.2.1+1
-  pull_to_refresh: 1.6.3
+  cupertino_icons: ^1.0.0
+  firebase_core: ^1.0.3
+  flutter_phoenix: ^0.1.0
+  scoped_model: ^1.1.0
+  auto_size_text: ^2.1.0
+  flutter_spinkit: ^4.1.2+1
+  cached_network_image: ^2.2.0
+  flutter_emoji: ^2.2.1+1
+  pull_to_refresh: 1.6.4-nullsafety.0
   # model:
   #   path: ../model
   api:
     path: ../api
-  shimmer: 1.1.2
-  confetti: 0.5.4+1
-  timeago: 2.0.29
-  flushbar: 1.10.4
-  persistent_bottom_nav_bar: 3.1.0
+  shimmer: ^1.1.2
+  confetti: ^0.5.4+1
+  timeago: ^2.0.29
+  flushbar: ^1.10.4
+  persistent_bottom_nav_bar: ^3.1.0
   scroll_app_bar:
     git:
       url: git://github.com/ncpleslie/scroll_app_bar.git
       ref: master
-  font_awesome_flutter: 8.11.0
-  flutter_svg: 0.19.1
-  package_info: 0.4.3+2
-  stacked: 1.7.7
-  auto_route: 0.6.9
-  stacked_services: 0.6.4
-  get_it: 5.0.6
-  injectable: 1.0.7
-  cloud_firestore: 0.16.0
-  firebase_auth: 0.20.0+1
+  font_awesome_flutter: ^8.11.0
+  flutter_svg: ^0.21.0
+  package_info: ^0.4.3+2
+  stacked: ^2.0.2
+  auto_route: ^0.6.9
+  stacked_services: ^0.6.4
+  get_it: ^6.0.0
+  injectable: ^1.0.7
+  cloud_firestore: ^1.0.4
+  firebase_auth: ^1.0.2
+  stacked_hooks: ^0.2.0
 
 dev_dependencies:
   flutter_test:

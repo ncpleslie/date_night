@@ -1,8 +1,7 @@
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/enums/dialog_type.dart';
 import 'package:date_night/services/plan_a_date_multi_service.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -11,9 +10,6 @@ class PlanADateMultiViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final PlanADateMultiService _planADateMultiService =
       locator<PlanADateMultiService>();
-
-  final TextEditingController _textController = TextEditingController();
-  TextEditingController get textController => _textController;
 
   bool get isRoomHost => _planADateMultiService.isRoomHost;
 
@@ -51,16 +47,17 @@ class PlanADateMultiViewModel extends BaseViewModel {
   }
 
   Future<void> enterARoom() async {
-    _planADateMultiService.clearAllMultiLists();
+    // TODO: Style Dialog
+    DialogResponse response = await _dialogService.showCustomDialog(
+      title: 'Room ID', variant: DialogType.Form, mainButtonTitle: 'Submit'
+    );
 
-    if (_textController.text.isEmpty) {
-      return;
-    }
+    _planADateMultiService.clearAllMultiLists();
     _isLoading = true;
     notifyListeners();
+
     bool isValidRoom =
-        await _planADateMultiService.setARoom(_textController.text);
-    _textController.clear();
+        await _planADateMultiService.setARoom(response?.responseData[0]);
 
     if (isValidRoom) {
       _planADateMultiService.isRoomHost = false;

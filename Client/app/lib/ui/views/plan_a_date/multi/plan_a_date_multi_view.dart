@@ -48,12 +48,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                           title: 'Create a room',
                           subtitle:
                               'Get a room code and share it will another user.\nYou use your phone and they use theirs',
-                          onPressed: () => _createARoom(vm)),
+                          onPressed: () async => await vm.createARoom()),
                       _button(
                           title: 'Enter a room',
                           subtitle:
                               'If your friend has set up a room,\nyou can enter their code and join them',
-                          onPressed: () => _enterARoom(vm)),
+                          onPressed: () async => await vm.enterARoom()),
                     ],
                   ),
           ),
@@ -62,7 +62,10 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     );
   }
 
-  Widget _button({String title, String subtitle, Function onPressed}) {
+  Widget _button(
+      {@required String title,
+      @required String subtitle,
+      @required Function onPressed}) {
     return Container(
       height: 175, // Increase this to change the padding
       child: Stack(
@@ -79,7 +82,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
               child: TextButton(
                 style: TextButton.styleFrom(
                     primary:
-                        Theme.of(context).primaryTextTheme.headline6.color),
+                        Theme.of(context).primaryTextTheme.headline6?.color),
                 onPressed: onPressed,
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -137,7 +140,8 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
   }
 
   void _enterARoom(PlanADateMultiViewModel vm) async {
-    await vm.enterARoom();
+    print("hi");
+    ;
   }
 
   Widget _createChevron(BuildContext context, Function onPressed) {
@@ -154,7 +158,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         child: InkWell(
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
-          onTap: onPressed,
+          onTap: () => onPressed,
           onTapDown: (TapDownDetails details) {},
           child: Container(
             alignment: Alignment.center,

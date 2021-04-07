@@ -29,7 +29,7 @@ class AddDateView extends StatelessWidget {
           name: vm.isMultiEditing() ? '${vm.roomId}' : '',
           transparent: vm.isMultiEditing() ? false : true,
         ).build(context),
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
 
         // Create body
         body: PageBackground(child: _buildPage(vm)),
