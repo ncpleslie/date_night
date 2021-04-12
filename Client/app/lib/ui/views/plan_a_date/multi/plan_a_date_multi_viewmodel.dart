@@ -49,26 +49,28 @@ class PlanADateMultiViewModel extends BaseViewModel {
   Future<void> enterARoom() async {
     // TODO: Style Dialog
     DialogResponse response = await _dialogService.showCustomDialog(
-      title: 'Room ID', variant: DialogType.Form, mainButtonTitle: 'Submit'
-    );
+        title: 'Room ID', variant: DialogType.Form, mainButtonTitle: 'Enter');
 
     _planADateMultiService.clearAllMultiLists();
     _isLoading = true;
     notifyListeners();
 
-    bool isValidRoom =
-        await _planADateMultiService.setARoom(response?.responseData[0]);
+    if (response?.responseData[0] != null) {
+      String parsedString = response?.responseData[0];
+      bool isValidRoom = await _planADateMultiService.setARoom(parsedString);
 
-    if (isValidRoom) {
-      _planADateMultiService.isRoomHost = false;
-      _planADateMultiService.isMultiEditing = true;
-      _navigationService.navigateTo(Routes.addDateView);
-    } else {
-      // TODO: Style Dialog
-      await _dialogService.showDialog(
-          title: 'Unable to enter that room',
-          description: 'Are you sure that\'s the right room code?');
+      if (isValidRoom) {
+        _planADateMultiService.isRoomHost = false;
+        _planADateMultiService.isMultiEditing = true;
+        _navigationService.navigateTo(Routes.addDateView);
+      } else {
+        // TODO: Style Dialog
+        await _dialogService.showDialog(
+            title: 'Unable to enter that room',
+            description: 'Are you sure that\'s the right room code?');
+      }
     }
+
     _isLoading = false;
     notifyListeners();
   }
@@ -77,13 +79,15 @@ class PlanADateMultiViewModel extends BaseViewModel {
     await _planADateMultiService.commitMultiIdeas();
   }
 
+  /// Determine if the other users have added their picks
   Future<void> ideasHaveChanged() async {
     await _planADateMultiService.ideasHaveChanged((bool stateChanged) =>
         {_ideasChanged = stateChanged, notifyListeners()});
   }
 
+  /// Wait for the host to move on to display the results
   Future<void> waitForHost() async {
-    _planADateMultiService.waitForHost();
+    await _planADateMultiService.waitForHost();
     await navigateToLoading();
   }
 

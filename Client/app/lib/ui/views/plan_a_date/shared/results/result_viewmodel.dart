@@ -17,9 +17,9 @@ class ResultsViewModel extends BaseViewModel {
 
   String getChosenIdea() {
     if (_planADateBaseService.isMultiEditing) {
-      return _planADateMultiService.dateMultiResponse.chosenIdea;
+      return _planADateMultiService.dateMultiResponse?.chosenIdea;
     }
-    return _planADateSingleService.dateResponse.chosenIdea;
+    return _planADateSingleService.dateResponse?.chosenIdea;
   }
 
   String getRandomFeedback() {

@@ -96,7 +96,7 @@ class PlanADateMultiService {
       if (querySnapshot.data()['chosenIdea'] != null) {
         dateMultiResponse = DateResponse.fromServerMap(querySnapshot.data());
         clearAllMultiLists();
-        completer.complete();
+        completer.complete(true);
       }
     });
     return completer.future;
@@ -118,7 +118,7 @@ class PlanADateMultiService {
 
     roomSnapshot.listen((querySnapshot) {
       if (querySnapshot.data()['gettingResults'] != null &&
-          querySnapshot.data()['gettingResults'] == true) {
+          querySnapshot.data()['gettingResults']) {
         completer.complete(true);
       }
     });

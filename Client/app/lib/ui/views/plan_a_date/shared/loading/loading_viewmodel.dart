@@ -20,10 +20,18 @@ class LoadingViewModel extends FutureViewModel<void> {
 
   Future<void> getResults() async {
     if (_planADateBaseService.isMultiEditing) {
-      await _planADateMultiService.calculateResults();
+      if (_planADateMultiService.isRoomHost) {
+        
+        await _planADateMultiService.calculateResults();
+      } else {
+
+        await _planADateMultiService.waitForResults();
+      }
     } else {
+
       await _planADateSingleService.calculateResults();
     }
+
     await _navigationService.replaceWith(Routes.resultsView);
   }
 }
