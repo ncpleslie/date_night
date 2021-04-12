@@ -1,4 +1,4 @@
-bool devMode = true;
+bool devMode = false;
 String get apiUrl => devMode ? apiConstants['dateNightEmulator'] : apiConstants['dateNight'];
 
 Map<String, String> apiConstants = {

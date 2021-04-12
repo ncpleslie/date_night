@@ -29,6 +29,13 @@
             {
               "client_id": "1065412985332-faorldv95gm0iu1supglhf8fgi3gquo3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1065412985332-pgdlqduku6hipo12erggs7gfql2bhpgd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.nickleslie.datanight"
+              }
             }
           ]
         }

@@ -90,6 +90,8 @@ const postARoom = async (request: functions.Request, response: functions.Respons
 }
 
 const deleteARoom = async (request: functions.Request, response: functions.Response, uid: string) => {
+
+    // TODO: Waiting x seconds and then delete room
     const roomId = request?.query?.roomId;
     
     if (roomId) {

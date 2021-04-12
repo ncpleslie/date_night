@@ -8,7 +8,7 @@ class ApiBaseHelper {
   Future<dynamic> get(String url, [Map<String, String> headers] ) async {
     var responseJson;
     try {
-      final response = await http.get(url, headers: headers);
+      final response = await http.get(Uri.parse(url), headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -18,7 +18,7 @@ class ApiBaseHelper {
 
   Future<dynamic> post(String url, dynamic body, [Map<String, String> headers] ) async {
     try {
-      final response = await http.post(url,
+      final response = await http.post(Uri.parse(url),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
@@ -34,7 +34,7 @@ class ApiBaseHelper {
   Future<dynamic> put(String url, dynamic body) async {
     var responseJson;
     try {
-      final response = await http.put(url, body: body);
+      final response = await http.put(Uri.parse(url), body: body);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -46,7 +46,7 @@ class ApiBaseHelper {
   Future<dynamic> delete(String url, [Map<String, String> headers] ) async {
     var apiResponse;
     try {
-      final response = await http.delete(url, headers: headers);
+      final response = await http.delete(Uri.parse(url), headers: headers);
       apiResponse = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
