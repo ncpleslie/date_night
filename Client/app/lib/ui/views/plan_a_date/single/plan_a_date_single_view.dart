@@ -16,7 +16,6 @@ class PlanADateSingleView extends StatefulWidget {
 }
 
 class _PlanADateSingleViewState extends State<PlanADateSingleView> {
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateSingleViewModel>.reactive(
@@ -54,10 +53,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
         child: InkWell(
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
-          onTap: () {
-            model.clearAllLists();
-            setState(() {});
-          },
+          onTap: () => model.clearAllLists(),
           onTapDown: (TapDownDetails details) {},
           child: Container(
             alignment: Alignment.center,

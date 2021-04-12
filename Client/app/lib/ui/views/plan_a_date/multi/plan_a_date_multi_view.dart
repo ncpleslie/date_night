@@ -1,18 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_viewmodel.dart';
-import 'package:date_night/ui/views/plan_a_date/shared/add_date/add_date_view.dart';
-import 'package:date_night/ui/views/plan_a_date/single/plan_a_date_single_viewmodel.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
-import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog.dart';
-import 'package:date_night/ui/widgets/dumb_widgets/custom_dialog_button.dart';
-import 'package:date_night/ui/widgets/dumb_widgets/custom_toast.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:stacked/stacked.dart';
 
 class PlanADateMultiView extends StatefulWidget {
@@ -21,9 +14,6 @@ class PlanADateMultiView extends StatefulWidget {
 }
 
 class _PlanADateMultiViewState extends State<PlanADateMultiView> {
-  final TextEditingController _textController = TextEditingController();
-  final TextEditingController _roomTextController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
@@ -38,11 +28,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         ).build(context),
         body: PageBackground(
           child: Container(
-            padding: EdgeInsets.only(top: 0.0),
             alignment: Alignment.center,
             child: vm.isLoading
                 ? CircularProgressIndicator()
-                : ListView(
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _button(
                           title: 'Create a room',
@@ -135,15 +126,6 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     );
   }
 
-  void _createARoom(PlanADateMultiViewModel vm) async {
-    await vm.createARoom();
-  }
-
-  void _enterARoom(PlanADateMultiViewModel vm) async {
-    print("hi");
-    ;
-  }
-
   Widget _createChevron(BuildContext context, Function onPressed) {
     final double buttonSize = 35;
     return Card(
@@ -177,126 +159,4 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
       ),
     );
   }
-
-  // Future<void> _enterARoom(
-  //     BuildContext context, PlanADateMultiViewModel model) async {
-  //   // Remove stored text when they reopen
-  //   final List<CustomDialogButton> buttons = [
-  //     CustomDialogButton(
-  //       context,
-  //       icon: Icons.chevron_right,
-  //       onTap: model.enterRoom,
-  //     )
-  //   ];
-
-  //   _textController.clear();
-  //   await showDialog<String>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CustomDialog(
-  //         context,
-  //         controller: _textController,
-  //         title: 'Enter a room code',
-  //         dialogButtons: buttons,
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Future<void> _multiDateError(String title, String message) async {
-  //   final List<CustomDialogButton> buttons = [
-  //     CustomDialogButton(
-  //       context,
-  //       icon: Icons.chevron_right,
-  //       onTap: () => Navigator.of(context, rootNavigator: true).pop('Continue'),
-  //     )
-  //   ];
-  //   await showDialog<String>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CustomDialog(
-  //         context,
-  //         title: title,
-  //         content: Text(
-  //           message,
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         dialogButtons: buttons,
-  //       );
-  //     },
-  //   );
-  // }
-
-  // void _onCopy(BuildContext context, String roomCode) {
-  //   Clipboard.setData(ClipboardData(text: roomCode));
-  //   CustomToast(title: 'Copied!', message: 'Room code copied to clipboard')
-  //       .build(context);
-  // }
-
-  // Future<void> _newRoomCode(
-  //     String roomCode, PlanADateMultiViewModel model) async {
-  //   _roomTextController.text = roomCode;
-
-  //   final List<CustomDialogButton> buttons = [
-  //     CustomDialogButton(
-  //       context,
-  //       icon: Icons.chevron_right,
-  //       onTap: () => {
-  //         pushNewScreen(
-  //           context,
-  //           screen: AddDateView(),
-  //           withNavBar: false,
-  //           pageTransitionAnimation: ThemeConfig.pageTransition,
-  //         ),
-  //         model.isMultiEditing = true,
-  //         model.isRoomHost = true,
-  //         _roomTextController.clear(),
-  //       },
-  //     )
-  //   ];
-
-  //   await showDialog<String>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return RoomCodeDialog(context,
-  //           controller: _roomTextController,
-  //           title: 'Room Code',
-  //           content: Container(),
-  //           dialogButtons: buttons,
-  //           onTap: () => _onCopy(context, roomCode));
-  //     },
-  //   );
-  // }
-
-  // void _navigateToMulti(PlanADateMultiViewModel model) async {
-  //   if (_textController.text.isNotEmpty) {
-  //     bool isValidRoom = await model.setARoom(_textController.text);
-  //     _textController.text = '';
-
-  //     if (isValidRoom) {
-  //       // Navigator.of(context).pushNamed(Routes.DateAdd);
-  //     } else {
-  //       await _multiDateError('Unable to enter that room',
-  //           'Are you sure that\'s the right room code?');
-  //     }
-  //   } else {
-  //     try {
-  //       await model.getARoom();
-  //       await _newRoomCode(model.roomId, model);
-  //     } catch (e) {
-  //       await _multiDateError('Unable to create a room',
-  //           'Due to an unknown error we are unable to create a room.\nRestart the application and try again.');
-  //     }
-  //   }
-
-  //   // Give the route change animation time to finish
-  //   Future.delayed(
-  //     const Duration(seconds: 1),
-  //     () => {
-  //       setState(() {
-  //         _isLoading = false;
-  //       })
-  //     },
-  //   );
-  // }
 }

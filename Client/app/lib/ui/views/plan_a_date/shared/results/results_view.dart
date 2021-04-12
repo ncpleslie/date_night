@@ -97,7 +97,7 @@ class ContinueButton extends StatelessWidget {
               shape: Theme.of(context).cardTheme.shape,
               color: Theme.of(context).primaryColor,
               child: FaIcon(FontAwesomeIcons.chevronRight),
-              onPressed: model.removeView,
+              onPressed: () => model.removeView(),
             )
           ],
         ),

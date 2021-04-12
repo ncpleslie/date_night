@@ -1,7 +1,9 @@
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/enums/dialog_response_type.dart';
 import 'package:date_night/enums/dialog_type.dart';
 import 'package:date_night/services/plan_a_date_multi_service.dart';
+import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -10,6 +12,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final PlanADateMultiService _planADateMultiService =
       locator<PlanADateMultiService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   bool get isRoomHost => _planADateMultiService.isRoomHost;
 
@@ -28,35 +31,60 @@ class PlanADateMultiViewModel extends BaseViewModel {
 
     try {
       await _planADateMultiService.getARoom();
-      DialogResponse response = await _dialogService.showDialog(
-          title: 'Room Code', description: _planADateMultiService.roomId);
-
-      if (response.confirmed != null && response.confirmed) {
-        _planADateMultiService.isRoomHost = true;
-        _planADateMultiService.isMultiEditing = true;
-        _navigationService.navigateTo(Routes.addDateView);
-      }
+      await _createARoomDialog();
     } catch (e) {
+      print(e.toString());
       await _dialogService.showDialog(
           title: 'Unable to create a room',
           description:
               'Due to an unknown error we are unable to create a room.\nRestart the application and try again.');
     }
+
     _isLoading = false;
     notifyListeners();
   }
 
-  Future<void> enterARoom() async {
-    // TODO: Style Dialog
+  Future<void> _createARoomDialog() async {
     DialogResponse response = await _dialogService.showCustomDialog(
-        title: 'Room ID', variant: DialogType.Form, mainButtonTitle: 'Enter');
+        title: 'Room Code',
+        barrierDismissible: true,
+        variant: DialogType.FormWithText,
+        description: _planADateMultiService.roomId);
 
-    _planADateMultiService.clearAllMultiLists();
+    if (response?.confirmed != null && response.confirmed) {
+      _planADateMultiService.isRoomHost = true;
+      _planADateMultiService.isMultiEditing = true;
+      _navigationService.navigateTo(Routes.addDateView);
+    }
+
+    if (!response.confirmed &&
+        response.responseData?.type == DialogResponseType.Copied) {
+      Clipboard.setData(ClipboardData(text: roomId));
+      _snackbarService.showSnackbar(
+          title: 'Copied!', message: 'Room code copied to clipboard');
+
+      // workaround to prevent the dialog from closing when tapping 'copy'
+      await _createARoomDialog();
+    }
+  }
+
+  Future<void> enterARoom() async {
     _isLoading = true;
     notifyListeners();
+    _planADateMultiService.clearAllMultiLists();
 
-    if (response?.responseData[0] != null) {
-      String parsedString = response?.responseData[0];
+    // TODO: Style Dialog
+    DialogResponse response = await _dialogService.showCustomDialog(
+        title: 'Room Code',
+        barrierDismissible: true,
+        variant: DialogType.Form,
+        mainButtonTitle: 'Enter');
+
+    if (response?.confirmed != null &&
+        response.confirmed &&
+        response?.responseData?.type == DialogResponseType.Text &&
+        response?.responseData?.response != null) {
+      String parsedString = response?.responseData?.response;
       bool isValidRoom = await _planADateMultiService.setARoom(parsedString);
 
       if (isValidRoom) {

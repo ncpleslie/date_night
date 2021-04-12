@@ -15,6 +15,7 @@ class PlanADateSingleViewModel extends BaseViewModel {
 
   void clearAllLists() {
     _planADateService.clearAllSingleLists();
+    notifyListeners();
   }
 
   bool isSelectedEditorsListValid(int editor) {
@@ -30,6 +31,8 @@ class PlanADateSingleViewModel extends BaseViewModel {
 
   /// Navigate to the next stage
   Future<void> navigateToLoading() async {
-    await _navigationService.navigateTo(Routes.loadingView);
+    if (_planADateService.isAnyEditorsListValid()) {
+      await _navigationService.navigateTo(Routes.loadingView);
+    }
   }
 }
