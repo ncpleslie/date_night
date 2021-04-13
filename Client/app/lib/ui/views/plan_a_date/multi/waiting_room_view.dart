@@ -19,8 +19,10 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
         return WillPopScope(
           onWillPop: vm.onPop,
           child: Scaffold(
+            extendBodyBehindAppBar: true,
             appBar: CustomAppBar(
               name: vm.roomId,
+              transparent: true,
             ).build(context),
             body: PageBackground(
               child: Container(
@@ -32,11 +34,19 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text('Your partner has entered their ideas', style: Theme.of(context).textTheme.bodyText2),
+                              Text('Your partner has entered their ideas',
+                                  style: Theme.of(context).textTheme.bodyText2),
                               SizedBox(
                                 height: 10,
                               ),
-                              RaisedButton(
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape),
+                                    padding: MaterialStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0)),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(Theme.of(context).primaryColorDark)),
                                 onPressed: () => vm.navigateToLoading(),
                                 child: Text('Continue'),
                               )

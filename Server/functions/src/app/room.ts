@@ -109,7 +109,11 @@ const deleteARoom = async (request: functions.Request, response: functions.Respo
             const snapshot = await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).get();
 
             if (snapshot?.data()?.owner && snapshot?.data()?.owner === uid) {
-                await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).update({ delete: true });
+                const roomRef = firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string) 
+
+                // TODO: Determine if the function should wait a short period before deleting.
+
+                await roomRef.delete();
             }
 
             response.send(new DeleteARoomDTO(roomId as string, 'Room scheduled for deletion.'));

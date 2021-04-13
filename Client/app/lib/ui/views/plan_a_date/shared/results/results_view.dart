@@ -86,10 +86,14 @@ class ContinueButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            RaisedButton(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-              shape: Theme.of(context).cardTheme.shape,
-              color: Theme.of(context).primaryColor,
+            ElevatedButton(
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape),
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
+                  foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColorDark)
+                  ),
               child: FaIcon(FontAwesomeIcons.chevronRight),
               onPressed: () => model.removeView(),
             )

@@ -82,6 +82,7 @@ class ThemeConfig {
     errorColor: Colors.red,
     brightness: Brightness.light,
     primaryColor: _primaryLight,
+    primaryColorDark: _textLight,
     accentColor: _accentLight,
     buttonColor: _primaryLight,
     cardTheme: CardTheme(

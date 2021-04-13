@@ -27,9 +27,10 @@ class AddDateView extends StatelessWidget {
           onWillPop: vm.onPop,
           child: Scaffold(
           // Build Appbar
-          extendBodyBehindAppBar: vm.roomId.isNotEmpty ? false : true,
+          extendBodyBehindAppBar: true,
           appBar: CustomAppBar(
             name: vm.isMultiEditing() ? '${vm.roomId}' : '',
+            transparent: true,
           ).build(context),
           // resizeToAvoidBottomPadding: false,
 

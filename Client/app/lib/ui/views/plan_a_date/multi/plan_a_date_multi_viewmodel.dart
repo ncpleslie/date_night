@@ -3,6 +3,7 @@ import 'package:date_night/app/router.gr.dart';
 import 'package:date_night/enums/dialog_response_type.dart';
 import 'package:date_night/enums/dialog_type.dart';
 import 'package:date_night/services/plan_a_date_multi_service.dart';
+import 'package:date_night/services/plan_a_date_single_service.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -11,6 +12,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final PlanADateMultiService _planADateMultiService = locator<PlanADateMultiService>();
+  final PlanADateSingleService _planADateSingleService = locator<PlanADateSingleService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
   bool get isRoomHost => _planADateMultiService.isRoomHost;
@@ -31,6 +33,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
     try {
       await _planADateMultiService.getARoom();
       await _createARoomDialog();
+      _planADateSingleService.clearAllSingleLists();
     } catch (e) {
       print(e.toString());
       await _dialogService.showDialog(
@@ -93,6 +96,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
       if (isValidRoom) {
         _planADateMultiService.isRoomHost = false;
         _planADateMultiService.isMultiEditing = true;
+        _planADateSingleService.clearAllSingleLists();
         _navigationService.navigateTo(Routes.addDateView);
 
       } else {
@@ -139,6 +143,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   }
 
   Future<bool> onPop() async {
+    _planADateMultiService.clearAllMultiLists();
     _planADateMultiService.deleteRoom();
     return _navigationService.back();
   }
