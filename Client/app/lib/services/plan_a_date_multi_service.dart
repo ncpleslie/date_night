@@ -20,8 +20,8 @@ class PlanADateMultiService {
   bool isRoomHost = false;
   String roomId;
   Stream<DocumentSnapshot> roomSnapshot;
-  List<String> chosenIdeas = List<String>();
-  List<String> usersChosenIdeas = List<String>();
+  List<String> chosenIdeas = [];
+  List<String> usersChosenIdeas = [];
   DateResponse dateMultiResponse;
 
   bool isMultiEditorsListValid() {
@@ -51,25 +51,17 @@ class PlanADateMultiService {
     // Clear lists
     if (isRoomHost) {
       print('getting results');
-      await FirebaseFirestore.instance
-          .collection('get_a_room')
-          .doc(roomId)
-          .update({'gettingResults': true});
+      await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({'gettingResults': true});
 
-      final Map<String, dynamic> dateReq =
-          DateRequest(dateIdeas: chosenIdeas).toJson();
+      final Map<String, dynamic> dateReq = DateRequest(dateIdeas: chosenIdeas).toJson();
 
       try {
-        final Map<String, dynamic> response =
-            await ApiSdk.postDate(_service.userToken, dateReq);
+        final Map<String, dynamic> response = await ApiSdk.postDate(_service.userToken, dateReq);
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 
         // TODO: Make model
-        await FirebaseFirestore.instance
-            .collection('get_a_room')
-            .doc(roomId)
-            .update({
+        await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({
           'chosenIdea': dateMultiResponse.chosenIdea,
         });
 
@@ -102,13 +94,10 @@ class PlanADateMultiService {
     return completer.future;
   }
 
-  // TODO: Convert this to backend code
+  /// Will ask the backend to delete the current room.
   void deleteRoom() async {
-    print('Querying external source');
-
-    final Map<String, dynamic> deleteARoomResponse =
-        await ApiSdk.deleteARoom(_service.userToken, roomId);
-    print(deleteARoomResponse);
+    print('Deleting room with ID: $roomId');
+    await ApiSdk.deleteARoom(_service.userToken, roomId);
   }
 
   Future<void> waitForHost() async {
@@ -117,8 +106,7 @@ class PlanADateMultiService {
     final completer = Completer<bool>();
 
     roomSnapshot.listen((querySnapshot) {
-      if (querySnapshot.data()['gettingResults'] != null &&
-          querySnapshot.data()['gettingResults']) {
+      if (querySnapshot.data()['gettingResults'] != null && querySnapshot.data()['gettingResults']) {
         completer.complete(true);
       }
     });
@@ -134,8 +122,7 @@ class PlanADateMultiService {
 
   void updateChosenIdeas(Function callback) {
     roomSnapshot.listen((querySnapshot) {
-      GetARoomResponse getARoomResponse =
-          GetARoomResponse.fromServerMap(querySnapshot.data());
+      GetARoomResponse getARoomResponse = GetARoomResponse.fromServerMap(querySnapshot.data());
       chosenIdeas = getARoomResponse.chosenIdeas;
       callback();
     });
@@ -144,18 +131,11 @@ class PlanADateMultiService {
   Future<void> commitMultiIdeas() async {
     print('Querying external source 6');
 
-    DocumentSnapshot results = await FirebaseFirestore.instance
-        .collection('get_a_room')
-        .doc(roomId)
-        .get();
+    DocumentSnapshot results = await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).get();
     print(results.data());
-    GetARoomResponse getARoomResponse =
-        GetARoomResponse.fromServerMap(results.data());
+    GetARoomResponse getARoomResponse = GetARoomResponse.fromServerMap(results.data());
     chosenIdeas = getARoomResponse.chosenIdeas;
-    await FirebaseFirestore.instance
-        .collection('get_a_room')
-        .doc(roomId)
-        .update({
+    await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({
       'chosenIdeas': [...chosenIdeas, ...usersChosenIdeas]
     });
   }
@@ -165,15 +145,14 @@ class PlanADateMultiService {
 
     roomId = null;
     try {
-      final Map<String, dynamic> getARoomResponse =
-          await ApiSdk.getARoom(_service.userToken);
+      final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom(_service.userToken);
 
       GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
 
       roomId = roomResponse.roomId;
       // await super.initFirebase();
       await queryARoom();
-      
+
       return roomId;
     } catch (e) {
       throw e;
@@ -184,11 +163,8 @@ class PlanADateMultiService {
     print('Querying external source 8');
 
     this.roomId = roomId;
-   // await super.initFirebase();
-    DocumentSnapshot results = await FirebaseFirestore.instance
-        .collection('get_a_room')
-        .doc(roomId)
-        .get();
+    // await super.initFirebase();
+    DocumentSnapshot results = await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).get();
     await queryARoom();
 
     return results.exists;
@@ -197,10 +173,7 @@ class PlanADateMultiService {
   Future<void> queryARoom() async {
     print('Querying external source 9');
     _planADateBaseService.isMultiEditing = true;
-    
-    roomSnapshot = FirebaseFirestore.instance
-        .collection('get_a_room')
-        .doc(roomId)
-        .snapshots();
+
+    roomSnapshot = FirebaseFirestore.instance.collection('get_a_room').doc(roomId).snapshots();
   }
 }

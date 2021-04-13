@@ -13,8 +13,7 @@ class ResultsView extends StatefulWidget {
   State<StatefulWidget> createState() => _ResultsViewState();
 }
 
-class _ResultsViewState extends State<ResultsView>
-    with SingleTickerProviderStateMixin {
+class _ResultsViewState extends State<ResultsView> with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationController _animationController;
   ConfettiController _confettiController;
@@ -59,14 +58,11 @@ class _ResultsViewState extends State<ResultsView>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.linear);
+    _animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    _animation = CurvedAnimation(parent: _animationController, curve: Curves.linear);
     _animation.addListener(() => setState(() {}));
     _animationController.forward();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 5));
+    _confettiController = ConfettiController(duration: const Duration(seconds: 5));
   }
 
   @override
@@ -85,15 +81,13 @@ class ContinueButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ResultsViewModel>.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
-      builder: (BuildContext context, ResultsViewModel model, Widget child) =>
-          Padding(
+      builder: (BuildContext context, ResultsViewModel model, Widget child) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             RaisedButton(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
               shape: Theme.of(context).cardTheme.shape,
               color: Theme.of(context).primaryColor,
               child: FaIcon(FontAwesomeIcons.chevronRight),
@@ -113,11 +107,9 @@ class ResultsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ViewModelBuilder.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
-      builder: (BuildContext context, ResultsViewModel model, Widget child) =>
-          Card(
+      builder: (BuildContext context, ResultsViewModel model, Widget child) => Card(
         elevation: Theme.of(context).cardTheme.elevation,
         margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
         shape: Theme.of(context).cardTheme.shape,
@@ -178,13 +170,7 @@ class ConfettiCanon extends StatelessWidget {
         maxBlastForce: 10,
         minBlastForce: 5,
         shouldLoop: true,
-        colors: const [
-          Colors.green,
-          Colors.blue,
-          Colors.pink,
-          Colors.orange,
-          Colors.purple
-        ],
+        colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.purple],
       ),
     );
   }

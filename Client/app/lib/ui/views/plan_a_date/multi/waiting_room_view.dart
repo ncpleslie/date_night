@@ -10,57 +10,57 @@ class WaitingRoomView extends StatefulWidget {
 }
 
 class _WaitingRoomViewState extends State<WaitingRoomView> {
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
       onModelReady: (PlanADateMultiViewModel vm) async => init(vm),
-      builder:
-          (BuildContext context, PlanADateMultiViewModel vm, Widget child) =>
-              Scaffold(
-        appBar: CustomAppBar(
-          name: vm.roomId,
-          transparent: false,
-        ).build(context),
-        body: PageBackground(
-          child: Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: vm.ideasChanged
-                ? vm.isRoomHost
-                    ? Column(
+      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget child) {
+        return WillPopScope(
+          onWillPop: vm.onPop,
+          child: Scaffold(
+            appBar: CustomAppBar(
+              name: vm.roomId,
+            ).build(context),
+            body: PageBackground(
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: vm.ideasChanged
+                    ? vm.isRoomHost
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text('Your partner has entered their ideas', style: Theme.of(context).textTheme.bodyText2),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              RaisedButton(
+                                onPressed: () => vm.navigateToLoading(),
+                                child: Text('Continue'),
+                              )
+                            ],
+                          )
+                        : Container()
+                    : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Your partner has entered their ideas',
+                          Text('Waiting for your partner to enter their ideas',
                               style: Theme.of(context).textTheme.bodyText2),
                           SizedBox(
                             height: 10,
                           ),
-                          RaisedButton(
-                            onPressed: () => vm.navigateToLoading(),
-                            child: Text('Continue'),
+                          LinearProgressIndicator(
+                            backgroundColor: Colors.transparent,
                           )
                         ],
-                      )
-                    : Container()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Waiting for your partner to enter their ideas',
-                          style: Theme.of(context).textTheme.bodyText2),
-                      SizedBox(
-                        height: 10,
                       ),
-                      LinearProgressIndicator(
-                        backgroundColor: Colors.transparent,
-                      )
-                    ],
-                  ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

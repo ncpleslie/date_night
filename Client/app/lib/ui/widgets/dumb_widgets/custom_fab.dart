@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// A custom floating action button element.
+// ignore: must_be_immutable
 class CustomFAB extends StatelessWidget {
   CustomFAB({@required this.tag, @required this.icon, @required this.onTap, this.disabled}) {
     disabled = disabled == null ? false : disabled;

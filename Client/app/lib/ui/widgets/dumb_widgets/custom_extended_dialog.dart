@@ -14,10 +14,8 @@ void setupDialogUi() {
   var dialogService = locator<DialogService>();
 
   final builders = {
-    DialogType.Basic: (context, sheetRequest, completer) =>
-        _BasicDialog(request: sheetRequest, completer: completer),
-    DialogType.Form: (context, sheetRequest, completer) =>
-        _FormDialog(request: sheetRequest, completer: completer),
+    DialogType.Basic: (context, sheetRequest, completer) => _BasicDialog(request: sheetRequest, completer: completer),
+    DialogType.Form: (context, sheetRequest, completer) => _FormDialog(request: sheetRequest, completer: completer),
     DialogType.FormWithText: (context, sheetRequest, completer) =>
         _FormWithTextDialog(request: sheetRequest, completer: completer),
   };
@@ -32,49 +30,33 @@ class _BasicDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              request.title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              request.description,
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () => completer(DialogResponse(confirmed: true)),
-              child: Container(
-                child: request.showIconInMainButton
-                    ? Icon(Icons.check_circle)
-                    : Text(request.mainButtonTitle),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-            )
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25.0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+        child: AlertDialog(
+          backgroundColor: Theme.of(context).cardTheme.color,
+          shape: Theme.of(context).dialogTheme.shape,
+          title: Center(
+            child: Text(request.title),
+          ),
+          content: getContent(),
+          actions: <Widget>[
+            CustomDialogButton(context,
+                icon: Icons.chevron_right,
+                onTap: () => completer(
+                    DialogResponse(confirmed: true, responseData: CustomDialogResponse(type: DialogResponseType.None))))
           ],
         ),
       ),
+    );
+  }
+
+  Widget getContent() {
+    return Text(
+      request.description,
+      style: TextStyle(fontSize: 18),
+      textAlign: TextAlign.center,
     );
   }
 }
@@ -102,7 +84,8 @@ class _FormDialog extends HookWidget {
             CustomDialogButton(context,
                 icon: Icons.chevron_right,
                 onTap: () => completer(DialogResponse(
-                    confirmed: true, responseData: CustomDialogResponse(type: DialogResponseType.Text, response: controller.text))))
+                    confirmed: true,
+                    responseData: CustomDialogResponse(type: DialogResponseType.Text, response: controller.text))))
           ],
         ),
       ),
@@ -125,12 +108,11 @@ class _FormDialog extends HookWidget {
 class _FormWithTextDialog extends _FormDialog {
   final DialogRequest request;
   final Function(DialogResponse) completer;
-  const _FormWithTextDialog({Key key, this.request, this.completer})
-      : super(key: key);
+  const _FormWithTextDialog({Key key, this.request, this.completer}) : super(key: key);
 
   @override
   Widget getContent(TextEditingController controller) {
-    controller.text = request.description;
+    controller.text = request.description.toUpperCase();
     return TextField(
       style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
       autofocus: true,
@@ -140,19 +122,16 @@ class _FormWithTextDialog extends _FormDialog {
       enableInteractiveSelection: true,
       readOnly: true,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 10),
+        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
         filled: true,
         fillColor: Colors.white,
-        suffix: Container(
-          child: Icon(
-            Icons.copy,
-            color: Colors.black,
-          ),
+        suffix: Icon(
+          Icons.copy,
+          color: Colors.black,
         ),
       ),
-      onTap: () => completer(DialogResponse(
-          confirmed: false,
-          responseData: CustomDialogResponse(type: DialogResponseType.Copied))),
+      onTap: () => completer(
+          DialogResponse(confirmed: false, responseData: CustomDialogResponse(type: DialogResponseType.Copied))),
     );
   }
 }

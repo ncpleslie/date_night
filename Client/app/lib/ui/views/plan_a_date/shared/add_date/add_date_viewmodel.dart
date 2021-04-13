@@ -10,10 +10,8 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AddDateViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  final PlanADateSingleService _planADateSingleService =
-      locator<PlanADateSingleService>();
-    final PlanADateMultiService _planADateMultiService =
-      locator<PlanADateMultiService>();
+  final PlanADateSingleService _planADateSingleService = locator<PlanADateSingleService>();
+  final PlanADateMultiService _planADateMultiService = locator<PlanADateMultiService>();
   final RandomIdeaService _randomIdeaService = locator<RandomIdeaService>();
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
 
@@ -91,5 +89,13 @@ class AddDateViewModel extends BaseViewModel {
         ? _planADateMultiService.removeMultiEditorsItemAt(index)
         : _planADateSingleService.removeItemAt(index);
     notifyListeners();
+  }
+
+  Future<bool> onPop() async {
+    if (isMultiEditing()) {
+      _planADateMultiService.deleteRoom();
+      return _navigationService.back();
+    }
+    return true;
   }
 }

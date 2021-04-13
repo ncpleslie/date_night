@@ -19,42 +19,43 @@ import 'add_date_viewmodel.dart';
 class AddDateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return ViewModelBuilder<AddDateViewModel>.reactive(
       viewModelBuilder: () => AddDateViewModel(),
-      builder: (BuildContext context, AddDateViewModel vm, Widget child) =>
-          Scaffold(
-        // Build Appbar
-        extendBodyBehindAppBar: vm.roomId.isNotEmpty ? false : true,
-        appBar: CustomAppBar(
-          name: vm.isMultiEditing() ? '${vm.roomId}' : '',
-          transparent: vm.isMultiEditing() ? false : true,
-        ).build(context),
-        // resizeToAvoidBottomPadding: false,
+      builder: (BuildContext context, AddDateViewModel vm, Widget child) {
+        return WillPopScope(
+          onWillPop: vm.onPop,
+          child: Scaffold(
+          // Build Appbar
+          extendBodyBehindAppBar: vm.roomId.isNotEmpty ? false : true,
+          appBar: CustomAppBar(
+            name: vm.isMultiEditing() ? '${vm.roomId}' : '',
+          ).build(context),
+          // resizeToAvoidBottomPadding: false,
 
-        // Create body
-        body: PageBackground(child: _buildPage(vm)),
+          // Create body
+          body: PageBackground(child: _buildPage(vm)),
 
-        // FAB
-        floatingActionButton: Container(
-          margin: EdgeInsets.only(bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              CustomFAB(
-                  tag: 'Add More',
-                  icon: Icons.add,
-                  onTap: () => _showInput(context, vm)),
-              CustomFAB(
-                tag: 'Continue',
-                icon: Icons.arrow_forward,
-                onTap: () => vm.onFinish(),
-                disabled: !vm.isListValid(),
-              )
-            ],
+          // FAB
+          floatingActionButton: Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                CustomFAB(tag: 'Add More', icon: Icons.add, onTap: () => _showInput(context, vm)),
+                CustomFAB(
+                  tag: 'Continue',
+                  icon: Icons.arrow_forward,
+                  onTap: () => vm.onFinish(),
+                  disabled: !vm.isListValid(),
+                )
+              ],
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
+        );
+      },
     );
   }
 
@@ -73,13 +74,10 @@ class AddDateView extends StatelessWidget {
                     itemCount: model.getEditorsList().length,
                     itemBuilder: (BuildContext context, int index) {
                       return DateAddIdeaCard(
-                          index: index,
-                          name: model.getEditorsList()[index],
-                          onDelete: model.removeIdea);
+                          index: index, name: model.getEditorsList()[index], onDelete: model.removeIdea);
                     },
                   )
-                : EmptyScreenIcon(emptyIconString,
-                    icon: CupertinoIcons.search));
+                : EmptyScreenIcon(emptyIconString, icon: CupertinoIcons.search));
       },
     );
   }
@@ -99,11 +97,9 @@ class AddDateView extends StatelessWidget {
     );
   }
 
-  List<CustomDialogButton> _getDialogButtons(
-      BuildContext context, AddDateViewModel model) {
+  List<CustomDialogButton> _getDialogButtons(BuildContext context, AddDateViewModel model) {
     return [
-      CustomDialogButton(context,
-          icon: Icons.delete, onTap: () => model.removeDialog()),
+      CustomDialogButton(context, icon: Icons.delete, onTap: () => model.removeDialog()),
       CustomDialogButton(context, icon: Icons.add, onTap: () => model.addIdea())
     ];
   }

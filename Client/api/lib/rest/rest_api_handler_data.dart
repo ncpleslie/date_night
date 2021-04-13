@@ -13,7 +13,7 @@ class RestApiHandlerData {
     return response;
   }
 
-    static deleteData(String path, [Map<String, String> headers]) async {
+  static deleteData(String path, [Map<String, String> headers]) async {
     final response = await _apiBaseHelper.delete('$path', headers);
     return response;
   }

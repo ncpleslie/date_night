@@ -13,7 +13,7 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
   final UserService _userService = locator<UserService>();
 
 
-  List<DateAroundModel> _dates = List<DateAroundModel>();
+  List<DateAroundModel> _dates = [];
   List<DateAroundModel> get dates => _dates;
 
   bool _isLoading = false;
@@ -25,7 +25,7 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
     }
 
     if (clearCacheData) {
-      _dates = List<DateAroundModel>();
+      _dates = [];
       notifyListeners();
     }
 

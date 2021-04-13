@@ -6,6 +6,7 @@ import GetARoomDTO from '../models/get_a_room_dto.model';
 import PostARoomDTO from '../models/post_a_room_dto.model'
 import { HTTPMethod } from '../enums/http_method.enum';
 import ErrorDTO from '../models/error_dto.model';
+import DeleteARoomDTO from '../models/delete_a_room_dto.model';
 
 const firestore = Admin.firestore;
 
@@ -49,7 +50,9 @@ const getARoom = async (request: functions.Request, response: functions.Response
         return;
     } catch (error) {
         functions.logger.error(error);
+
         response.status(500).send('Unable to create room');
+
         return;
     }
 }
@@ -70,7 +73,9 @@ const postARoom = async (request: functions.Request, response: functions.Respons
             }
 
         } catch (error) {
+
             response.status(400).send('Bad request. Unable to locate room.');
+
             return;
         }
 
@@ -79,13 +84,17 @@ const postARoom = async (request: functions.Request, response: functions.Respons
             const currentDates = roomData?.['chosenIdeas'];
             const newDateIdeas = [...currentDates, ...dateIdeas]
             await roomRef.update({ chosenIdeas: newDateIdeas });
+
             response.send(new PostARoomDTO(roomId, newDateIdeas));
+
             return;
         } catch (error) {
             response.status(500).send(new ErrorDTO('Error updating room.'));
+
             return;
         }
     }
+
     response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId and dateIdeas array.'));
 }
 
@@ -93,8 +102,9 @@ const deleteARoom = async (request: functions.Request, response: functions.Respo
 
     // TODO: Waiting x seconds and then delete room
     const roomId = request?.query?.roomId;
-    
+
     if (roomId) {
+        
         try {
             const snapshot = await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).get();
 
@@ -102,11 +112,14 @@ const deleteARoom = async (request: functions.Request, response: functions.Respo
                 await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).update({ delete: true });
             }
 
-            response.send(`Room scheduled for deletion. Room ID: ${roomId}`);
+            response.send(new DeleteARoomDTO(roomId as string, 'Room scheduled for deletion.'));
+
             return;
         } catch (e) {
+            functions.logger.error(e);
             response.status(500).send(new ErrorDTO('Internal Server Error. Unable to delete room'));
         }
     }
+
     response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId.'));
 }

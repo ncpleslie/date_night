@@ -48,11 +48,11 @@ class _HomeViewState extends State<HomeView> {
       navBarStyle: NavBarStyle.style3,
       handleAndroidBackButtonPress: true,
       confineInSafeArea: true,
-      // itemAnimationProperties: ItemAnimationProperties(
-      //   // Navigation Bar's items animation properties.
-      //   duration: Duration(milliseconds: 200),
-      //   curve: Curves.ease,
-      // ),
+      itemAnimationProperties: ItemAnimationProperties(
+        // Navigation Bar's items animation properties.
+        duration: Duration(milliseconds: 800),
+        curve: Curves.bounceOut,
+      ),
       screenTransitionAnimation: ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,

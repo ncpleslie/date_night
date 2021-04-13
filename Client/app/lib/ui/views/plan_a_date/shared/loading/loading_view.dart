@@ -32,7 +32,7 @@ class _LoadingViewState extends State<LoadingView> {
                     children: <Widget>[
                       // Getting results text
                       Text(
-                        'Thinking...',
+                        '',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).primaryTextTheme.headline5,
                       ),
@@ -41,12 +41,12 @@ class _LoadingViewState extends State<LoadingView> {
                 ),
               ),
 
-              // Animated 'Thinking' bubble
+              // Animated 'Thinking' heart
               const Positioned(
                   child: Center(
                 child: Opacity(
                   opacity: 0.5,
-                  child: SpinKitDoubleBounce(
+                  child: SpinKitPumpingHeart(
                     size: 300.0,
                     duration: Duration(seconds: 3),
                     color: Colors.white,
@@ -58,26 +58,5 @@ class _LoadingViewState extends State<LoadingView> {
         ),
       ),
     );
-  }
-
-
-  /// Calculates the results of their users chosen request.
-  /// These results can be grabbed from the model when needed.
-  /// (Probably the results page).
-  Future<void> _getResults(LoadingViewModel model) async {
-    // print(model.isMultiEditing);
-    // print(model.isRoomHost);
-    // if (model.isMultiEditing) {
-    //   if (model.isRoomHost) {
-    //     await model.calculateMultiResults();
-    //   } else {
-    //     await model.waitForResults();
-    //   }
-    // } else {
-    //   await model.calculateResults();
-    // }
-    // SchedulerBinding.instance.addPostFrameCallback((_) {
-    //   Navigator.of(context).popAndPushNamed(Routes.Results);
-    // });
   }
 }

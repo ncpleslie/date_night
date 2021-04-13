@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/views/plan_a_date/multi/plan_a_date_multi_viewmodel.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/page_background.dart';

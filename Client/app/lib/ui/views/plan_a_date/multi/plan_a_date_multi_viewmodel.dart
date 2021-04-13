@@ -10,8 +10,7 @@ import 'package:stacked_services/stacked_services.dart';
 class PlanADateMultiViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
-  final PlanADateMultiService _planADateMultiService =
-      locator<PlanADateMultiService>();
+  final PlanADateMultiService _planADateMultiService = locator<PlanADateMultiService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
   bool get isRoomHost => _planADateMultiService.isRoomHost;
@@ -51,20 +50,28 @@ class PlanADateMultiViewModel extends BaseViewModel {
         variant: DialogType.FormWithText,
         description: _planADateMultiService.roomId);
 
-    if (response?.confirmed != null && response.confirmed) {
-      _planADateMultiService.isRoomHost = true;
-      _planADateMultiService.isMultiEditing = true;
-      _navigationService.navigateTo(Routes.addDateView);
+    if (response == null) {
+      // Delete the room since the user has exited
+      _planADateMultiService.deleteRoom();
+      return;
     }
 
-    if (!response.confirmed &&
-        response.responseData?.type == DialogResponseType.Copied) {
-      Clipboard.setData(ClipboardData(text: roomId));
-      _snackbarService.showSnackbar(
-          title: 'Copied!', message: 'Room code copied to clipboard');
+    if (response != null && response?.confirmed != null) {
+      if (response.confirmed) {
+        // Enter the room
+        _planADateMultiService.isRoomHost = true;
+        _planADateMultiService.isMultiEditing = true;
+        _navigationService.navigateTo(Routes.addDateView);
+      }
 
-      // workaround to prevent the dialog from closing when tapping 'copy'
-      await _createARoomDialog();
+      if (!response.confirmed && response.responseData?.type == DialogResponseType.Copied) {
+        // User wants to copy the room code
+        Clipboard.setData(ClipboardData(text: roomId));
+        _snackbarService.showSnackbar(title: 'Copied!', message: 'Room code copied to clipboard');
+
+        // workaround to prevent the dialog from closing when tapping 'copy'
+        await _createARoomDialog();
+      }
     }
   }
 
@@ -73,12 +80,8 @@ class PlanADateMultiViewModel extends BaseViewModel {
     notifyListeners();
     _planADateMultiService.clearAllMultiLists();
 
-    // TODO: Style Dialog
     DialogResponse response = await _dialogService.showCustomDialog(
-        title: 'Room Code',
-        barrierDismissible: true,
-        variant: DialogType.Form,
-        mainButtonTitle: 'Enter');
+        variant: DialogType.Form, title: 'Room Code', barrierDismissible: true, mainButtonTitle: 'Enter');
 
     if (response?.confirmed != null &&
         response.confirmed &&
@@ -91,9 +94,11 @@ class PlanADateMultiViewModel extends BaseViewModel {
         _planADateMultiService.isRoomHost = false;
         _planADateMultiService.isMultiEditing = true;
         _navigationService.navigateTo(Routes.addDateView);
+
       } else {
-        // TODO: Style Dialog
-        await _dialogService.showDialog(
+        // Wrong room code
+        await _dialogService.showCustomDialog(
+            variant: DialogType.Basic,
             title: 'Unable to enter that room',
             description: 'Are you sure that\'s the right room code?');
       }
@@ -109,8 +114,8 @@ class PlanADateMultiViewModel extends BaseViewModel {
 
   /// Determine if the other users have added their picks
   Future<void> ideasHaveChanged() async {
-    await _planADateMultiService.ideasHaveChanged((bool stateChanged) =>
-        {_ideasChanged = stateChanged, notifyListeners()});
+    await _planADateMultiService
+        .ideasHaveChanged((bool stateChanged) => {_ideasChanged = stateChanged, notifyListeners()});
   }
 
   /// Wait for the host to move on to display the results
@@ -131,5 +136,10 @@ class PlanADateMultiViewModel extends BaseViewModel {
       await commitMultiIdeas();
       await waitForHost();
     }
+  }
+
+  Future<bool> onPop() async {
+    _planADateMultiService.deleteRoom();
+    return _navigationService.back();
   }
 }

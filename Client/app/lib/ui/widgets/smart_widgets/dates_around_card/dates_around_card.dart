@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/models/date_around_model.dart';
-import 'package:date_night/ui/widgets/dumb_widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -19,9 +18,7 @@ class DatesAroundCard extends StatelessWidget {
   DatesAroundCard({@required this.id, @required this.date, @required this.index}) {
     _chosenDate = date.chosenIdea;
 
-    _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty
-        ? date.otherIdeas.join(', ')
-        : null;
+    _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty ? date.otherIdeas.join(', ') : null;
   }
 
   final List<List<Color>> pillColors = ThemeConfig.pillColors;
@@ -48,8 +45,7 @@ class DatesAroundCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DatesAroundCardViewModel>.reactive(
         viewModelBuilder: () => DatesAroundCardViewModel(),
-        builder: (BuildContext context, DatesAroundCardViewModel model,
-            Widget child) {
+        builder: (BuildContext context, DatesAroundCardViewModel model, Widget child) {
           if (_model == null) {
             _model = model;
           }
@@ -82,9 +78,7 @@ class DatesAroundCard extends StatelessWidget {
           maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.bodyText1?.color,
-              fontSize: 12,
-              fontWeight: FontWeight.bold),
+              color: Theme.of(context).primaryTextTheme.bodyText1?.color, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -114,13 +108,9 @@ class DatesAroundCard extends StatelessWidget {
           },
           child: Container(
             constraints: BoxConstraints(
-                maxHeight: buttonSize,
-                maxWidth: buttonSize,
-                minHeight: buttonSize,
-                minWidth: buttonSize),
+                maxHeight: buttonSize, maxWidth: buttonSize, minHeight: buttonSize, minWidth: buttonSize),
             padding: EdgeInsets.all(0),
-            child: Icon(Icons.more_horiz,
-                color: Theme.of(context).primaryIconTheme.color),
+            child: Icon(Icons.more_horiz, color: Theme.of(context).primaryIconTheme.color),
           ),
         ),
       ),
@@ -198,10 +188,7 @@ class DatesAroundCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Other Ideas: ',
-                          style: Theme.of(context)
-                              .primaryTextTheme
-                              .subtitle1
-                              .copyWith(fontWeight: FontWeight.bold)),
+                          style: Theme.of(context).primaryTextTheme.subtitle1.copyWith(fontWeight: FontWeight.bold)),
                       AutoSizeText(
                         _otherDates.isNotEmpty ? _otherDates : ':(',
                         overflow: TextOverflow.ellipsis,

@@ -1,6 +1,7 @@
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_extended_dialog.dart';
+import 'package:date_night/ui/widgets/dumb_widgets/custom_extended_snackbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -11,6 +12,7 @@ import 'app/router.gr.dart' as routes;
 void main() async {
   setupLocator();
   setupDialogUi();
+  setupSnackbarUi();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(Phoenix(
