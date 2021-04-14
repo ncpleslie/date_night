@@ -1,3 +1,4 @@
-const String baseURi = 'https://date-night-ios.firebaseio.com/';
-const String uploadURi = baseURi + 'dateideas.json';
-const String fetchURi = baseURi + 'dateideas.json';
+class Globals {
+  static const String TERMS_AND_CONDITIONS = 'assets/documents/terms_and_conditions.md';
+  static const String PRIVACY_POLICY = 'assets/documents/privacy_policy.md';
+}

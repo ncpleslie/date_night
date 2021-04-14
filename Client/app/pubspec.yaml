@@ -61,6 +61,7 @@ dependencies:
   firebase_auth: ^1.0.2
   stacked_hooks: ^0.2.0
   simple_animations: ^3.0.3
+  flutter_markdown: ^0.6.1
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,8 @@ flutter:
   assets:
     - assets/images/background.svg
     - assets/images/background_dark.svg
+    - assets/documents/privacy_policy.md
+    - assets/documents/terms_and_conditions.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

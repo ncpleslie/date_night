@@ -1,5 +1,6 @@
 enum DialogType {
   Basic,
   Form,
-  FormWithText
+  FormWithText,
+  LongText
 }

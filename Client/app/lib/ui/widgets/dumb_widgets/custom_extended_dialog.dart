@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:date_night/enums/dialog_type.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 void setupDialogUi() {
   var dialogService = locator<DialogService>();
@@ -18,6 +19,8 @@ void setupDialogUi() {
     DialogType.Form: (context, sheetRequest, completer) => _FormDialog(request: sheetRequest, completer: completer),
     DialogType.FormWithText: (context, sheetRequest, completer) =>
         _FormWithTextDialog(request: sheetRequest, completer: completer),
+    DialogType.LongText: (context, sheetRequest, completer) =>
+        _LongTextDialog(request: sheetRequest, completer: completer),
   };
 
   dialogService.registerCustomDialogBuilders(builders);
@@ -132,6 +135,19 @@ class _FormWithTextDialog extends _FormDialog {
       ),
       onTap: () => completer(
           DialogResponse(confirmed: false, responseData: CustomDialogResponse(type: DialogResponseType.Copied))),
+    );
+  }
+}
+
+class _LongTextDialog extends _BasicDialog {
+  final DialogRequest request;
+  final Function(DialogResponse) completer;
+  const _LongTextDialog({Key key, this.request, this.completer}) : super(key: key);
+
+   @override
+  Widget getContent() {
+    return Markdown(
+      data: request.description,
     );
   }
 }

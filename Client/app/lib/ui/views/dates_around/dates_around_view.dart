@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:scroll_app_bar/scroll_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import 'dates_around_viewmodel.dart';
