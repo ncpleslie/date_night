@@ -35,7 +35,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
       await _createARoomDialog();
       _planADateSingleService.clearAllSingleLists();
     } catch (e) {
-      print(e.toString());
+      
       await _dialogService.showDialog(
           title: 'Unable to create a room',
           description:

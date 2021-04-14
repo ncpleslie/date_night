@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:scroll_app_bar/scroll_app_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import 'dates_around_viewmodel.dart';
@@ -25,50 +26,54 @@ class DatesAroundView extends StatefulWidget {
 
 class _DatesAroundViewState extends State<DatesAroundView> {
   final ScrollController controller = ScrollController();
-  final RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  final RefreshController refreshController = RefreshController(initialRefresh: false);
+
+  var title = 'Dates Around';
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DatesAroundViewModel>.reactive(
       onModelReady: (model) => onModelReady(model),
       viewModelBuilder: () => DatesAroundViewModel(),
-      builder:
-          (BuildContext context, DatesAroundViewModel model, Widget child) =>
-              Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: CustomAppBar(
-                name: 'Dates Around',
-                icon: _settingsIcon(context, model),
-                transparent: true,
-                scrollable: true,
-                scrollController: controller)
-            .build(context),
-        body: PageBackground(
+      builder: (BuildContext context, DatesAroundViewModel model, Widget child) {
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: CustomAppBar(
+                  name: title,
+                  icon: _settingsIcon(context, model),
+                  transparent: true,
+                  scrollable: true,
+                  scrollController: controller)
+              .build(context),
+          body: PageBackground(
             child: model.isBusy
                 ? ShimmerDatesAroundListView()
-                : SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    header: WaterDropHeader(
-                      waterDropColor: Theme.of(context).primaryColor,
+                : Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: WaterDropHeader(
+                        waterDropColor: Theme.of(context).primaryColor,
+                      ),
+                      footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
+                        return _loadingState(status);
+                      }),
+                      controller: refreshController,
+                      onRefresh: () async => {
+                        await model.loadMore(clearCacheData: true),
+                        refreshController.refreshCompleted(),
+                        //controller.appBar.setPinState(true),
+                      },
+                      onLoading: () => refreshController.loadComplete(),
+                      child: !model.hasError && model.dataReady
+                          ? _list(context, model.dates)
+                          : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                     ),
-                    footer: CustomFooter(
-                        builder: (BuildContext context, LoadStatus status) {
-                      return _loadingState(status);
-                    }),
-                    controller: refreshController,
-                    onRefresh: () async => {
-                      await model.loadMore(clearCacheData: true),
-                      refreshController.refreshCompleted(),
-                    },
-                    onLoading: () => refreshController.loadComplete(),
-                    child: !model.hasError && model.dataReady
-                        ? _list(context, model.dates)
-                        : EmptyScreenIcon(
-                            'Failed to load.\nPull down to refresh.'),
-                  ),),
-      ),
+                ),
+          ),
+        );
+      },
     );
   }
 
@@ -77,6 +82,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         model.loadMore();
+        //controller.appBar.setPinState(false);
       }
     });
   }
@@ -84,15 +90,12 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   /// Creates the list of dates around.
   Widget _list(BuildContext context, List<DateAroundModel> dates) {
     return ListView.builder(
-      padding: const EdgeInsets.only(top: 65.0),
+      padding: const EdgeInsets.only(top: 45.0),
       controller: controller,
       itemCount: dates.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index < dates.length) {
-          return DatesAroundCard(
-              id: dates[index].id,
-              date: dates[index],
-              index: index);
+          return DatesAroundCard(id: dates[index].id, date: dates[index], index: index);
         }
         return Container();
       },
