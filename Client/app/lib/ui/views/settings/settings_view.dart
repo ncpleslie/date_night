@@ -1,7 +1,6 @@
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_viewmodel.dart';

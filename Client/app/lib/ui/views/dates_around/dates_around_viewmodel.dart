@@ -12,7 +12,6 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
   final NavigationService _navigationService = locator<NavigationService>();
   final UserService _userService = locator<UserService>();
 
-
   List<DateAroundModel> _dates = [];
   List<DateAroundModel> get dates => _dates;
 
@@ -26,7 +25,6 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
 
     if (clearCacheData) {
       _dates = [];
-      notifyListeners();
     }
 
     _isLoading = true;
@@ -36,17 +34,15 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
           ? await ApiSdk.getDatesAround(idToken, _dates[_dates.length - 1].id)
           : await ApiSdk.getDatesAround(idToken);
 
-      final List<Map<String, dynamic>> datesAround =
-          response["datesAround"].cast<Map<String, dynamic>>();
+      final List<Map<String, dynamic>> datesAround = response["datesAround"].cast<Map<String, dynamic>>();
 
-      List<DateAroundModel> newDates = datesAround
-          .map((Map<String, dynamic> dateAround) =>
-              DateAroundModel.fromServerMap(dateAround))
-          .toList();
+      List<DateAroundModel> newDates =
+          datesAround.map((Map<String, dynamic> dateAround) => DateAroundModel.fromServerMap(dateAround)).toList();
 
       _dates.addAll(newDates);
     } catch (e) {
       _isLoading = false;
+      // TODO: Show error snackbar
       throw e;
     }
 

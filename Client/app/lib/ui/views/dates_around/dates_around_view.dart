@@ -48,8 +48,8 @@ class _DatesAroundViewState extends State<DatesAroundView> {
             child: model.isBusy
                 ? ShimmerDatesAroundListView()
                 : Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: SmartRefresher(
+                    margin: EdgeInsets.only(top: 20),
+                    child: SmartRefresher(
                       enablePullDown: true,
                       enablePullUp: true,
                       header: WaterDropHeader(
@@ -69,7 +69,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                           ? _list(context, model.dates)
                           : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                     ),
-                ),
+                  ),
           ),
         );
       },
