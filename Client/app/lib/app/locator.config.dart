@@ -4,51 +4,54 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:get_it/get_it.dart' as _i1;
+import 'package:injectable/injectable.dart' as _i2;
+import 'package:stacked_services/stacked_services.dart' as _i5;
 
-import '../services/dates_around_service.dart';
-import '../services/plan_a_date_base_service.dart';
-import '../services/plan_a_date_multi_service.dart';
-import '../services/plan_a_date_single_service.dart';
-import '../services/random_idea_service.dart';
-import '../services/result_feedback_service.dart';
-import '../services/startup_service.dart';
-import '../services/third_party_services_module.dart';
-import '../services/user_service.dart';
+import '../services/api_service.dart' as _i3;
+import '../services/dates_around_service.dart' as _i4;
+import '../services/plan_a_date_base_service.dart' as _i6;
+import '../services/plan_a_date_multi_service.dart' as _i7;
+import '../services/plan_a_date_single_service.dart' as _i8;
+import '../services/random_idea_service.dart' as _i9;
+import '../services/result_feedback_service.dart' as _i10;
+import '../services/startup_service.dart' as _i11;
+import '../services/third_party_services_module.dart' as _i13;
+import '../services/user_service.dart'
+    as _i12; // ignore_for_file: unnecessary_lambdas
 
-/// adds generated dependencies
-/// to the provided [GetIt] instance
-
-GetIt $initGetIt(
-  GetIt get, {
-  String environment,
-  EnvironmentFilter environmentFilter,
-}) {
-  final gh = GetItHelper(get, environment, environmentFilter);
+// ignore_for_file: lines_longer_than_80_chars
+/// initializes the registration of provided dependencies inside of [GetIt]
+_i1.GetIt $initGetIt(_i1.GetIt get,
+    {String environment, _i2.EnvironmentFilter environmentFilter}) {
+  final gh = _i2.GetItHelper(get, environment, environmentFilter);
   final thirdPartyServicesModule = _$ThirdPartyServicesModule();
-  gh.lazySingleton<DatesAroundService>(() => DatesAroundService());
-  gh.lazySingleton<DialogService>(() => thirdPartyServicesModule.dialogService);
-  gh.lazySingleton<NavigationService>(
+  gh.lazySingleton<_i3.ApiService>(() => _i3.ApiService());
+  gh.lazySingleton<_i4.DatesAroundService>(() => _i4.DatesAroundService());
+  gh.lazySingleton<_i5.DialogService>(
+      () => thirdPartyServicesModule.dialogService);
+  gh.lazySingleton<_i5.NavigationService>(
       () => thirdPartyServicesModule.navigationService);
-  gh.lazySingleton<PlanADateBaseService>(() => PlanADateBaseService());
-  gh.lazySingleton<PlanADateMultiService>(() => PlanADateMultiService());
-  gh.lazySingleton<PlanADateSingleService>(() => PlanADateSingleService());
-  gh.lazySingleton<RandomIdeaService>(() => RandomIdeaService());
-  gh.lazySingleton<ResultFeedbackService>(() => ResultFeedbackService());
-  gh.lazySingleton<SnackbarService>(
+  gh.lazySingleton<_i6.PlanADateBaseService>(() => _i6.PlanADateBaseService());
+  gh.lazySingleton<_i7.PlanADateMultiService>(
+      () => _i7.PlanADateMultiService());
+  gh.lazySingleton<_i8.PlanADateSingleService>(
+      () => _i8.PlanADateSingleService());
+  gh.lazySingleton<_i9.RandomIdeaService>(() => _i9.RandomIdeaService());
+  gh.lazySingleton<_i10.ResultFeedbackService>(
+      () => _i10.ResultFeedbackService());
+  gh.lazySingleton<_i5.SnackbarService>(
       () => thirdPartyServicesModule.snackbarService);
-  gh.lazySingleton<StartUpService>(() => StartUpService());
-  gh.lazySingleton<UserService>(() => UserService());
+  gh.lazySingleton<_i11.StartUpService>(() => _i11.StartUpService());
+  gh.lazySingleton<_i12.UserService>(() => _i12.UserService());
   return get;
 }
 
-class _$ThirdPartyServicesModule extends ThirdPartyServicesModule {
+class _$ThirdPartyServicesModule extends _i13.ThirdPartyServicesModule {
   @override
-  DialogService get dialogService => DialogService();
+  _i5.DialogService get dialogService => _i5.DialogService();
   @override
-  NavigationService get navigationService => NavigationService();
+  _i5.NavigationService get navigationService => _i5.NavigationService();
   @override
-  SnackbarService get snackbarService => SnackbarService();
+  _i5.SnackbarService get snackbarService => _i5.SnackbarService();
 }

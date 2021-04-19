@@ -1,8 +1,12 @@
-import './api_constants.dart';
 import './rest/rest_api_handler_data.dart';
+
+
 
 /// For querying a production API.
 class ApiSdk {
+  /// Base API Url
+  static String apiUrl;
+
   /// Fetch other current dates
   static Future<Map<String, dynamic>> getDatesAround(String token,
       [String lastId]) async {
