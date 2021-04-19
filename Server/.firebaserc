@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "date-night-api"
+    "default": "date-night-api",
+    "prod": "date-night-prod",
+    "develop": "date-night-develop"
   }
 }
