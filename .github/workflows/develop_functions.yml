@@ -1,8 +1,8 @@
-name: Firebase function deploy - Production
+name: Firebase function deploy - Develop
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
       with:
-          args: deploy --only functions:[environment prod]
+          args: deploy --only functions:[environment develop]
       env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_PATH: Server
