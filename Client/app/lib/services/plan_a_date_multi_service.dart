@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:api/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/models/date_request_model.dart';
 import 'package:date_night/models/date_response_model.dart';
 import 'package:date_night/models/get_a_room_model.dart';
 import 'package:date_night/models/get_a_room_response_model.dart';
+import 'package:date_night/services/api_service.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
 import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
@@ -15,6 +15,7 @@ import 'package:injectable/injectable.dart';
 class PlanADateMultiService {
   final UserService _service = locator<UserService>();
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
+  final ApiService _apiService = locator<ApiService>();
 
   bool isMultiEditing = false;
   bool isRoomHost = false;
@@ -56,7 +57,7 @@ class PlanADateMultiService {
       final Map<String, dynamic> dateReq = DateRequest(dateIdeas: chosenIdeas).toJson();
 
       try {
-        final Map<String, dynamic> response = await ApiSdk.postDate(_service.userToken, dateReq);
+        final Map<String, dynamic> response = await _apiService.postDate(_service.userToken, dateReq);
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 
@@ -97,7 +98,7 @@ class PlanADateMultiService {
   /// Will ask the backend to delete the current room.
   void deleteRoom() async {
     print('Deleting room with ID: $roomId');
-    await ApiSdk.deleteARoom(_service.userToken, roomId);
+    await _apiService.deleteARoom(_service.userToken, roomId);
   }
 
   Future<void> waitForHost() async {
@@ -145,7 +146,7 @@ class PlanADateMultiService {
 
     roomId = null;
     try {
-      final Map<String, dynamic> getARoomResponse = await ApiSdk.getARoom(_service.userToken);
+      final Map<String, dynamic> getARoomResponse = await _apiService.getARoom(_service.userToken);
 
       GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
 
