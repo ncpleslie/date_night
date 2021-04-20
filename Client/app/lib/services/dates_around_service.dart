@@ -1,13 +1,17 @@
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/models/date_around_model.dart';
+import 'package:date_night/models/server_error_model.dart';
 import 'package:date_night/services/api_service.dart';
 import 'package:date_night/services/user_service.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 @lazySingleton
 class DatesAroundService {
   final UserService _userService = locator<UserService>();
   final ApiService _apiService = locator<ApiService>();
+  final SnackbarService _snackBar = locator<SnackbarService>();
 
   void reportDate(String id) {
     print('Reported: $id');
@@ -21,11 +25,16 @@ class DatesAroundService {
         ? await _apiService.getDatesAround(idToken, previousDateId)
         : await _apiService.getDatesAround(idToken);
 
-    final List<Map<String, dynamic>> datesAround = response["datesAround"].cast<Map<String, dynamic>>();
+    try {
+      final List<Map<String, dynamic>> datesAround = response["datesAround"].cast<Map<String, dynamic>>();
+      return datesAround.map((Map<String, dynamic> dateAround) => DateAroundModel.fromServerMap(dateAround)).toList();
+    } on NoSuchMethodError {
+      // It's probably a cast error because we recieved a server error. The server should've returned a user-friendly error message
+      _snackBar.showSnackbar(title: "Yikes", message: ServerErrorModel.fromServerMap(response).error);
+    } catch (e) {
+      _snackBar.showSnackbar(title: "Yikes", message: "An unknown error occurred.");
+    }
 
-    List<DateAroundModel> newDates =
-        datesAround.map((Map<String, dynamic> dateAround) => DateAroundModel.fromServerMap(dateAround)).toList();
-
-    return newDates;
+    return List.empty();
   }
 }

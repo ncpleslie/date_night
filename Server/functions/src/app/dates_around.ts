@@ -13,8 +13,14 @@ const firestore = Admin.firestore;
 export const datesAround = async (request: functions.Request, response: functions.Response) => {
     functions.logger.info('Dates Around queried');
 
-    if (!await Admin.isAuthorizedUser(request)) {
-        response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
+    const userId = await Admin.isAuthorizedUser(request);
+    if (!userId) {
+        response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
+        return;
+    }
+
+    if (await Admin.isRateLimited(userId)) {
+        response.status(429).send(new ErrorDTO('Too many requests. Slow down, buddy.', 429));
         return;
     }
 
@@ -33,7 +39,7 @@ export const datesAround = async (request: functions.Request, response: function
 
     } catch (e) {
         functions.logger.error(e);
-        response.status(500).send(new ErrorDTO('Internal Server Error. Something went wrong on our end but it could\'ve been something in your request.'));
+        response.status(500).send(new ErrorDTO('Internal Server Error. Something went wrong on our end but it could\'ve been something in your request.', 500));
     }
 }
 

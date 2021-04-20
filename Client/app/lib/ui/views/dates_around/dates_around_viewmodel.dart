@@ -18,7 +18,6 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
   bool _isLoading = false;
 
   Future<List<DateAroundModel>> loadMore({bool clearCacheData = false}) async {
-    print('Querying external source 2');
     if (_isLoading) {
       return _dates;
     }
@@ -29,19 +28,14 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
 
     _isLoading = true;
 
-    try {
-      List<DateAroundModel> newDates =
-          await _datesAroundService.getDates(previousDateId: _dates.isNotEmpty ? _dates[_dates.length - 1].id : "");
-      _dates.addAll(newDates);
-    } catch (e) {
-      _isLoading = false;
-      print(e.toString());
-      _snackbarService.showSnackbar(message: "Error retrieving dates around you.");
-    }
+    List<DateAroundModel> newDates =
+        await _datesAroundService.getDates(previousDateId: _dates.isNotEmpty ? _dates[_dates.length - 1].id : "");
+    _dates.addAll(newDates);
+    _isLoading = false;
 
     _isLoading = false;
     notifyListeners();
-    
+
     return _dates;
   }
 

@@ -15,12 +15,12 @@ import ErrorDTO from '../models/error_dto.model';
 // TODO: Implement fuzzy matching
 export const dates = async (request: functions.Request, response: functions.Response) => {
     if (!await Admin.isAuthorizedUser(request)) {
-        response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
+        response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
         return;
     }
 
     if (!request?.body?.dateIdeas) {
-        response.status(400).send(new ErrorDTO('Invalid request. Ensure you have provided a valid array of date ideas.'));
+        response.status(400).send(new ErrorDTO('Invalid request. Ensure you have provided a valid array of date ideas.', 400));
         return;
     }
 
@@ -53,7 +53,7 @@ export const dates = async (request: functions.Request, response: functions.Resp
         response.send(JSON.stringify(dateDTO));
     } catch (e) {
         functions.logger.error(e);
-        response.status(500).send(new ErrorDTO('Unable to save to DB'));
+        response.status(500).send(new ErrorDTO('Unable to save to DB', 500));
     }
 }
 

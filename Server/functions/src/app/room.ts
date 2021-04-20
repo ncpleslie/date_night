@@ -17,14 +17,19 @@ const firestore = Admin.firestore;
  */
 // TODO: Introduce friendly crypto-safe words for document ID
 export const room = async (request: functions.Request, response: functions.Response) => {
-    const uid = await Admin.isAuthorizedUser(request)
-    if (!uid) {
-        response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
+    const userId = await Admin.isAuthorizedUser(request)
+    if (!userId) {
+        response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
+        return;
+    }
+
+    if (await Admin.isRateLimited(userId)) {
+        response.status(429).send(new ErrorDTO('Too many requests. Slow down, buddy.', 429));
         return;
     }
 
     if (request.method === HTTPMethod.GET) {
-        await getARoom(request, response, uid);
+        await getARoom(request, response, userId);
         return;
     }
 
@@ -34,18 +39,18 @@ export const room = async (request: functions.Request, response: functions.Respo
     }
 
     if (request.method === HTTPMethod.DELETE) {
-        await deleteARoom(request, response, uid);
+        await deleteARoom(request, response, userId);
         return;
     }
 
     response.status(404);
 }
 
-const getARoom = async (request: functions.Request, response: functions.Response, uid: string) => {
+const getARoom = async (request: functions.Request, response: functions.Response, userId: string) => {
     try {
         const roomId = rword.generate();
         const currentTime = firestore.FieldValue.serverTimestamp();
-        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).set({ chosenIdeas: [], owner: uid, created: currentTime });
+        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).set({ chosenIdeas: [], owner: userId, created: currentTime });
         response.send(new GetARoomDTO(roomId as string));
         return;
     } catch (error) {
@@ -89,13 +94,13 @@ const postARoom = async (request: functions.Request, response: functions.Respons
 
             return;
         } catch (error) {
-            response.status(500).send(new ErrorDTO('Error updating room.'));
+            response.status(500).send(new ErrorDTO('Error updating room.', 500));
 
             return;
         }
     }
 
-    response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId and dateIdeas array.'));
+    response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId and dateIdeas array.', 400));
 }
 
 const deleteARoom = async (request: functions.Request, response: functions.Response, uid: string) => {
@@ -121,9 +126,9 @@ const deleteARoom = async (request: functions.Request, response: functions.Respo
             return;
         } catch (e) {
             functions.logger.error(e);
-            response.status(500).send(new ErrorDTO('Internal Server Error. Unable to delete room'));
+            response.status(500).send(new ErrorDTO('Internal Server Error. Unable to delete room', 500));
         }
     }
 
-    response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId.'));
+    response.status(400).send(new ErrorDTO('Bad request. Please provide a roomId.', 400));
 }
