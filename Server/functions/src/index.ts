@@ -9,7 +9,6 @@ const runtimeOpts: functions.RuntimeOptions = {
     timeoutSeconds: 30,
 }
 
-
 Admin.firestore;
 // TODO: Rate limit
 export const dates_around = functions.runWith(runtimeOpts).https.onRequest(datesAround);
