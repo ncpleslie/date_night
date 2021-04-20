@@ -17,4 +17,10 @@ samples, guidance on mobile development, and a full API reference.
 
 ###
 
+## To Run
+
+flutter run --dart-define=API_URL=<API_ENDPOINT>
+
+## Rebuild services
+
 flutter pub run build_runner build --delete-conflicting-outputs

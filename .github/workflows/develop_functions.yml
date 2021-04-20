@@ -2,6 +2,8 @@ name: Firebase function deploy - Develop
 
 on:
   push:
+    paths:
+      'Server/**'
     branches: [ develop ]
 
 jobs:

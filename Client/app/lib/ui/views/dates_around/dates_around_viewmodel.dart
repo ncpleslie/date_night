@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:api/main.dart';
 import 'package:date_night/app/locator.dart';
 import 'package:date_night/app/router.gr.dart';
 import 'package:date_night/models/date_around_model.dart';
-import 'package:date_night/services/user_service.dart';
+import 'package:date_night/services/dates_around_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
   final NavigationService _navigationService = locator<NavigationService>();
-  final UserService _userService = locator<UserService>();
+  final DatesAroundService _datesAroundService = locator<DatesAroundService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   List<DateAroundModel> _dates = [];
   List<DateAroundModel> get dates => _dates;
@@ -29,21 +29,13 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
 
     _isLoading = true;
     try {
-      final String idToken = _userService.userToken;
-      final Map<String, dynamic> response = _dates.isNotEmpty
-          ? await ApiSdk.getDatesAround(idToken, _dates[_dates.length - 1].id)
-          : await ApiSdk.getDatesAround(idToken);
-
-      final List<Map<String, dynamic>> datesAround = response["datesAround"].cast<Map<String, dynamic>>();
-
       List<DateAroundModel> newDates =
-          datesAround.map((Map<String, dynamic> dateAround) => DateAroundModel.fromServerMap(dateAround)).toList();
-
+          await _datesAroundService.getDates(previousDateId: _dates.isNotEmpty ? _dates[_dates.length - 1].id : "");
       _dates.addAll(newDates);
     } catch (e) {
       _isLoading = false;
-      // TODO: Show error snackbar
-      throw e;
+      print(e.toString());
+      _snackbarService.showSnackbar(message: "Error retrieving dates around you.");
     }
 
     _isLoading = false;

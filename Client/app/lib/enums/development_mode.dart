@@ -1,0 +1,1 @@
+enum DevelopmentModes { Test, Emulator }
