@@ -12,8 +12,15 @@ const firestore = Admin.firestore;
  * @param response 
  */
 export const randomIdea = async (request: functions.Request, response: functions.Response) => {
-    if (!await Admin.isAuthorizedUser(request)) {
-        response.status(401).send(new ErrorDTO('A valid logged in user token is required.'));
+
+    const userId = await Admin.isAuthorizedUser(request);
+    if (!userId) {
+        response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
+        return;
+    }
+
+    if (await Admin.isRateLimited(userId)) {
+        response.status(429).send(new ErrorDTO('Too many requests. Slow down, buddy.', 429));
         return;
     }
 
