@@ -14,7 +14,9 @@ import ErrorDTO from '../models/error_dto.model';
  */
 // TODO: Implement fuzzy matching
 export const dates = async (request: functions.Request, response: functions.Response) => {
-    if (!await Admin.isAuthorizedUser(request)) {
+
+    const userId = await Admin.isAuthorizedUser(request);
+    if (!userId) {
         response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
         return;
     }
@@ -43,9 +45,8 @@ export const dates = async (request: functions.Request, response: functions.Resp
         dateReq.dateIdeas.splice(dupeIndex, 1);
     }
 
-
     // Store in DB
-    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now());
+    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now(), userId);
     try {
         const writeResult = await admin.firestore().collection(FirestoreConstants.DATES.DB_NAME).add(storedDate.toObject());
         const dateDTO = new DateDTO(chosenIdea, dateReq.dateIdeas, writeResult.path);
@@ -54,6 +55,7 @@ export const dates = async (request: functions.Request, response: functions.Resp
     } catch (e) {
         functions.logger.error(e);
         response.status(500).send(new ErrorDTO('Unable to save to DB', 500));
+        return;
     }
 }
 

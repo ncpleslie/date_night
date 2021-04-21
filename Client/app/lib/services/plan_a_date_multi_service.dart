@@ -54,10 +54,8 @@ class PlanADateMultiService {
       print('getting results');
       await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({'gettingResults': true});
 
-      final Map<String, dynamic> dateReq = DateRequest(dateIdeas: chosenIdeas).toJson();
-
       try {
-        final Map<String, dynamic> response = await _apiService.postDate(_service.userToken, dateReq);
+        final Map<String, dynamic> response = await _apiService.postDate(_service.userToken, DateRequest(dateIdeas: chosenIdeas));
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 

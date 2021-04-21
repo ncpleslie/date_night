@@ -55,8 +55,10 @@ class ApiBaseHelper {
 dynamic _returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
-      var responseJson = json.decode(response.body.toString());
-      return responseJson;
+      if (response.body.isEmpty) {
+        return;
+      }
+      return json.decode(response?.body?.toString());
     case 400:
       return json.decode(response.body.toString());
     case 401:
