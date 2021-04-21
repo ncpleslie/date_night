@@ -74,13 +74,12 @@ const postARoom = async (request: functions.Request, response: functions.Respons
         try {
             roomSnapshot = await roomRef.get();
             if (!roomSnapshot.exists) {
-                throw Error('Document not found');
+                response.status(400).send(new ErrorDTO('Bad request. Unable to locate room.', 400));
+                return;
             }
 
         } catch (error) {
-
-            response.status(400).send('Bad request. Unable to locate room.');
-
+            response.status(500).send(new ErrorDTO('Something went wrong.', 500));
             return;
         }
 
@@ -95,7 +94,6 @@ const postARoom = async (request: functions.Request, response: functions.Respons
             return;
         } catch (error) {
             response.status(500).send(new ErrorDTO('Error updating room.', 500));
-
             return;
         }
     }

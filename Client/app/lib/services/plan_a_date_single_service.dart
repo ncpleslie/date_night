@@ -8,14 +8,13 @@ import 'package:date_night/services/plan_a_date_base_service.dart';
 import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
-
 @lazySingleton
 class PlanADateSingleService {
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
   final UserService _userService = locator<UserService>();
   final ApiService _apiService = locator<ApiService>();
 
-    /// List of all the current date ideas.
+  /// List of all the current date ideas.
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
   /// For Final Selection
@@ -93,17 +92,13 @@ class PlanADateSingleService {
     // Else return random answer
     // Clear lists
     List<String> flatList = dateIdeas.expand((i) => i).toList();
-    final Map<String, dynamic> dateReq =
-        DateRequest(dateIdeas: flatList).toJson();
+    var dateReq = DateRequest(dateIdeas: flatList);
     try {
-      final Map<String, dynamic> response =
-          await _apiService.postDate(_userService.userToken, dateReq);
+      final Map<String, dynamic> response = await _apiService.postDate(_userService.userToken, dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);
       dateResponse = date;
     } catch (_) {
-      dateResponse = DateResponse(
-          chosenIdea: dateReq['dateIdeas']
-              [Random().nextInt(dateReq['dateIdeas'].length)]);
+      dateResponse = DateResponse(chosenIdea: dateReq.dateIdeas[Random().nextInt(dateReq.dateIdeas.length)]);
     }
     clearAllSingleLists();
   }
