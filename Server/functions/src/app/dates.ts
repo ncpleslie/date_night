@@ -46,11 +46,13 @@ export const dates = async (request: functions.Request, response: functions.Resp
     }
 
     // Store in DB
-    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now(), userId);
+    // TODO: SUPPORT PRIVATE MODE
+    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now(), userId, true);
     try {
         const writeResult = await admin.firestore().collection(FirestoreConstants.DATES.DB_NAME).add(storedDate.toObject());
         const dateDTO = new DateDTO(chosenIdea, dateReq.dateIdeas, writeResult.path);
         functions.logger.info(`Dates successfully queried: ${dateDTO.chosenIdea}`);
+
         response.send(JSON.stringify(dateDTO));
     } catch (e) {
         functions.logger.error(e);

@@ -24,17 +24,17 @@ export const datesAround = async (request: functions.Request, response: function
         return;
     }
 
-    let snapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>;
+    let datesSnapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>;
 
     try {
         if (!request?.query?.lastId) {
-            snapshot = await getDatesAroundQuery.get();
+            datesSnapshot = await getDatesAroundQuery.get();
         } else {
             const queryCursor = await firestore().collection(FirestoreConstants.DATES.DB_NAME).doc(request.query.lastId as string).get();
-            snapshot = await getDatesAroundQuery.startAfter(queryCursor).get();
+            datesSnapshot = await getDatesAroundQuery.startAfter(queryCursor).get();
         }
 
-        const datesAroundArray = dateAround(snapshot);
+        const datesAroundArray = dateAround(datesSnapshot);
         response.send(new DatesAroundDTO(datesAroundArray));
 
     } catch (e) {
@@ -44,8 +44,10 @@ export const datesAround = async (request: functions.Request, response: function
 }
 
 const dateAround = (payload: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>) =>
-    payload.docs.map(doc =>
-        new DateAround(doc.data().chosenIdea, doc.data().otherIdeas, doc.data().date.toDate(), doc.id)
-    );
+    payload.docs.map(doc => new DateAround(doc.data().chosenIdea, doc.data().otherIdeas, doc.data().date.toDate(), doc.id));
 
-const getDatesAroundQuery = firestore().collection(FirestoreConstants.DATES.DB_NAME).orderBy(FirestoreConstants.DATES.ORDER_BY, FirestoreConstants.DATES.ORDER).limit(FirestoreConstants.DATES.LIMIT);
+const getDatesAroundQuery = firestore()
+    .collection(FirestoreConstants.DATES.DB_NAME)
+    .orderBy(FirestoreConstants.DATES.ORDER_BY, FirestoreConstants.DATES.ORDER)
+    .where(FirestoreConstants.DATES.FILTER.FIRST, FirestoreConstants.DATES.FILTER.OPERATOR as FirebaseFirestore.WhereFilterOp, FirestoreConstants.DATES.FILTER.CONDITION)
+    .limit(FirestoreConstants.DATES.LIMIT);

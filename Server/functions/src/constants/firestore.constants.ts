@@ -4,6 +4,11 @@ export class FirestoreConstants {
         ORDER_BY: 'date',
         ORDER: "desc" as const,
         LIMIT: 6,
+        FILTER: {
+            FIRST: 'isPublic',
+            OPERATOR: '==',
+            CONDITION: true,
+        },
     }
 
     public static readonly RANDOM_IDEAS = {
