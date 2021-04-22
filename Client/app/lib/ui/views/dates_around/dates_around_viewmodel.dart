@@ -10,7 +10,6 @@ import 'package:stacked_services/stacked_services.dart';
 class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
   final NavigationService _navigationService = locator<NavigationService>();
   final DatesAroundService _datesAroundService = locator<DatesAroundService>();
-  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   List<DateAroundModel> _dates = [];
   List<DateAroundModel> get dates => _dates;
