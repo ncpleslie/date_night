@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "dev.nickleslie.date_night"
+        applicationId "dev.nickleslie.datenight"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
