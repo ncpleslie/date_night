@@ -58,6 +58,7 @@ dependencies:
   stacked_hooks: ^0.2.0
   simple_animations: ^3.0.3
   flutter_markdown: ^0.6.1
+  firebase_crashlytics: ^2.0.1
 
 dev_dependencies:
   flutter_test:
