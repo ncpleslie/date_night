@@ -22,6 +22,15 @@ class SettingsViewModel extends FutureViewModel {
   bool _isLightMode = true;
   bool get isLightMode => _isLightMode;
 
+  bool _isPublic;
+  bool get isPublic => _isPublic;
+
+  Future<void> setIsPublic(bool value) async {
+    await _userService.setPublic(value);
+    _isPublic = await _userService.getPublic();
+    notifyListeners();
+  }
+
   void deleteDeviceData() async {
     await _userService.signOutAndDelete();
     _snackbarService.showSnackbar(title: 'Data Deleted', message: 'The app will now restart');
@@ -37,6 +46,7 @@ class SettingsViewModel extends FutureViewModel {
   Future futureToRun() => _getAppInfo();
 
   Future<void> _getAppInfo() async {
+    _isPublic = await _userService.getPublic();
     _about = await About.packageInfo();
     notifyListeners();
   }

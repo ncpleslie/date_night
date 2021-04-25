@@ -26,7 +26,7 @@ export const dates = async (request: functions.Request, response: functions.Resp
         return;
     }
 
-    const dateReq = new DateRequest(sanitize(request.body.dateIdeas));
+    const dateReq = new DateRequest(sanitize(request.body.dateIdeas), request.body.isPublic);
     let chosenIdea: string;
 
     // If duplicate, return dupe
@@ -47,7 +47,7 @@ export const dates = async (request: functions.Request, response: functions.Resp
 
     // Store in DB
     // TODO: SUPPORT PRIVATE MODE
-    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now(), userId, true);
+    const storedDate = new StoredDate(chosenIdea, dateReq.dateIdeas, admin.firestore.Timestamp.now(), userId, dateReq.isPublic);
     try {
         const writeResult = await admin.firestore().collection(FirestoreConstants.DATES.DB_NAME).add(storedDate.toObject());
         const dateDTO = new DateDTO(chosenIdea, dateReq.dateIdeas, writeResult.path);

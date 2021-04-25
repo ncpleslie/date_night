@@ -36,6 +36,7 @@ class ApiService {
   /// Get the winning date idea.
   /// POST
   Future<Map<String, dynamic>> postDate(DateRequest body) async {
+    body.isPublic = await _userService.getPublic();
     var token = await _userService.userToken;
     return await RestApiHandlerData.postData('${apiUrl}date', body.toJson(), {'Authorization': 'Bearer $token'});
   }

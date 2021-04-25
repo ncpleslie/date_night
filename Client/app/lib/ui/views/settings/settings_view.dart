@@ -15,18 +15,18 @@ class SettingsView extends StatelessWidget {
         appBar: CustomAppBar(name: 'Settings').build(context),
         body: ListView(
           children: [
-            // Disable because there is no theme switching yet
-
-            // ListTile(
-            //   leading: FaIcon(FontAwesomeIcons.adjust),
-            //   title: Text('Light/Dark Mode'),
-            //   trailing: Switch.adaptive(
-            //       activeTrackColor: Colors.green,
-            //       activeColor: Colors.white,
-            //       value: model.isLightMode,
-            //       onChanged: (bool state) => model.toggleLightMode()),
-            // ),
-
+            if (vm.isPublic != null)
+              ListTile(
+                title: Text('Public idea sharing'),
+                subtitle: Text(
+                    'Your ideas will${vm.isPublic ? "" : " not"} be shared on the "Dates Around" page.\nThis has no effect if you enter another user\'s room.'),
+                onTap: () async => await vm.setIsPublic(!vm.isPublic),
+                trailing: Switch.adaptive(
+                    activeTrackColor: Colors.green,
+                    activeColor: Colors.white,
+                    value: vm.isPublic,
+                    onChanged: (bool state) async => await vm.setIsPublic(state)),
+              ),
             ListTile(
               title: Text('Delete stored data'),
               subtitle: Text('This will remove any data this app has stored on your device.'),
