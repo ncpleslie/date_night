@@ -1,4 +1,4 @@
-package dev.nickleslie.date_night
+package dev.nickleslie.datenight
 
 import io.flutter.embedding.android.FlutterActivity
 

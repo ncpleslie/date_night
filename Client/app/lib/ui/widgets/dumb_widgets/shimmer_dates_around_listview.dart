@@ -12,6 +12,8 @@ class ShimmerDatesAroundListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
       padding: const EdgeInsets.only(top: 65.0),
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
