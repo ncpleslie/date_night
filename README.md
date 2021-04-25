@@ -20,6 +20,12 @@ Date Night is there to help.
   - Automatically uploads ideas so other users can get help deciding
 
 
+## Client
+[See here for more on the client](/Client/README.MD)
+
+## Server
+[See here for more on the server](/Server/README.MD)
+
 ### Tech
 
 Date Night uses a number of open source projects to work properly:
