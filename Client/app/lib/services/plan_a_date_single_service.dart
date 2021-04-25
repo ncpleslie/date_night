@@ -5,13 +5,11 @@ import 'package:date_night/models/date_request_model.dart';
 import 'package:date_night/models/date_response_model.dart';
 import 'package:date_night/services/api_service.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
-import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PlanADateSingleService {
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
-  final UserService _userService = locator<UserService>();
   final ApiService _apiService = locator<ApiService>();
 
   /// List of all the current date ideas.
@@ -94,7 +92,7 @@ class PlanADateSingleService {
     List<String> flatList = dateIdeas.expand((i) => i).toList();
     var dateReq = DateRequest(dateIdeas: flatList);
     try {
-      final Map<String, dynamic> response = await _apiService.postDate(_userService.userToken, dateReq);
+      final Map<String, dynamic> response = await _apiService.postDate(dateReq);
       final DateResponse date = DateResponse.fromServerMap(response);
       dateResponse = date;
     } catch (_) {

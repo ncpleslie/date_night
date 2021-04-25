@@ -3,18 +3,16 @@ import 'package:date_night/models/date_around_model.dart';
 import 'package:date_night/models/report_model.dart';
 import 'package:date_night/models/server_error_model.dart';
 import 'package:date_night/services/api_service.dart';
-import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @lazySingleton
 class DatesAroundService {
-  final UserService _userService = locator<UserService>();
   final ApiService _apiService = locator<ApiService>();
   final SnackbarService _snackBar = locator<SnackbarService>();
 
   Future reportDate(String id) async {
-    await _apiService.reportADate(_userService.userToken, ReportModel(dateAroundId: id));
+    await _apiService.reportADate(ReportModel(dateAroundId: id));
     _snackBar.showSnackbar(
       title: "Thank you",
       message: "This date has been reported",
@@ -24,10 +22,9 @@ class DatesAroundService {
   Future<List<DateAroundModel>> getDates({String previousDateId = ""}) async {
     print('Querying external source 2');
 
-    final String idToken = _userService.userToken;
     final Map<String, dynamic> response = previousDateId.isNotEmpty
-        ? await _apiService.getDatesAround(idToken, previousDateId)
-        : await _apiService.getDatesAround(idToken);
+        ? await _apiService.getDatesAround(previousDateId)
+        : await _apiService.getDatesAround();
 
     try {
       final List<Map<String, dynamic>> datesAround = response["datesAround"].cast<Map<String, dynamic>>();

@@ -8,12 +8,10 @@ import 'package:date_night/models/get_a_room_model.dart';
 import 'package:date_night/models/get_a_room_response_model.dart';
 import 'package:date_night/services/api_service.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
-import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PlanADateMultiService {
-  final UserService _service = locator<UserService>();
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
   final ApiService _apiService = locator<ApiService>();
 
@@ -55,7 +53,7 @@ class PlanADateMultiService {
       await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({'gettingResults': true});
 
       try {
-        final Map<String, dynamic> response = await _apiService.postDate(_service.userToken, DateRequest(dateIdeas: chosenIdeas));
+        final Map<String, dynamic> response = await _apiService.postDate(DateRequest(dateIdeas: chosenIdeas));
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 
@@ -96,7 +94,7 @@ class PlanADateMultiService {
   /// Will ask the backend to delete the current room.
   void deleteRoom() async {
     print('Deleting room with ID: $roomId');
-    await _apiService.deleteARoom(_service.userToken, roomId);
+    await _apiService.deleteARoom(roomId);
   }
 
   Future<void> waitForHost() async {
@@ -144,7 +142,7 @@ class PlanADateMultiService {
 
     roomId = null;
     try {
-      final Map<String, dynamic> getARoomResponse = await _apiService.getARoom(_service.userToken);
+      final Map<String, dynamic> getARoomResponse = await _apiService.getARoom();
 
       GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
 

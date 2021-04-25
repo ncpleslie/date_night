@@ -5,14 +5,16 @@ import 'package:injectable/injectable.dart';
 class UserService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   UserCredential _userCredential;
-  String _idToken;
-  String get userToken => _idToken;
+  Future<String> get userToken async {
+    print('refreshing token');
+    return await _userCredential.user.getIdToken();
+  }
 
   Future<void> signIn() async {
     print('Querying external source 12');
     try {
       _userCredential = await _firebaseAuth.signInAnonymously();
-      _idToken = await _userCredential.user.getIdToken();
+      await _userCredential.user.getIdToken();
     } catch (e) {
       throw e;
     }

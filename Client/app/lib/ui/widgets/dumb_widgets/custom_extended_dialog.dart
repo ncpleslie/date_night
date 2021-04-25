@@ -38,6 +38,7 @@ class _BasicDialog extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
         child: AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
           backgroundColor: Theme.of(context).cardTheme.color,
           shape: Theme.of(context).dialogTheme.shape,
           title: Center(
@@ -146,8 +147,10 @@ class _LongTextDialog extends _BasicDialog {
 
    @override
   Widget getContent() {
-    return Markdown(
-      data: request.description,
+    return Scrollbar(
+      child: Markdown(
+        data: request.description,
+      ),
     );
   }
 }
