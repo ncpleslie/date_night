@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "1065412985332",
+    "firebase_url": "https://date-night-api-default-rtdb.firebaseio.com",
     "project_id": "date-night-api",
     "storage_bucket": "date-night-api.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1065412985332:android:6873c3b0dbdc4df349b9a1",
+        "mobilesdk_app_id": "1:1065412985332:android:a20f125882229d3d49b9a1",
         "android_client_info": {
-          "package_name": "dev.nickleslie.date_night"
+          "package_name": "dev.nickleslie.datenight"
         }
       },
       "oauth_client": [

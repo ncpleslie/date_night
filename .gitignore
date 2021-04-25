@@ -1,3 +1,4 @@
 Client/app/ios/Runner/GoogleService-Info.plist
 .idea/
 Client/app/ios/GoogleService-Info.plist
+Client/app/android/app/google-services.json

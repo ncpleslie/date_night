@@ -41,10 +41,6 @@ dependencies:
   timeago: ^2.0.29
   flushbar: ^1.10.4
   persistent_bottom_nav_bar: ^3.1.0
-  scroll_app_bar:
-    git:
-      url: git://github.com/ncpleslie/scroll_app_bar.git
-      ref: master
   font_awesome_flutter: ^8.11.0
   flutter_svg: ^0.21.0
   package_info: ^0.4.3+2
@@ -58,7 +54,6 @@ dependencies:
   stacked_hooks: ^0.2.0
   simple_animations: ^3.0.3
   flutter_markdown: ^0.6.1
-  firebase_crashlytics: ^2.0.1
 
 dev_dependencies:
   flutter_test:

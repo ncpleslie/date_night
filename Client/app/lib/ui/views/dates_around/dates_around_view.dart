@@ -37,13 +37,6 @@ class _DatesAroundViewState extends State<DatesAroundView> {
       builder: (BuildContext context, DatesAroundViewModel model, Widget child) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(
-                  name: title,
-                  icon: _settingsIcon(context, model),
-                  transparent: true,
-                  scrollable: true,
-                  scrollController: controller)
-              .build(context),
           body: PageBackground(
             child: model.isBusy
                 ? ShimmerDatesAroundListView()
@@ -62,11 +55,10 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                       onRefresh: () async => {
                         await model.loadMore(clearCacheData: true),
                         refreshController.refreshCompleted(),
-                        //controller.appBar.setPinState(true),
                       },
                       onLoading: () => refreshController.loadComplete(),
                       child: !model.hasError && model.dataReady
-                          ? _list(context, model.dates)
+                          ? _list(context, model.dates, model)
                           : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                     ),
                   ),
@@ -81,23 +73,26 @@ class _DatesAroundViewState extends State<DatesAroundView> {
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
         model.loadMore();
-        //controller.appBar.setPinState(false);
       }
     });
   }
 
   /// Creates the list of dates around.
-  Widget _list(BuildContext context, List<DateAroundModel> dates) {
-    return ListView.builder(
-      padding: const EdgeInsets.only(top: 45.0),
-      controller: controller,
-      itemCount: dates.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (index < dates.length) {
-          return DatesAroundCard(id: dates[index].id, date: dates[index], index: index);
-        }
-        return Container();
-      },
+  Widget _list(BuildContext context, List<DateAroundModel> dates, DatesAroundViewModel model) {
+    return CustomScrollView(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      slivers: [
+        CustomAppBar(
+                name: title, icon: _settingsIcon(context, model), transparent: true, scrollable: true, isSliver: true)
+            .build(context),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => DatesAroundCard(id: dates[index].id, date: dates[index], index: index),
+            childCount: dates.length,
+          ),
+        ),
+      ],
     );
   }
 
@@ -143,6 +138,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   Widget _settingsIcon(BuildContext context, DatesAroundViewModel model) {
     return IconButton(
       icon: const Icon(Icons.settings),
+      padding: EdgeInsets.only(bottom: 10),
       tooltip: 'Settings',
       onPressed: model.navigateToSettings,
     );
