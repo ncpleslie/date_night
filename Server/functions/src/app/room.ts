@@ -48,10 +48,10 @@ export const room = async (request: functions.Request, response: functions.Respo
 
 const getARoom = async (request: functions.Request, response: functions.Response, userId: string) => {
     try {
-        const roomId = rword.generate();
+        const roomId = (rword.generate(1, { length: '3-4' }) as string).toLowerCase();
         const currentTime = firestore.FieldValue.serverTimestamp();
-        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).set({ chosenIdeas: [], owner: userId, created: currentTime });
-        response.send(new GetARoomDTO(roomId as string));
+        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId).set({ chosenIdeas: [], owner: userId, created: currentTime });
+        response.send(new GetARoomDTO(roomId));
         return;
     } catch (error) {
         functions.logger.error(error);
@@ -68,7 +68,7 @@ const postARoom = async (request: functions.Request, response: functions.Respons
     const dateIdeas: string[] = request?.body?.dateIdeas;
 
     if (roomId && dateIdeas) {
-        const roomRef = firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId);
+        const roomRef = firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId.toLowerCase());
         let roomSnapshot: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>;
 
         try {
@@ -107,12 +107,12 @@ const deleteARoom = async (request: functions.Request, response: functions.Respo
     const roomId = request?.query?.roomId;
 
     if (roomId) {
-        
+
         try {
             const snapshot = await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string).get();
 
             if (snapshot?.data()?.owner && snapshot?.data()?.owner === uid) {
-                const roomRef = firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string) 
+                const roomRef = firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId as string)
 
                 // TODO: Determine if the function should wait a short period before deleting.
 

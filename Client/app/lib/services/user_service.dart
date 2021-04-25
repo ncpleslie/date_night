@@ -39,6 +39,6 @@ class UserService {
 
   Future<bool> getPublic() async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(SharedPreferencesIndex.PUBLIC) ?? false;
+    return prefs.getBool(SharedPreferencesIndex.PUBLIC) ?? true;
   }
 }
