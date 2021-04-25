@@ -140,6 +140,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
       icon: const Icon(Icons.settings),
       padding: EdgeInsets.only(bottom: 10),
       tooltip: 'Settings',
+      splashRadius: 12,
       onPressed: model.navigateToSettings,
     );
   }

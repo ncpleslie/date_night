@@ -148,7 +148,7 @@ class DatesAroundCard extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Card(
-          elevation: Theme.of(context).cardTheme.elevation,
+          elevation: Theme.of(context).cardTheme.elevation - 5,
           margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
           shape: Theme.of(context).cardTheme.shape,
           color: Theme.of(context).cardTheme.color,

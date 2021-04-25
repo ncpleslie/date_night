@@ -30,7 +30,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: _buildTabBar(context),
-        // resizeToAvoidBottomPadding: false,
       );
 
   Widget _buildTabBar(BuildContext context) {
@@ -52,12 +51,6 @@ class _HomeViewState extends State<HomeView> {
         // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 800),
         curve: Curves.bounceOut,
-      ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
       ),
     );
   }
