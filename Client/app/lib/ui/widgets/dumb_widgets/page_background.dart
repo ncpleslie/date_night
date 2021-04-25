@@ -1,5 +1,7 @@
+import 'package:date_night/config/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 /// The custom background that will be displayed on most screens.
@@ -18,11 +20,12 @@ class PageBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
-        children: [_animatedBackground(), child],
+        children: [_svgBackground(), child],
       ),
     );
   }
 
+  /// Poor performance
   Widget _animatedBackground() {
     return PlasmaRenderer(
       type: PlasmaType.infinity,
@@ -56,10 +59,9 @@ class PageBackground extends StatelessWidget {
     );
   }
 
-  // Not used due to now testing animated background performance
-  // Widget _svgBackground() {
-  //   if (ThemeConfig.backgroundImage.split(".")[1] == 'svg') {
-  //     return SvgPicture.asset(ThemeConfig.backgroundImage, fit: BoxFit.cover);
-  //   }
-  // }
+  Widget _svgBackground() {
+    if (ThemeConfig.backgroundImage.split(".")[1] == 'svg') {
+      return SvgPicture.asset(ThemeConfig.backgroundImage, fit: BoxFit.cover);
+    }
+  }
 }

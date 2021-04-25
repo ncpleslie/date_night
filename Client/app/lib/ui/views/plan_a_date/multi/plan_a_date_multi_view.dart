@@ -37,12 +37,12 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                       _button(
                           title: 'Create a room',
                           subtitle:
-                              'Get a room code and share it will another user.\nYou use your phone and they use theirs',
+                              'Get a room code and share it with your friend.',
                           onPressed: () async => await vm.createARoom()),
                       _button(
                           title: 'Enter a room',
                           subtitle:
-                              'If your friend has set up a room,\nyou can enter their code and join them',
+                              'If your friend has set up a room,\nenter their room code',
                           onPressed: () async => await vm.enterARoom()),
                     ],
                   ),
