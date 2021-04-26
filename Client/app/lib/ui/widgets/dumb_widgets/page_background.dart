@@ -8,7 +8,6 @@ import 'package:flutter_svg/svg.dart';
 /// This can be useful to show a "thinking" state to the user and
 /// provide feedback that the application is loading.
 // ignore: must_be_immutable
-
 class PageBackground extends StatelessWidget {
   const PageBackground({@required this.child});
 

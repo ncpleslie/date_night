@@ -139,7 +139,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         child: InkWell(
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
-          onTap: () => onPressed,
+          onTap: onPressed,
           onTapDown: (TapDownDetails details) {},
           child: Container(
             alignment: Alignment.center,

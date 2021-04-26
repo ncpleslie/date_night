@@ -49,7 +49,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                         waterDropColor: Theme.of(context).primaryColor,
                       ),
                       footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
-                        return _loadingState(status);
+                        return _loadingState(status, model);
                       }),
                       controller: refreshController,
                       onRefresh: () async => {
@@ -97,7 +97,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   }
 
   /// The states the "Pull to refresh" Widget can have.
-  Widget _loadingState(LoadStatus status) {
+  Widget _loadingState(LoadStatus status, DatesAroundViewModel model) {
     switch (status) {
       case LoadStatus.loading:
         return ShimmerDatesAroundListView();
@@ -108,6 +108,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
         break;
 
       case LoadStatus.canLoading:
+        model.loadMore();
         return _padding(Text(
           EmojiParser().emojify(':ghost:'),
           style: const TextStyle(fontSize: 20.0),

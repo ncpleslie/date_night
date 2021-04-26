@@ -31,8 +31,6 @@ class DatesAroundViewModel extends FutureViewModel<List<DateAroundModel>> {
         await _datesAroundService.getDates(previousDateId: _dates.isNotEmpty ? _dates[_dates.length - 1].id : "");
     _dates.addAll(newDates);
     _isLoading = false;
-
-    _isLoading = false;
     notifyListeners();
 
     return _dates;
