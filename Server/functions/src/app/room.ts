@@ -7,6 +7,7 @@ import PostARoomDTO from '../models/post_a_room_dto.model'
 import { HTTPMethod } from '../enums/http_method.enum';
 import ErrorDTO from '../models/error_dto.model';
 import DeleteARoomDTO from '../models/delete_a_room_dto.model';
+import cors from 'cors';
 
 const firestore = Admin.firestore;
 
@@ -17,33 +18,38 @@ const firestore = Admin.firestore;
  */
 // TODO: Introduce friendly crypto-safe words for document ID
 export const room = async (request: functions.Request, response: functions.Response) => {
-    const userId = await Admin.isAuthorizedUser(request)
-    if (!userId) {
-        response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
-        return;
-    }
 
-    if (await Admin.isRateLimited(userId)) {
-        response.status(429).send(new ErrorDTO('Too many requests. Slow down, buddy.', 429));
-        return;
-    }
+    const corsHandler = cors({ origin: true });
+    corsHandler(request, response, async () => {
 
-    if (request.method === HTTPMethod.GET) {
-        await getARoom(request, response, userId);
-        return;
-    }
+        const userId = await Admin.isAuthorizedUser(request)
+        if (!userId) {
+            response.status(401).send(new ErrorDTO('A valid logged in user token is required.', 401));
+            return;
+        }
 
-    if (request.method === HTTPMethod.POST) {
-        await postARoom(request, response);
-        return;
-    }
+        if (await Admin.isRateLimited(userId)) {
+            response.status(429).send(new ErrorDTO('Too many requests. Slow down, buddy.', 429));
+            return;
+        }
 
-    if (request.method === HTTPMethod.DELETE) {
-        await deleteARoom(request, response, userId);
-        return;
-    }
+        if (request.method === HTTPMethod.GET) {
+            await getARoom(request, response, userId);
+            return;
+        }
 
-    response.status(404);
+        if (request.method === HTTPMethod.POST) {
+            await postARoom(request, response);
+            return;
+        }
+
+        if (request.method === HTTPMethod.DELETE) {
+            await deleteARoom(request, response, userId);
+            return;
+        }
+
+        response.status(404);
+    });
 }
 
 const getARoom = async (request: functions.Request, response: functions.Response, userId: string) => {
