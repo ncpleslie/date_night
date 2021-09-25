@@ -9,12 +9,12 @@ class UserService {
   UserCredential _userCredential;
 
   Future<String> get userToken async {
-    print('refreshing token');
+    print('Getting anonymous user\'s token');
     return await _userCredential.user.getIdToken();
   }
 
   Future<void> signIn() async {
-    print('Querying external source 12');
+    print('Signing in anonymously');
     try {
       _userCredential = await _firebaseAuth.signInAnonymously();
       await _userCredential.user.getIdToken();
@@ -24,7 +24,7 @@ class UserService {
   }
 
   Future<void> signOut() async {
-    print('Querying external source 13');
+    print('Signing anonymous user out');
     await _firebaseAuth.signOut();
   }
 
@@ -40,5 +40,13 @@ class UserService {
   Future<bool> getPublic() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getBool(SharedPreferencesIndex.PUBLIC) ?? true;
+  }
+
+  Future<String> getUserId() async {
+    if (_userCredential == null) {
+      throw Exception('User must be initialised');
+    }
+
+    return _userCredential.user.uid;
   }
 }

@@ -12,8 +12,19 @@ class ApiService {
   final UserService _userService = locator<UserService>();
 
   /// Base API Url
-  static const envApiUrl = String.fromEnvironment('API_URL');
-  String get apiUrl => envApiUrl.isNotEmpty ? envApiUrl : Globals.API_URL[DevelopmentModes.Test];
+  String apiUrl;
+
+  ApiService() {
+    apiUrl = Globals.API_URL;
+
+    if (apiUrl.isEmpty) {
+      apiUrl = Globals.API_URLS[Globals.DEVELOPMENT_MODE];
+    } else {
+      apiUrl = Globals.API_URLS[DevelopmentModes.Test];
+    }
+
+    print('API service initialised with API URL: $apiUrl');
+  }
 
   /// Fetch other current dates.
   /// GET

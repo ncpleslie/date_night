@@ -38,30 +38,34 @@ class _DatesAroundViewState extends State<DatesAroundView> {
         return Scaffold(
           extendBodyBehindAppBar: true,
           body: PageBackground(
-            child: model.isBusy
-                ? ShimmerDatesAroundListView()
-                : Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: WaterDropHeader(
-                        waterDropColor: Theme.of(context).primaryColor,
+            child: SafeArea(
+              top: true,
+              bottom: true,
+              child: model.isBusy
+                  ? ShimmerDatesAroundListView()
+                  : Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: WaterDropHeader(
+                          waterDropColor: Theme.of(context).primaryColor,
+                        ),
+                        footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
+                          return _loadingState(status, model);
+                        }),
+                        controller: refreshController,
+                        onRefresh: () async => {
+                          await model.loadMore(clearCacheData: true),
+                          refreshController.refreshCompleted(),
+                        },
+                        onLoading: () => refreshController.loadComplete(),
+                        child: !model.hasError && model.dataReady
+                            ? _list(context, model.dates, model)
+                            : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                       ),
-                      footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
-                        return _loadingState(status, model);
-                      }),
-                      controller: refreshController,
-                      onRefresh: () async => {
-                        await model.loadMore(clearCacheData: true),
-                        refreshController.refreshCompleted(),
-                      },
-                      onLoading: () => refreshController.loadComplete(),
-                      child: !model.hasError && model.dataReady
-                          ? _list(context, model.dates, model)
-                          : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                     ),
-                  ),
+            ),
           ),
         );
       },

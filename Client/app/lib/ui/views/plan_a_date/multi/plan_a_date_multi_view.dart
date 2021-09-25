@@ -17,45 +17,42 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
-      builder:
-          (BuildContext context, PlanADateMultiViewModel vm, Widget child) =>
-              Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: CustomAppBar(
-          name: '',
-          icon: Container(),
-        ).build(context),
-        body: PageBackground(
-          child: Container(
-            alignment: Alignment.center,
-            child: vm.isLoading
-                ? CircularProgressIndicator()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _button(
-                          title: 'Create a room',
-                          subtitle:
-                              'Get a room code and share it with your friend.',
-                          onPressed: () async => await vm.createARoom()),
-                      _button(
-                          title: 'Enter a room',
-                          subtitle:
-                              'If your friend has set up a room,\nenter their room code',
-                          onPressed: () async => await vm.enterARoom()),
-                    ],
-                  ),
+      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget child) => SafeArea(
+        bottom: true,
+        top: true,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: CustomAppBar(
+            name: '',
+            icon: Container(),
+          ).build(context),
+          body: PageBackground(
+            child: Container(
+              alignment: Alignment.center,
+              child: vm.isLoading
+                  ? CircularProgressIndicator()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _button(
+                            title: 'Get a room',
+                            subtitle: 'Get a room code and share it with your friend.',
+                            onPressed: () async => await vm.createARoom()),
+                        _button(
+                            title: 'Enter a room',
+                            subtitle: 'If your friend has set up a room,\nenter their room code',
+                            onPressed: () async => await vm.enterARoom()),
+                      ],
+                    ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _button(
-      {@required String title,
-      @required String subtitle,
-      @required Function onPressed}) {
+  Widget _button({@required String title, @required String subtitle, @required Function onPressed}) {
     return Container(
       height: 175, // Increase this to change the padding
       child: Stack(
@@ -70,13 +67,10 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
               color: Theme.of(context).cardTheme.color,
               margin: const EdgeInsets.all(20.0),
               child: TextButton(
-                style: TextButton.styleFrom(
-                    primary:
-                        Theme.of(context).primaryTextTheme.headline6?.color),
+                style: TextButton.styleFrom(primary: Theme.of(context).primaryTextTheme.headline6?.color),
                 onPressed: onPressed,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,8 +86,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                               softWrap: true,
                               maxLines: 1,
                               textAlign: TextAlign.center,
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText2,
+                              style: Theme.of(context).primaryTextTheme.bodyText2,
                             ),
                             Container(
                               margin: const EdgeInsets.all(8.0),
@@ -105,10 +98,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                               softWrap: true,
                               maxLines: 3,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .subtitle1
-                                  .copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).primaryTextTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -133,8 +123,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         height: 40,
         width: 40,
         padding: EdgeInsets.all(3),
-        decoration:
-            BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
         alignment: Alignment.center,
         child: InkWell(
           customBorder: new CircleBorder(),
@@ -144,10 +133,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
           child: Container(
             alignment: Alignment.center,
             constraints: BoxConstraints(
-                maxHeight: buttonSize,
-                maxWidth: buttonSize,
-                minHeight: buttonSize,
-                minWidth: buttonSize),
+                maxHeight: buttonSize, maxWidth: buttonSize, minHeight: buttonSize, minWidth: buttonSize),
             padding: EdgeInsets.all(0),
             child: FaIcon(
               FontAwesomeIcons.chevronRight,

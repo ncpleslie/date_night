@@ -1,3 +1,4 @@
+import 'package:date_night/config/globals.dart';
 import 'package:date_night/config/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -17,7 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Date Night',
+        title: Globals.APP_NAME,
         theme: ThemeConfig.theme,
         initialRoute: routes.Routes.bootView,
         onGenerateRoute: routes.Router().onGenerateRoute,
