@@ -2,6 +2,7 @@ import 'package:date_night/app/locator.dart';
 import 'package:date_night/app/router.gr.dart';
 import 'package:date_night/enums/dialog_response_type.dart';
 import 'package:date_night/enums/dialog_type.dart';
+import 'package:date_night/helpers/utils.dart';
 import 'package:date_night/services/plan_a_date_multi_service.dart';
 import 'package:date_night/services/plan_a_date_single_service.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,9 @@ class PlanADateMultiViewModel extends BaseViewModel {
 
   String get roomId => _planADateMultiService.roomId;
 
+  String _totalContributors = '';
+  String get totalContributors => _totalContributors;
+
   Future<void> createARoom() async {
     _planADateMultiService.clearAllMultiLists();
     _isLoading = true;
@@ -35,7 +39,6 @@ class PlanADateMultiViewModel extends BaseViewModel {
       await _createARoomDialog();
       _planADateSingleService.clearAllSingleLists();
     } catch (e) {
-      
       await _dialogService.showDialog(
           title: 'Unable to create a room',
           description:
@@ -98,7 +101,6 @@ class PlanADateMultiViewModel extends BaseViewModel {
         _planADateMultiService.isMultiEditing = true;
         _planADateSingleService.clearAllSingleLists();
         _navigationService.navigateTo(Routes.addDateView);
-
       } else {
         // Wrong room code
         await _dialogService.showCustomDialog(
@@ -118,8 +120,11 @@ class PlanADateMultiViewModel extends BaseViewModel {
 
   /// Determine if the other users have added their picks
   Future<void> ideasHaveChanged() async {
-    await _planADateMultiService
-        .ideasHaveChanged((bool stateChanged) => {_ideasChanged = stateChanged, notifyListeners()});
+    await _planADateMultiService.ideasHaveChanged((bool stateChanged) async => {
+          _ideasChanged = stateChanged,
+          if (_ideasChanged) {_totalContributors = Utils.numberToWord(await _planADateMultiService.getTotalUsersFinished())},
+          notifyListeners()
+        });
   }
 
   /// Wait for the host to move on to display the results

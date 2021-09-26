@@ -1,3 +1,4 @@
+import 'package:date_night/config/globals.dart';
 import 'package:date_night/models/date_around_model.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/empty_screen_icon.dart';
@@ -27,7 +28,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   final ScrollController controller = ScrollController();
   final RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  var title = 'Dates Around';
+  var title = Globals.MAIN_PAGE_TITLE;
 
   @override
   Widget build(BuildContext context) {
@@ -38,30 +39,34 @@ class _DatesAroundViewState extends State<DatesAroundView> {
         return Scaffold(
           extendBodyBehindAppBar: true,
           body: PageBackground(
-            child: model.isBusy
-                ? ShimmerDatesAroundListView()
-                : Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: SmartRefresher(
-                      enablePullDown: true,
-                      enablePullUp: true,
-                      header: WaterDropHeader(
-                        waterDropColor: Theme.of(context).primaryColor,
+            child: SafeArea(
+              top: true,
+              bottom: true,
+              child: model.isBusy
+                  ? ShimmerDatesAroundListView()
+                  : Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: WaterDropHeader(
+                          waterDropColor: Theme.of(context).primaryColor,
+                        ),
+                        footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
+                          return _loadingState(status, model);
+                        }),
+                        controller: refreshController,
+                        onRefresh: () async => {
+                          await model.loadMore(clearCacheData: true),
+                          refreshController.refreshCompleted(),
+                        },
+                        onLoading: () => refreshController.loadComplete(),
+                        child: !model.hasError && model.dataReady
+                            ? _list(context, model.dates, model)
+                            : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                       ),
-                      footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
-                        return _loadingState(status, model);
-                      }),
-                      controller: refreshController,
-                      onRefresh: () async => {
-                        await model.loadMore(clearCacheData: true),
-                        refreshController.refreshCompleted(),
-                      },
-                      onLoading: () => refreshController.loadComplete(),
-                      child: !model.hasError && model.dataReady
-                          ? _list(context, model.dates, model)
-                          : EmptyScreenIcon('Failed to load.\nPull down to refresh.'),
                     ),
-                  ),
+            ),
           ),
         );
       },

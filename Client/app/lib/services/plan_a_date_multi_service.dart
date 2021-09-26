@@ -8,11 +8,15 @@ import 'package:date_night/models/get_a_room_model.dart';
 import 'package:date_night/models/get_a_room_response_model.dart';
 import 'package:date_night/services/api_service.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
+import 'package:date_night/services/realtime_db_service.dart';
+import 'package:date_night/services/user_service.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PlanADateMultiService {
   final PlanADateBaseService _planADateBaseService = locator<PlanADateBaseService>();
+  final RealtimeDBService _realtimeDBService = locator<RealtimeDBService>();
+  final UserService _userService = locator<UserService>();
   final ApiService _apiService = locator<ApiService>();
 
   bool isMultiEditing = false;
@@ -41,28 +45,24 @@ class PlanADateMultiService {
   }
 
   Future<void> calculateResults() async {
-    print('Querying external source 3');
-
     // Determine result
     // Combine lists
     // If value in there twice, that is the answer
     // Else return random answer
     // Clear lists
     if (isRoomHost) {
-      print('getting results');
-      await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({'gettingResults': true});
+      print('EXTERNAL: Calculating results');
+      await _realtimeDBService.updateRoomById(roomId, {'gettingResults': true});
 
       try {
         final Map<String, dynamic> response = await _apiService.postDate(DateRequest(dateIdeas: chosenIdeas));
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 
-        // TODO: Make model
-        await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({
+        await _realtimeDBService.updateRoomById(roomId, {
           'chosenIdea': dateMultiResponse.chosenIdea,
         });
 
-        // deletion now automated
         deleteRoom();
       } catch (error) {
         throw error;
@@ -77,9 +77,8 @@ class PlanADateMultiService {
   }
 
   Future<void> waitForResults() {
-    print('Querying external source 4');
+    print('EXTERNAL: Waiting for results from host');
 
-    print('Waiting for results');
     final completer = Completer<bool>();
     roomSnapshot.listen((querySnapshot) {
       if (querySnapshot.data()['chosenIdea'] != null) {
@@ -88,17 +87,18 @@ class PlanADateMultiService {
         completer.complete(true);
       }
     });
+
     return completer.future;
   }
 
   /// Will ask the backend to delete the current room.
   void deleteRoom() async {
-    print('Deleting room with ID: $roomId');
+    print('EXTERNAL: Deleting room with ID: $roomId');
     await _apiService.deleteARoom(roomId);
   }
 
   Future<void> waitForHost() async {
-    print('Querying external source 5');
+    print('EXTERNAL: Listening for host to continue');
 
     final completer = Completer<bool>();
 
@@ -107,6 +107,7 @@ class PlanADateMultiService {
         completer.complete(true);
       }
     });
+
     return completer.future;
   }
 
@@ -126,19 +127,18 @@ class PlanADateMultiService {
   }
 
   Future<void> commitMultiIdeas() async {
-    print('Querying external source 6');
+    print('EXTERNAL: Adding ideas to multi date');
 
-    DocumentSnapshot results = await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).get();
-    print(results.data());
-    GetARoomResponse getARoomResponse = GetARoomResponse.fromServerMap(results.data());
-    chosenIdeas = getARoomResponse.chosenIdeas;
-    await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).update({
-      'chosenIdeas': [...chosenIdeas, ...usersChosenIdeas]
-    });
+    await _realtimeDBService.addIdeas(roomId, usersChosenIdeas);
+
+    if (!isRoomHost) {
+      String userId = await _userService.getUserId();
+      await _realtimeDBService.addContributorId(roomId, userId);
+    }
   }
 
   Future<String> getARoom() async {
-    print('Querying external source 7');
+    print('EXTERNAL: Getting room code');
 
     roomId = null;
     try {
@@ -147,7 +147,6 @@ class PlanADateMultiService {
       GetARoom roomResponse = GetARoom.fromServerMap(getARoomResponse);
 
       roomId = roomResponse.roomId;
-      // await super.initFirebase();
       await queryARoom();
 
       return roomId;
@@ -157,20 +156,31 @@ class PlanADateMultiService {
   }
 
   Future<bool> setARoom(String roomId) async {
-    print('Querying external source 8');
+    print('EXTERNAL: Finding and setting room');
 
-    this.roomId = roomId;
-    // await super.initFirebase();
-    DocumentSnapshot results = await FirebaseFirestore.instance.collection('get_a_room').doc(roomId).get();
+    this.roomId = roomId.toLowerCase();
+    DocumentSnapshot results = await _realtimeDBService.getRoomById(this.roomId);
     await queryARoom();
 
     return results.exists;
   }
 
   Future<void> queryARoom() async {
-    print('Querying external source 9');
+    print('EXTERNAL: Getting DB Snapshot');
     _planADateBaseService.isMultiEditing = true;
 
-    roomSnapshot = FirebaseFirestore.instance.collection('get_a_room').doc(roomId).snapshots();
+    roomSnapshot = _realtimeDBService.getRoomSnapshotById(roomId);
+  }
+
+  Future<int> getTotalUsersFinished() async {
+    print('EXTERNAL: Getting total contributors Snapshot');
+
+    var contributors = await _realtimeDBService.getAllContributors(roomId);
+    print(contributors);
+
+    String userId = await _userService.getUserId();
+    contributors.removeWhere((contributor) => contributor as String == userId);
+
+    return contributors.length;
   }
 }

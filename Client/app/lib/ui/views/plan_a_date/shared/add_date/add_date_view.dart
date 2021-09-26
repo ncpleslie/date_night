@@ -19,42 +19,45 @@ import 'add_date_viewmodel.dart';
 class AddDateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return ViewModelBuilder<AddDateViewModel>.reactive(
       viewModelBuilder: () => AddDateViewModel(),
       builder: (BuildContext context, AddDateViewModel vm, Widget child) {
         return WillPopScope(
           onWillPop: vm.onPop,
-          child: Scaffold(
-          // Build Appbar
-          extendBodyBehindAppBar: true,
-          appBar: CustomAppBar(
-            name: vm.isMultiEditing() ? '${vm.roomId}' : '',
-            transparent: true,
-          ).build(context),
-          // resizeToAvoidBottomPadding: false,
+          child: SafeArea(
+            bottom: true,
+            top: true,
+            child: Scaffold(
+              // Build Appbar
+              extendBodyBehindAppBar: true,
+              appBar: CustomAppBar(
+                name: vm.isMultiEditing() ? '${vm.roomId}' : '',
+                transparent: true,
+              ).build(context),
+              // resizeToAvoidBottomPadding: false,
 
-          // Create body
-          body: PageBackground(child: _buildPage(vm)),
+              // Create body
+              body: PageBackground(child: _buildPage(vm)),
 
-          // FAB
-          floatingActionButton: Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                CustomFAB(tag: 'Add More', icon: Icons.add, onTap: () => _showInput(context, vm)),
-                CustomFAB(
-                  tag: 'Continue',
-                  icon: Icons.arrow_forward,
-                  onTap: () => vm.onFinish(),
-                  disabled: !vm.isListValid(),
-                )
-              ],
+              // FAB
+              floatingActionButton: Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    CustomFAB(tag: 'Add More', icon: Icons.add, onTap: () => _showInput(context, vm)),
+                    CustomFAB(
+                      tag: 'Continue',
+                      icon: Icons.arrow_forward,
+                      onTap: () => vm.onFinish(),
+                      disabled: !vm.isListValid(),
+                    )
+                  ],
+                ),
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      ),
         );
       },
     );

@@ -14,11 +14,12 @@ import '../services/plan_a_date_base_service.dart' as _i6;
 import '../services/plan_a_date_multi_service.dart' as _i7;
 import '../services/plan_a_date_single_service.dart' as _i8;
 import '../services/random_idea_service.dart' as _i9;
-import '../services/result_feedback_service.dart' as _i10;
-import '../services/startup_service.dart' as _i11;
-import '../services/third_party_services_module.dart' as _i13;
+import '../services/realtime_db_service.dart' as _i10;
+import '../services/result_feedback_service.dart' as _i11;
+import '../services/startup_service.dart' as _i12;
+import '../services/third_party_services_module.dart' as _i14;
 import '../services/user_service.dart'
-    as _i12; // ignore_for_file: unnecessary_lambdas
+    as _i13; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -38,16 +39,17 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i8.PlanADateSingleService>(
       () => _i8.PlanADateSingleService());
   gh.lazySingleton<_i9.RandomIdeaService>(() => _i9.RandomIdeaService());
-  gh.lazySingleton<_i10.ResultFeedbackService>(
-      () => _i10.ResultFeedbackService());
+  gh.lazySingleton<_i10.RealtimeDBService>(() => _i10.RealtimeDBService());
+  gh.lazySingleton<_i11.ResultFeedbackService>(
+      () => _i11.ResultFeedbackService());
   gh.lazySingleton<_i5.SnackbarService>(
       () => thirdPartyServicesModule.snackbarService);
-  gh.lazySingleton<_i11.StartUpService>(() => _i11.StartUpService());
-  gh.lazySingleton<_i12.UserService>(() => _i12.UserService());
+  gh.lazySingleton<_i12.StartUpService>(() => _i12.StartUpService());
+  gh.lazySingleton<_i13.UserService>(() => _i13.UserService());
   return get;
 }
 
-class _$ThirdPartyServicesModule extends _i13.ThirdPartyServicesModule {
+class _$ThirdPartyServicesModule extends _i14.ThirdPartyServicesModule {
   @override
   _i5.DialogService get dialogService => _i5.DialogService();
   @override

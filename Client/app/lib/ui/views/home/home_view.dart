@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: _buildTabBar(context),
+        body: SafeArea(top: true, bottom: true, child: _buildTabBar(context)),
       );
 
   Widget _buildTabBar(BuildContext context) {

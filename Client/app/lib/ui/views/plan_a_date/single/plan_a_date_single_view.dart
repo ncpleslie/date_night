@@ -20,21 +20,19 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateSingleViewModel>.reactive(
       viewModelBuilder: () => PlanADateSingleViewModel(),
-      builder: (BuildContext context, PlanADateSingleViewModel model,
-              Widget child) =>
-          Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: CustomAppBar(
-                name: '',
-                transparent: true,
-                icon: model.isAnyEditorsListValid()
-                    ? _deleteAllButton(model)
-                    : Container())
-            .build(context),
-        body: PageBackground(child: _buildSelectionButtons(model)),
-        floatingActionButton: Padding(
-            padding: EdgeInsets.only(bottom: 50),
-            child: _buildFinishButton(model)),
+      builder: (BuildContext context, PlanADateSingleViewModel model, Widget child) => SafeArea(
+        bottom: true,
+        top: true,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: CustomAppBar(
+                  name: '',
+                  transparent: true,
+                  icon: model.isAnyEditorsListValid() ? _deleteAllButton(model) : Container())
+              .build(context),
+          body: PageBackground(child: _buildSelectionButtons(model)),
+          floatingActionButton: Padding(padding: EdgeInsets.only(bottom: 50), child: _buildFinishButton(model)),
+        ),
       ),
     );
   }
@@ -47,8 +45,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
         height: 50,
         width: 50,
         padding: EdgeInsets.all(3),
-        decoration:
-            BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: Colors.white12, shape: BoxShape.circle),
         alignment: Alignment.center,
         child: InkWell(
           customBorder: new CircleBorder(),
@@ -58,10 +55,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
           child: Container(
             alignment: Alignment.center,
             constraints: BoxConstraints(
-                maxHeight: buttonSize,
-                maxWidth: buttonSize,
-                minHeight: buttonSize,
-                minWidth: buttonSize),
+                maxHeight: buttonSize, maxWidth: buttonSize, minHeight: buttonSize, minWidth: buttonSize),
             padding: EdgeInsets.all(0),
             child: FaIcon(
               FontAwesomeIcons.trash,

@@ -1,3 +1,4 @@
+import 'package:date_night/config/globals.dart';
 import 'package:package_info/package_info.dart';
 
 class About {
@@ -6,7 +7,6 @@ class About {
     return AboutModel.fromPackageInfo(packageInfo);
   });
   static const String appLegalese = 'Created By Nick Leslie\nAll Rights Reserved';
-  static const String appName = 'Date Night';
 }
 
 class AboutModel {
@@ -24,7 +24,7 @@ class AboutModel {
 
   factory AboutModel.fromPackageInfo(PackageInfo packageInfo) {
     return AboutModel(
-        appName: About.appName,
+        appName: Globals.APP_NAME,
         packageName: packageInfo.packageName,
         version: packageInfo.version,
         buildNumber: packageInfo.buildNumber,

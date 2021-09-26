@@ -1,3 +1,5 @@
+import 'package:date_night/config/globals.dart';
+import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,42 +13,48 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
       viewModelBuilder: () => SettingsViewModel(),
-      builder: (BuildContext context, SettingsViewModel vm, Widget child) => Scaffold(
-        appBar: CustomAppBar(name: 'Settings').build(context),
-        body: ListView(
-          children: [
-            if (vm.isPublic != null)
+      builder: (BuildContext context, SettingsViewModel vm, Widget child) => SafeArea(
+        bottom: true,
+        top: true,
+        child: Scaffold(
+          appBar: CustomAppBar(name: 'Settings').build(context),
+          body: ListView(
+            children: [
+              if (vm.isPublic != null)
+                ListTile(
+                  title: Text('Public idea sharing'),
+                  subtitle: Text(
+                      'Your ideas will${vm.isPublic ? "" : " not"} be shared on the "${Globals.MAIN_PAGE_TITLE}" page.\nThis has no effect if you enter another user\'s room.'),
+                  onTap: () async => await vm.setIsPublic(!vm.isPublic),
+                  trailing: Switch.adaptive(
+                      activeTrackColor: Colors.green,
+                      inactiveTrackColor: Colors.grey[200],
+                      activeColor: Colors.grey[300],
+                      inactiveThumbColor: Colors.grey[200],
+                      value: vm.isPublic,
+                      onChanged: (bool state) async => await vm.setIsPublic(state)),
+                ),
               ListTile(
-                title: Text('Public idea sharing'),
-                subtitle: Text(
-                    'Your ideas will${vm.isPublic ? "" : " not"} be shared on the "Dates Around" page.\nThis has no effect if you enter another user\'s room.'),
-                onTap: () async => await vm.setIsPublic(!vm.isPublic),
-                trailing: Switch.adaptive(
-                    activeTrackColor: Colors.green,
-                    activeColor: Colors.white,
-                    value: vm.isPublic,
-                    onChanged: (bool state) async => await vm.setIsPublic(state)),
+                title: Text('Delete stored data'),
+                subtitle: Text('This will remove any data this app has stored on your device.'),
+                onTap: vm.deleteDeviceData,
               ),
-            ListTile(
-              title: Text('Delete stored data'),
-              subtitle: Text('This will remove any data this app has stored on your device.'),
-              onTap: vm.deleteDeviceData,
-            ),
-            ListTile(
-              title: Text('Terms and Conditions'),
-              onTap: vm.showTermsAndConditions,
-            ),
-            ListTile(
-              title: Text('Privacy Policy'),
-              onTap: vm.showPrivacyPolicy,
-            ),
-            if (vm.about != null)
-              AboutListTile(
-                applicationName: vm.about.appName,
-                applicationVersion: vm.about.version,
-                applicationLegalese: vm.about.appLegalese,
+              ListTile(
+                title: Text('Terms and Conditions'),
+                onTap: vm.showTermsAndConditions,
               ),
-          ],
+              ListTile(
+                title: Text('Privacy Policy'),
+                onTap: vm.showPrivacyPolicy,
+              ),
+              if (vm.about != null)
+                AboutListTile(
+                  applicationName: vm.about.appName,
+                  applicationVersion: vm.about.version,
+                  applicationLegalese: vm.about.appLegalese,
+                ),
+            ],
+          ),
         ),
       ),
     );

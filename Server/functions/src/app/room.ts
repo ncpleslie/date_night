@@ -56,7 +56,7 @@ const getARoom = async (request: functions.Request, response: functions.Response
     try {
         const roomId = (rword.generate(1, { length: '3-4' }) as string).toLowerCase();
         const currentTime = firestore.FieldValue.serverTimestamp();
-        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId).set({ chosenIdeas: [], owner: userId, created: currentTime });
+        await firestore().collection(FirestoreConstants.ROOM.DB_NAME).doc(roomId).set({ chosenIdeas: [], contributors: [], owner: userId, created: currentTime });
         response.send(new GetARoomDTO(roomId));
         return;
     } catch (error) {

@@ -22,33 +22,41 @@ class BootView extends StatelessWidget {
   }
 
   Widget _hasError(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'An error has occured starting this application.\nIf this continues, ensure you have an active internet connection.',
-              textAlign: TextAlign.center,
-            ),
-            TextButton(
-              child: Text('Restart'),
-              onPressed: () => {Phoenix.rebirth(context)},
-            )
-          ],
+    return SafeArea(
+      bottom: true,
+      top: true,
+      child: Scaffold(
+        body: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'An error has occured starting this application.\nIf this continues, ensure you have an active internet connection.',
+                textAlign: TextAlign.center,
+              ),
+              TextButton(
+                child: Text('Restart'),
+                onPressed: () => {Phoenix.rebirth(context)},
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _isBusy() {
-    return Scaffold(
-      body: PageBackground(
-        child: Container(
-          alignment: Alignment.center,
-          child: CircularProgressIndicator(),
+    return SafeArea(
+      bottom: true,
+      top: true,
+      child: Scaffold(
+        body: PageBackground(
+          child: Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          ),
         ),
       ),
     );
