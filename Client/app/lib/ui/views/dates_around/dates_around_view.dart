@@ -1,3 +1,4 @@
+import 'package:date_night/config/globals.dart';
 import 'package:date_night/models/date_around_model.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/empty_screen_icon.dart';
@@ -27,7 +28,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   final ScrollController controller = ScrollController();
   final RefreshController refreshController = RefreshController(initialRefresh: false);
 
-  var title = 'Dates Around';
+  var title = Globals.MAIN_PAGE_TITLE;
 
   @override
   Widget build(BuildContext context) {

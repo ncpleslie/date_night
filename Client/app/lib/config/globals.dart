@@ -13,4 +13,10 @@ class Globals {
     DevelopmentModes.Test: "https://us-central1-date-night-api.cloudfunctions.net/",
     DevelopmentModes.Emulator: "http://10.0.2.2:5003/date-night-api/us-central1/"
   };
+  static const int DEFAULT_TIMEOUT_IN_SECS = 5;
+  static const int MAX_API_RETRIES = 3;
+
+  static const String MAIN_PAGE_TITLE = "Dates Around";
+  static const String SINGLE_PLAN_A_DATE_PAGE_TITLE = "Plan a date";
+  static const String MULTI_PLAN_A_DATE_PAGE_TITLE = "Plan a date";
 }

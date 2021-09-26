@@ -1,3 +1,5 @@
+import 'package:date_night/config/globals.dart';
+import 'package:date_night/config/theme_data.dart';
 import 'package:date_night/ui/widgets/dumb_widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +24,13 @@ class SettingsView extends StatelessWidget {
                 ListTile(
                   title: Text('Public idea sharing'),
                   subtitle: Text(
-                      'Your ideas will${vm.isPublic ? "" : " not"} be shared on the "Dates Around" page.\nThis has no effect if you enter another user\'s room.'),
+                      'Your ideas will${vm.isPublic ? "" : " not"} be shared on the "${Globals.MAIN_PAGE_TITLE}" page.\nThis has no effect if you enter another user\'s room.'),
                   onTap: () async => await vm.setIsPublic(!vm.isPublic),
                   trailing: Switch.adaptive(
                       activeTrackColor: Colors.green,
-                      activeColor: Colors.white,
+                      inactiveTrackColor: Colors.grey[200],
+                      activeColor: Colors.grey[300],
+                      inactiveThumbColor: Colors.grey[200],
                       value: vm.isPublic,
                       onChanged: (bool state) async => await vm.setIsPublic(state)),
                 ),
