@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:date_night/app/locator.dart';
-import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/app/router.router.dart';
 import 'package:date_night/models/date_around_model.dart';
 import 'package:date_night/services/dates_around_service.dart';
 import 'package:stacked/stacked.dart';

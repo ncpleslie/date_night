@@ -16,7 +16,7 @@ class PlanADateSingleService {
   List<List<String>> dateIdeas = <List<String>>[<String>[], <String>[]];
 
   /// For Final Selection
-  DateResponse dateResponse;
+  DateResponse? dateResponse;
 
   /// The current date editor.
   int currentEditor = 0;

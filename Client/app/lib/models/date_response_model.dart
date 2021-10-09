@@ -1,5 +1,5 @@
 class DateResponse {
-  DateResponse({this.chosenIdea});
+  DateResponse({required this.chosenIdea});
 
   final String chosenIdea;
 

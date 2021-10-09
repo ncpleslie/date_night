@@ -14,7 +14,7 @@ class DateAddDialog extends StatelessWidget {
 
   final BuildContext context;
 
-  DateAddDialogViewModel _model;
+  DateAddDialogViewModel? _model;
 
   /// The main model
   final TextEditingController _textController = TextEditingController();
@@ -24,7 +24,7 @@ class DateAddDialog extends StatelessWidget {
     return ViewModelBuilder<DateAddDialogViewModel>.nonReactive(
       viewModelBuilder: () => DateAddDialogViewModel(),
       builder:
-          (BuildContext context, DateAddDialogViewModel model, Widget child) {
+          (BuildContext context, DateAddDialogViewModel model, Widget? child) {
         if (_model == null) _model = model;
         return GestureDetector(
           // If the user taps outside form boxes then the keyboard is minimized
@@ -68,7 +68,7 @@ class DateAddDialog extends StatelessWidget {
   /// Add the idea to list of possible dates
   void _addIdea(BuildContext context) {
     if (_textController.text.isNotEmpty) {
-      _model.addIdea(_textController.text);
+      _model?.addIdea(_textController.text);
       // if (model.isMultiEditing) {
       //   model.addMultiIdea(_textController.text);
       // } else {

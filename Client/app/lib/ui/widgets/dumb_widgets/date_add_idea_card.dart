@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// The card can also be dismissed or deleted.
 class DateAddIdeaCard extends StatelessWidget {
   DateAddIdeaCard(
-      {@required this.name, @required this.index, @required this.onDelete});
+      {required this.name, required this.index, required this.onDelete});
 
   /// Name of the card.
   final String name;

@@ -8,13 +8,13 @@ import 'boot_viewmodel.dart';
 /// This page is to perform functions before the app starts up.
 /// This includes login the user in.
 class BootView extends StatelessWidget {
-  const BootView({Key key}) : super(key: key);
+  const BootView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BootViewModel>.reactive(
         viewModelBuilder: () => BootViewModel(),
-        builder: (BuildContext context, BootViewModel model, Widget child) {
+        builder: (BuildContext context, BootViewModel model, Widget? child) {
           if (model.isBusy) return _isBusy();
           if (model.hasError) return _hasError(context);
           return _hasError(context);

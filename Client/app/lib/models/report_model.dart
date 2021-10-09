@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 
 class ReportModel {
-  ReportModel({@required this.dateAroundId});
+  ReportModel({required this.dateAroundId});
 
   final String dateAroundId;
 

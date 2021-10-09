@@ -1,5 +1,5 @@
 class DateAroundModel2 {
-  DateAroundModel2({this.chosenIdea, this.otherIdeas, this.date, this.id});
+  DateAroundModel2({required this.chosenIdea, required this.otherIdeas, required this.date, required this.id});
 
   final String chosenIdea;
   final List<dynamic> otherIdeas;

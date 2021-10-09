@@ -13,11 +13,11 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
       viewModelBuilder: () => SettingsViewModel(),
-      builder: (BuildContext context, SettingsViewModel vm, Widget child) => SafeArea(
+      builder: (BuildContext context, SettingsViewModel vm, Widget? child) => SafeArea(
         bottom: true,
         top: true,
         child: Scaffold(
-          appBar: CustomAppBar(name: 'Settings').build(context),
+          appBar: CustomAppBar(name: 'Settings').build(context) as PreferredSizeWidget,
           body: ListView(
             children: [
               if (vm.isPublic != null)

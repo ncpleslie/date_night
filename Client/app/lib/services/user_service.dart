@@ -6,18 +6,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 @lazySingleton
 class UserService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  UserCredential _userCredential;
+  late UserCredential? _userCredential;
 
-  Future<String> get userToken async {
+  Future<String?> get userToken async {
     print('Getting anonymous user\'s token');
-    return await _userCredential.user.getIdToken();
+
+    if (_userCredential == null) {
+      throw Exception("User Credentials not set");
+    }
+
+    return await _userCredential?.user!.getIdToken();
   }
 
   Future<void> signIn() async {
     print('Signing in anonymously');
     try {
       _userCredential = await _firebaseAuth.signInAnonymously();
-      await _userCredential.user.getIdToken();
+      await _userCredential?.user!.getIdToken();
     } catch (e) {
       throw e;
     }
@@ -29,7 +34,11 @@ class UserService {
   }
 
   Future<void> signOutAndDelete() async {
-    _userCredential.user.delete();
+    if (_userCredential == null) {
+      throw Exception("User Credentials not set");
+    }
+
+    _userCredential?.user!.delete();
   }
 
   Future<void> setPublic(bool value) async {
@@ -42,11 +51,11 @@ class UserService {
     return prefs.getBool(SharedPreferencesIndex.PUBLIC) ?? true;
   }
 
-  Future<String> getUserId() async {
+  Future<String?> getUserId() async {
     if (_userCredential == null) {
       throw Exception('User must be initialised');
     }
 
-    return _userCredential.user.uid;
+    return _userCredential?.user?.uid;
   }
 }

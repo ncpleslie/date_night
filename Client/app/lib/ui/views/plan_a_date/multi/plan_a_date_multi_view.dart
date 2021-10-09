@@ -17,7 +17,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
-      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget child) => SafeArea(
+      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget? child) => SafeArea(
         bottom: true,
         top: true,
         child: Scaffold(
@@ -25,7 +25,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
           appBar: CustomAppBar(
             name: '',
             icon: Container(),
-          ).build(context),
+          ).build(context) as PreferredSizeWidget,
           body: PageBackground(
             child: Container(
               alignment: Alignment.center,
@@ -52,7 +52,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
     );
   }
 
-  Widget _button({@required String title, @required String subtitle, @required Function onPressed}) {
+  Widget _button({required String title, required String subtitle, required Function onPressed}) {
     return Container(
       height: 175, // Increase this to change the padding
       child: Stack(
@@ -68,7 +68,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
               margin: const EdgeInsets.all(20.0),
               child: TextButton(
                 style: TextButton.styleFrom(primary: Theme.of(context).primaryTextTheme.headline6?.color),
-                onPressed: onPressed,
+                onPressed: () => onPressed,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
                   child: Row(
@@ -98,7 +98,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
                               softWrap: true,
                               maxLines: 3,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).primaryTextTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).primaryTextTheme.subtitle1!.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -128,7 +128,7 @@ class _PlanADateMultiViewState extends State<PlanADateMultiView> {
         child: InkWell(
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
-          onTap: onPressed,
+          onTap: () => onPressed,
           onTapDown: (TapDownDetails details) {},
           child: Container(
             alignment: Alignment.center,

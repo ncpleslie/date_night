@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// AutoRouteGenerator
+// StackedRouterGenerator
 // **************************************************************************
 
 // ignore_for_file: public_member_api_docs
 
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
 import '../ui/views/boot/boot_view.dart';
 import '../ui/views/dates_around/dates_around_view.dart';
@@ -40,7 +40,7 @@ class Routes {
   };
 }
 
-class Router extends RouterBase {
+class StackedRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
@@ -54,55 +54,55 @@ class Router extends RouterBase {
     RouteDef(Routes.waitingRoomView, page: WaitingRoomView),
   ];
   @override
-  Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
-  final _pagesMap = <Type, AutoRouteFactory>{
+  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
+  final _pagesMap = <Type, StackedRouteFactory>{
     BootView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => const BootView(),
         settings: data,
       );
     },
     HomeView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => HomeView(),
         settings: data,
       );
     },
     DatesAroundView: (data) {
-      final args = data.getArgs<DatesAroundViewArguments>(
+      var args = data.getArgs<DatesAroundViewArguments>(
         orElse: () => DatesAroundViewArguments(),
       );
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => DatesAroundView(key: args.key),
         settings: data,
       );
     },
     SettingsView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => SettingsView(),
         settings: data,
       );
     },
     AddDateView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => AddDateView(),
         settings: data,
       );
     },
     LoadingView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => LoadingView(),
         settings: data,
       );
     },
     ResultsView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => ResultsView(),
         settings: data,
       );
     },
     WaitingRoomView: (data) {
-      return MaterialPageRoute<dynamic>(
+      return MaterialPageRoute<MaterialRoute<dynamic>>(
         builder: (context) => WaitingRoomView(),
         settings: data,
       );
@@ -116,6 +116,6 @@ class Router extends RouterBase {
 
 /// DatesAroundView arguments holder class
 class DatesAroundViewArguments {
-  final Key key;
+  final Key? key;
   DatesAroundViewArguments({this.key});
 }

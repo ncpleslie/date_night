@@ -8,7 +8,7 @@ import 'package:retry/retry.dart';
 import 'api_exception.dart';
 
 class ApiBaseHelper {
-  Future<dynamic> get(String url, [Map<String, String> headers]) async {
+  Future<dynamic> get(String url, [Map<String, String>? headers]) async {
     var responseJson;
     try {
       final response = await httpRetry(
@@ -21,11 +21,11 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(String url, dynamic body, [Map<String, String> headers]) async {
+  Future<dynamic> post(String url, dynamic body, [Map<String, String>? headers]) async {
     try {
       final response = await httpRetry(http
           .post(Uri.parse(url),
-              headers: {'Content-type': 'application/json', 'Accept': 'application/json', ...headers},
+              headers: {'Content-type': 'application/json', 'Accept': 'application/json', ...?headers},
               body: json.encode(body))
           .timeout(Duration(seconds: Globals.DEFAULT_TIMEOUT_IN_SECS)));
 
@@ -49,7 +49,7 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> delete(String url, [Map<String, String> headers]) async {
+  Future<dynamic> delete(String url, [Map<String, String>? headers]) async {
     var apiResponse;
     try {
       final response = await httpRetry(
@@ -75,7 +75,7 @@ dynamic _returnResponse(http.Response response) {
       if (response.body.isEmpty) {
         return;
       }
-      return json.decode(response?.body?.toString());
+      return json.decode(response.body.toString());
     case 400:
       return json.decode(response.body.toString());
     case 401:

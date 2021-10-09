@@ -15,10 +15,10 @@ import 'dates_around_card_viewmodel.dart';
 /// other users that are currently happening.
 // ignore: must_be_immutable
 class DatesAroundCard extends StatelessWidget {
-  DatesAroundCard({@required this.id, @required this.date, @required this.index}) {
+  DatesAroundCard({required this.id, required this.date, required this.index}) {
     _chosenDate = date.chosenIdea;
 
-    _otherDates = date.otherIdeas != null || date.otherIdeas.isEmpty ? date.otherIdeas.join(', ') : null;
+    _otherDates = (date.otherIdeas != null || date.otherIdeas!.isEmpty ? date.otherIdeas!.join(', ') : null)!;
   }
 
   final List<List<Color>> pillColors = ThemeConfig.pillColors;
@@ -33,19 +33,19 @@ class DatesAroundCard extends StatelessWidget {
   final DateAroundModel date;
 
   /// The winning date idea.
-  String _chosenDate;
+  late String _chosenDate;
 
   /// The other date ideas.
-  String _otherDates;
+  late String _otherDates;
 
   // ViewModel
-  DatesAroundCardViewModel _model;
+  DatesAroundCardViewModel? _model;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DatesAroundCardViewModel>.reactive(
         viewModelBuilder: () => DatesAroundCardViewModel(),
-        builder: (BuildContext context, DatesAroundCardViewModel model, Widget child) {
+        builder: (BuildContext context, DatesAroundCardViewModel model, Widget? child) {
           if (_model == null) {
             _model = model;
           }
@@ -118,7 +118,7 @@ class DatesAroundCard extends StatelessWidget {
   }
 
   void _optionsPopupMenu(BuildContext context, Offset offset) async {
-    int result = await showMenu(
+    int? result = await showMenu(
       shape: Theme.of(context).cardTheme.shape,
       context: context,
       position: RelativeRect.fromLTRB(offset.dx, offset.dy, 0, 0),
@@ -137,7 +137,7 @@ class DatesAroundCard extends StatelessWidget {
       elevation: 8.0,
     );
     if (result == 0) {
-      _model.reportDate(id);
+      _model?.reportDate(id);
     }
   }
 
@@ -148,7 +148,7 @@ class DatesAroundCard extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Card(
-          elevation: Theme.of(context).cardTheme.elevation - 5,
+          elevation: Theme.of(context).cardTheme.elevation! - 5,
           margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
           shape: Theme.of(context).cardTheme.shape,
           color: Theme.of(context).cardTheme.color,
@@ -188,7 +188,7 @@ class DatesAroundCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Other Ideas: ',
-                          style: Theme.of(context).primaryTextTheme.subtitle1.copyWith(fontWeight: FontWeight.bold)),
+                          style: Theme.of(context).primaryTextTheme.subtitle1?.copyWith(fontWeight: FontWeight.bold)),
                       AutoSizeText(
                         _otherDates.isNotEmpty ? _otherDates : ':(',
                         overflow: TextOverflow.ellipsis,

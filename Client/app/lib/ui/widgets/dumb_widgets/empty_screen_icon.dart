@@ -11,7 +11,7 @@ class EmptyScreenIcon extends StatelessWidget {
   final String text;
 
   /// An icon to show the user.
-  final IconData icon;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 class DateRequest {
-  DateRequest({this.dateIdeas, this.isPublic = true});
+  DateRequest({required this.dateIdeas, this.isPublic = true});
   List<String> dateIdeas;
   bool isPublic;
 

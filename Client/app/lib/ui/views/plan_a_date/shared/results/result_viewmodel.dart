@@ -1,5 +1,5 @@
 import 'package:date_night/app/locator.dart';
-import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/app/router.router.dart';
 import 'package:date_night/services/plan_a_date_base_service.dart';
 import 'package:date_night/services/plan_a_date_multi_service.dart';
 import 'package:date_night/services/plan_a_date_single_service.dart';
@@ -20,9 +20,9 @@ class ResultsViewModel extends BaseViewModel {
 
   String getChosenIdea() {
     if (_planADateBaseService.isMultiEditing) {
-      return _planADateMultiService.dateMultiResponse?.chosenIdea;
+      return _planADateMultiService.dateMultiResponse.chosenIdea;
     }
-    return _planADateSingleService.dateResponse?.chosenIdea;
+    return _planADateSingleService.dateResponse!.chosenIdea;
   }
 
   String getRandomFeedback() {

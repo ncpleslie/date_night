@@ -1,8 +1,8 @@
 class DateAroundModel {
-  DateAroundModel({this.chosenIdea, this.otherIdeas, this.date, this.id});
+  DateAroundModel({required this.chosenIdea, this.otherIdeas, required this.date, required this.id});
 
   final String chosenIdea;
-  final List<dynamic> otherIdeas;
+  final List<dynamic>? otherIdeas;
   final DateTime date;
   final String id;
 
@@ -10,7 +10,7 @@ class DateAroundModel {
     return DateAroundModel(
       chosenIdea: data['chosenIdea'] ?? 'Server Error',
       otherIdeas: data['otherIdeas'] ?? [''],
-      date: DateTime.parse(data['date']).toLocal() ?? DateTime.now(),
+      date: DateTime.parse(data['date']).toLocal(),
       id: data['id'] ?? null,
     );
   }

@@ -21,11 +21,11 @@ class PlanADateMultiService {
 
   bool isMultiEditing = false;
   bool isRoomHost = false;
-  String roomId;
-  Stream<DocumentSnapshot> roomSnapshot;
+  late String? roomId;
+  late Stream<DocumentSnapshot> roomSnapshot;
   List<String> chosenIdeas = [];
   List<String> usersChosenIdeas = [];
-  DateResponse dateMultiResponse;
+  late DateResponse dateMultiResponse;
 
   bool isMultiEditorsListValid() {
     return usersChosenIdeas.isNotEmpty;
@@ -52,14 +52,14 @@ class PlanADateMultiService {
     // Clear lists
     if (isRoomHost) {
       print('EXTERNAL: Calculating results');
-      await _realtimeDBService.updateRoomById(roomId, {'gettingResults': true});
+      await _realtimeDBService.updateRoomById(roomId!, {'gettingResults': true});
 
       try {
         final Map<String, dynamic> response = await _apiService.postDate(DateRequest(dateIdeas: chosenIdeas));
 
         dateMultiResponse = DateResponse.fromServerMap(response);
 
-        await _realtimeDBService.updateRoomById(roomId, {
+        await _realtimeDBService.updateRoomById(roomId!, {
           'chosenIdea': dateMultiResponse.chosenIdea,
         });
 
@@ -81,7 +81,9 @@ class PlanADateMultiService {
 
     final completer = Completer<bool>();
     roomSnapshot.listen((querySnapshot) {
-      if (querySnapshot.data()['chosenIdea'] != null) {
+      Map<String, Object> snapshotData = querySnapshot.data() as Map<String, Object>;
+
+      if (snapshotData['chosenIdea'] != null) {
         dateMultiResponse = DateResponse.fromServerMap(querySnapshot.data());
         clearAllMultiLists();
         completer.complete(true);
@@ -94,16 +96,18 @@ class PlanADateMultiService {
   /// Will ask the backend to delete the current room.
   void deleteRoom() async {
     print('EXTERNAL: Deleting room with ID: $roomId');
-    await _apiService.deleteARoom(roomId);
+    await _apiService.deleteARoom(roomId!);
   }
 
-  Future<void> waitForHost() async {
+  Future<bool> waitForHost() async {
     print('EXTERNAL: Listening for host to continue');
 
     final completer = Completer<bool>();
 
     roomSnapshot.listen((querySnapshot) {
-      if (querySnapshot.data()['gettingResults'] != null && querySnapshot.data()['gettingResults']) {
+      Map<String, Object> snapshotData = querySnapshot.data() as Map<String, Object>;
+      
+      if (snapshotData['gettingResults'] != null && snapshotData['gettingResults'] != null) {
         completer.complete(true);
       }
     });
@@ -120,7 +124,9 @@ class PlanADateMultiService {
 
   void updateChosenIdeas(Function callback) {
     roomSnapshot.listen((querySnapshot) {
-      GetARoomResponse getARoomResponse = GetARoomResponse.fromServerMap(querySnapshot.data());
+       Map<String, Object> snapshotData = querySnapshot.data() as Map<String, Object>;
+
+      GetARoomResponse getARoomResponse = GetARoomResponse.fromServerMap(snapshotData);
       chosenIdeas = getARoomResponse.chosenIdeas;
       callback();
     });
@@ -129,15 +135,15 @@ class PlanADateMultiService {
   Future<void> commitMultiIdeas() async {
     print('EXTERNAL: Adding ideas to multi date');
 
-    await _realtimeDBService.addIdeas(roomId, usersChosenIdeas);
+    await _realtimeDBService.addIdeas(roomId!, usersChosenIdeas);
 
     if (!isRoomHost) {
-      String userId = await _userService.getUserId();
-      await _realtimeDBService.addContributorId(roomId, userId);
+      String? userId = await _userService.getUserId();
+      await _realtimeDBService.addContributorId(roomId!, userId!);
     }
   }
 
-  Future<String> getARoom() async {
+  Future<String?> getARoom() async {
     print('EXTERNAL: Getting room code');
 
     roomId = null;
@@ -159,7 +165,7 @@ class PlanADateMultiService {
     print('EXTERNAL: Finding and setting room');
 
     this.roomId = roomId.toLowerCase();
-    DocumentSnapshot results = await _realtimeDBService.getRoomById(this.roomId);
+    DocumentSnapshot results = await _realtimeDBService.getRoomById(this.roomId!);
     await queryARoom();
 
     return results.exists;
@@ -169,16 +175,16 @@ class PlanADateMultiService {
     print('EXTERNAL: Getting DB Snapshot');
     _planADateBaseService.isMultiEditing = true;
 
-    roomSnapshot = _realtimeDBService.getRoomSnapshotById(roomId);
+    roomSnapshot = _realtimeDBService.getRoomSnapshotById(roomId!);
   }
 
   Future<int> getTotalUsersFinished() async {
     print('EXTERNAL: Getting total contributors Snapshot');
 
-    var contributors = await _realtimeDBService.getAllContributors(roomId);
+    var contributors = await _realtimeDBService.getAllContributors(roomId!);
     print(contributors);
 
-    String userId = await _userService.getUserId();
+    String? userId = await _userService.getUserId();
     contributors.removeWhere((contributor) => contributor as String == userId);
 
     return contributors.length;

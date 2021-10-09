@@ -17,7 +17,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  PersistentTabController _controller;
+  late PersistentTabController _controller;
 
   int currentPage = 0;
 
@@ -39,7 +39,7 @@ class _HomeViewState extends State<HomeView> {
       controller: _controller,
       screens: _getPage(),
       items: _getTabIcons(),
-      backgroundColor: Theme.of(context).appBarTheme.color,
+      backgroundColor: Theme.of(context).appBarTheme.color!,
       decoration: NavBarDecoration(
         colorBehindNavBar: Colors.transparent,
         adjustScreenBottomPaddingOnCurve: true,
@@ -60,19 +60,19 @@ class _HomeViewState extends State<HomeView> {
     return [
       PersistentBottomNavBarItem(
           icon: FaIcon(FontAwesomeIcons.globeAmericas),
-          activeColor: Colors.blue,
-          inactiveColor: Colors.grey,
+          activeColorPrimary: Colors.blue,
+          inactiveColorPrimary: Colors.grey,
           opacity: 0.3),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.male),
-        activeColor: Colors.teal,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.teal,
+        inactiveColorPrimary: Colors.grey,
         opacity: 0.7,
       ),
       PersistentBottomNavBarItem(
           icon: FaIcon(FontAwesomeIcons.peopleArrows),
-          activeColor: Colors.purple,
-          inactiveColor: Colors.grey,
+          activeColorPrimary: Colors.purple,
+          inactiveColorPrimary: Colors.grey,
           opacity: 0.3),
     ];
   }

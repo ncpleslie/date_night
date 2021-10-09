@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Custom button displayed on the add date dialog.
 class CustomDialogButton extends StatelessWidget {
-  const CustomDialogButton(this.context, {this.icon, this.onTap});
+  const CustomDialogButton(this.context, {required this.icon, required this.onTap});
 
   final BuildContext context;
 
@@ -26,7 +26,7 @@ class CustomDialogButton extends StatelessWidget {
         child: InkWell(
           customBorder: new CircleBorder(),
           splashColor: Colors.black26,
-          onTap: onTap,
+          onTap: () => onTap,
           onTapDown: (TapDownDetails details) {},
           child: Container(
             alignment: Alignment.center,

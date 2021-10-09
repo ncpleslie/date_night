@@ -20,7 +20,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlanADateSingleViewModel>.reactive(
       viewModelBuilder: () => PlanADateSingleViewModel(),
-      builder: (BuildContext context, PlanADateSingleViewModel model, Widget child) => SafeArea(
+      builder: (BuildContext context, PlanADateSingleViewModel model, Widget? child) => SafeArea(
         bottom: true,
         top: true,
         child: Scaffold(
@@ -29,7 +29,7 @@ class _PlanADateSingleViewState extends State<PlanADateSingleView> {
                   name: '',
                   transparent: true,
                   icon: model.isAnyEditorsListValid() ? _deleteAllButton(model) : Container())
-              .build(context),
+              .build(context) as PreferredSizeWidget,
           body: PageBackground(child: _buildSelectionButtons(model)),
           floatingActionButton: Padding(padding: EdgeInsets.only(bottom: 50), child: _buildFinishButton(model)),
         ),

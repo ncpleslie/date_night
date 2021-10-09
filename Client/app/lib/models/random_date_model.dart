@@ -1,5 +1,5 @@
 class RandomDate {
-  RandomDate({this.date});
+  RandomDate({required this.date});
 
   String date;
 

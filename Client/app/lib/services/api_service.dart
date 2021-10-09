@@ -12,12 +12,12 @@ class ApiService {
   final UserService _userService = locator<UserService>();
 
   /// Base API Url
-  String apiUrl;
+  String? apiUrl;
 
   ApiService() {
     apiUrl = Globals.API_URL;
 
-    if (apiUrl.isEmpty) {
+    if (apiUrl == null) {
       apiUrl = Globals.API_URLS[Globals.DEVELOPMENT_MODE];
     } else {
       apiUrl = Globals.API_URLS[DevelopmentModes.Test];
@@ -28,7 +28,7 @@ class ApiService {
 
   /// Fetch other current dates.
   /// GET
-  Future<Map<String, dynamic>> getDatesAround([String lastId]) async {
+  Future<Map<String, dynamic>> getDatesAround([String? lastId]) async {
     var token = await _userService.userToken;
     String url = '${apiUrl}dates_around';
     if (lastId != null) {

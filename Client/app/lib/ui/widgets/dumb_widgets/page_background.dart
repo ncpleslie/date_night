@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 /// provide feedback that the application is loading.
 // ignore: must_be_immutable
 class PageBackground extends StatelessWidget {
-  const PageBackground({@required this.child});
+  const PageBackground({required this.child});
 
   /// What will be displayed over the background.
   final Widget child;

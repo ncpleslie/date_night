@@ -1,5 +1,5 @@
 import 'package:date_night/app/locator.dart';
-import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/app/router.router.dart';
 import 'package:date_night/enums/dialog_response_type.dart';
 import 'package:date_night/enums/dialog_type.dart';
 import 'package:date_night/helpers/utils.dart';
@@ -24,7 +24,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   bool _ideasChanged = false;
   bool get ideasChanged => _ideasChanged;
 
-  String get roomId => _planADateMultiService.roomId;
+  String? get roomId => _planADateMultiService.roomId;
 
   String _totalContributors = '';
   String get totalContributors => _totalContributors;
@@ -50,7 +50,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
   }
 
   Future<void> _createARoomDialog() async {
-    DialogResponse response = await _dialogService.showCustomDialog(
+    DialogResponse? response = await _dialogService.showCustomDialog(
         title: 'Room Code',
         barrierDismissible: true,
         variant: DialogType.FormWithText,
@@ -62,7 +62,7 @@ class PlanADateMultiViewModel extends BaseViewModel {
       return;
     }
 
-    if (response != null && response?.confirmed != null) {
+    if (response.confirmed) {
       if (response.confirmed) {
         // Enter the room
         _planADateMultiService.isRoomHost = true;
@@ -86,14 +86,14 @@ class PlanADateMultiViewModel extends BaseViewModel {
     notifyListeners();
     _planADateMultiService.clearAllMultiLists();
 
-    DialogResponse response = await _dialogService.showCustomDialog(
+    DialogResponse? response = await _dialogService.showCustomDialog(
         variant: DialogType.Form, title: 'Room Code', barrierDismissible: true, mainButtonTitle: 'Enter');
 
     if (response?.confirmed != null &&
-        response.confirmed &&
-        response?.responseData?.type == DialogResponseType.Text &&
-        response?.responseData?.response != null) {
-      String parsedString = response?.responseData?.response;
+        response!.confirmed &&
+        response.responseData?.type == DialogResponseType.Text &&
+        response.responseData?.response != null) {
+      String parsedString = response.responseData?.response;
       bool isValidRoom = await _planADateMultiService.setARoom(parsedString);
 
       if (isValidRoom) {
