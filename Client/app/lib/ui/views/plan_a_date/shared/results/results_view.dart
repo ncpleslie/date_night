@@ -14,15 +14,15 @@ class ResultsView extends StatefulWidget {
 }
 
 class _ResultsViewState extends State<ResultsView> with SingleTickerProviderStateMixin {
-  Animation<double> _animation;
-  AnimationController _animationController;
-  ConfettiController _confettiController;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+  late ConfettiController _confettiController;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ResultsViewModel>.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
-      builder: (BuildContext context, ResultsViewModel model, Widget child) {
+      builder: (BuildContext context, ResultsViewModel model, Widget? child) {
         _confettiController.play();
         return PageBackground(
           child: SafeArea(
@@ -74,21 +74,21 @@ class _ResultsViewState extends State<ResultsView> with SingleTickerProviderStat
 
 class ContinueButton extends StatelessWidget {
   const ContinueButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ResultsViewModel>.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
-      builder: (BuildContext context, ResultsViewModel model, Widget child) => Padding(
+      builder: (BuildContext context, ResultsViewModel model, Widget? child) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ElevatedButton(
               style: ButtonStyle(
-                  shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape as OutlinedBorder),
                   padding: MaterialStateProperty.all<EdgeInsets>(
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0)),
                   backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
@@ -106,14 +106,14 @@ class ContinueButton extends StatelessWidget {
 
 class ResultsCard extends StatelessWidget {
   const ResultsCard({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.nonReactive(
       viewModelBuilder: () => ResultsViewModel(),
-      builder: (BuildContext context, ResultsViewModel model, Widget child) => Card(
+      builder: (BuildContext context, ResultsViewModel model, Widget? child) => Card(
         elevation: Theme.of(context).cardTheme.elevation,
         margin: EdgeInsets.fromLTRB(18, 6, 18, 6),
         shape: Theme.of(context).cardTheme.shape,
@@ -156,8 +156,8 @@ class ResultsCard extends StatelessWidget {
 
 class ConfettiCanon extends StatelessWidget {
   const ConfettiCanon({
-    Key key,
-    @required ConfettiController confettiController,
+    Key? key,
+    required ConfettiController confettiController,
   })  : _confettiController = confettiController,
         super(key: key);
 

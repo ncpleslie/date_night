@@ -12,10 +12,10 @@ class ThemeConfig {
       : PageTransitionAnimation.slideUp;
 
   static ThemeData get theme => LIGHT_MODE ? themeLight : themeDark;
-  static List<Color> get background =>
+  static List<Color?> get background =>
       LIGHT_MODE ? lightBackgroundColors : darkBackgroundColors;
-  static Color get primaryColor => LIGHT_MODE ? _primaryDark : _primaryLight;
-  static Color get accentColor => LIGHT_MODE ? _accentDark : _accentLight;
+  static Color? get primaryColor => LIGHT_MODE ? _primaryDark : _primaryLight;
+  static Color? get accentColor => LIGHT_MODE ? _accentDark : _accentLight;
   static Color get textColor => LIGHT_MODE ? _textDark : _textLight;
 
   static String get backgroundImage => LIGHT_MODE
@@ -35,21 +35,21 @@ class ThemeConfig {
 
   static final List<List<Color>> _pillColorsDark = [
     [
-      Colors.purple[600],
-      Colors.blue[900],
+      Colors.purple[600]!,
+      Colors.blue[900]!,
     ],
   ];
 
   /// Light Theme
-  static final Color _primaryDark = Colors.grey[900];
-  static final Color _accentDark = Colors.grey[850];
+  static final Color? _primaryDark = Colors.grey[900];
+  static final Color? _accentDark = Colors.grey[850];
   static final Color _textDark = Colors.white;
 
-  static final Color backgroundOneLight = Colors.lightBlue[100];
-  static final Color backgroundTwoLight = Colors.red[100];
-  static final Color backgroundThreeLight = Colors.purple[200];
+  static final Color? backgroundOneLight = Colors.lightBlue[100];
+  static final Color? backgroundTwoLight = Colors.red[100];
+  static final Color? backgroundThreeLight = Colors.purple[200];
 
-  static final List<Color> lightBackgroundColors = [
+  static final List<Color?> lightBackgroundColors = [
     backgroundOneLight,
     backgroundTwoLight,
     backgroundThreeLight
@@ -60,11 +60,11 @@ class ThemeConfig {
   static final Color _accentLight = Colors.white54;
   static final Color _textLight = Colors.black54;
 
-  static final Color backgroundOneDark = Colors.purple[500];
-  static final Color backgroundTwoDark = Colors.purple[800];
-  static final Color backgroundThreeDark = Colors.grey[900];
+  static final Color? backgroundOneDark = Colors.purple[500];
+  static final Color? backgroundTwoDark = Colors.purple[800];
+  static final Color? backgroundThreeDark = Colors.grey[900];
 
-  static final List<Color> darkBackgroundColors = [
+  static final List<Color?> darkBackgroundColors = [
     backgroundOneDark,
     backgroundTwoDark,
     backgroundThreeDark
@@ -138,7 +138,7 @@ class ThemeConfig {
     cardTheme: CardTheme(
       elevation: 2,
       shadowColor: Colors.white24,
-      color: Colors.grey[900].withOpacity(0.7),
+      color: Colors.grey[900]?.withOpacity(0.7),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(25.0),
       ),

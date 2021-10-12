@@ -29,7 +29,7 @@ void setupDialogUi() {
 class _BasicDialog extends StatelessWidget {
   final DialogRequest request;
   final Function(DialogResponse) completer;
-  const _BasicDialog({Key key, this.request, this.completer}) : super(key: key);
+  const _BasicDialog({Key? key, required this.request, required this.completer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class _BasicDialog extends StatelessWidget {
           backgroundColor: Theme.of(context).cardTheme.color,
           shape: Theme.of(context).dialogTheme.shape,
           title: Center(
-            child: Text(request.title),
+            child: Text(request.title!),
           ),
           content: getContent(),
           actions: <Widget>[
@@ -58,7 +58,7 @@ class _BasicDialog extends StatelessWidget {
 
   Widget getContent() {
     return Text(
-      request.description,
+      request.description!,
       style: TextStyle(fontSize: 18),
       textAlign: TextAlign.center,
     );
@@ -68,7 +68,7 @@ class _BasicDialog extends StatelessWidget {
 class _FormDialog extends HookWidget {
   final DialogRequest request;
   final Function(DialogResponse) completer;
-  const _FormDialog({Key key, this.request, this.completer}) : super(key: key);
+  const _FormDialog({Key? key, required this.request, required this.completer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _FormDialog extends HookWidget {
           backgroundColor: Theme.of(context).cardTheme.color,
           shape: Theme.of(context).dialogTheme.shape,
           title: Center(
-            child: Text(request.title),
+            child: Text(request.title!),
           ),
           content: getContent(controller),
           actions: <Widget>[
@@ -112,11 +112,11 @@ class _FormDialog extends HookWidget {
 class _FormWithTextDialog extends _FormDialog {
   final DialogRequest request;
   final Function(DialogResponse) completer;
-  const _FormWithTextDialog({Key key, this.request, this.completer}) : super(key: key);
+  const _FormWithTextDialog({Key? key, required this.request, required this.completer}) : super(key: key, request: request, completer: completer);
 
   @override
   Widget getContent(TextEditingController controller) {
-    controller.text = request.description.toUpperCase();
+    controller.text = request.description!.toUpperCase();
     return TextField(
       style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
       autofocus: true,
@@ -143,13 +143,13 @@ class _FormWithTextDialog extends _FormDialog {
 class _LongTextDialog extends _BasicDialog {
   final DialogRequest request;
   final Function(DialogResponse) completer;
-  const _LongTextDialog({Key key, this.request, this.completer}) : super(key: key);
+  const _LongTextDialog({Key? key, required this.request, required this.completer}) : super(key: key, request: request, completer: completer);
 
    @override
   Widget getContent() {
     return Scrollbar(
       child: Markdown(
-        data: request.description,
+        data: request.description!,
       ),
     );
   }

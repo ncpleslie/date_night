@@ -21,7 +21,7 @@ class AddDateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddDateViewModel>.reactive(
       viewModelBuilder: () => AddDateViewModel(),
-      builder: (BuildContext context, AddDateViewModel vm, Widget child) {
+      builder: (BuildContext context, AddDateViewModel vm, Widget? child) {
         return WillPopScope(
           onWillPop: vm.onPop,
           child: SafeArea(
@@ -33,7 +33,7 @@ class AddDateView extends StatelessWidget {
               appBar: CustomAppBar(
                 name: vm.isMultiEditing() ? '${vm.roomId}' : '',
                 transparent: true,
-              ).build(context),
+              ).build(context) as PreferredSizeWidget,
               // resizeToAvoidBottomPadding: false,
 
               // Create body

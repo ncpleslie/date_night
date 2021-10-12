@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
 class ServerErrorModel {
-  ServerErrorModel({@required this.error, this.errorCode});
+  ServerErrorModel({required this.error, required this.errorCode});
 
   final String error;
   final int errorCode;

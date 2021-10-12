@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 
 class CustomToast extends StatelessWidget {
-  const CustomToast({this.title, this.message});
+  const CustomToast({required this.title, required this.message});
   final String title;
   final String message;
   @override
   Flushbar build(BuildContext context) {
     return Flushbar(
-      backgroundColor: Theme.of(context).cardTheme.color.withOpacity(0.9),
+      backgroundColor: Theme.of(context).cardTheme.color!.withOpacity(0.9),
       margin: EdgeInsets.fromLTRB(8, 8, 8, 60),
       borderRadius: 8,
       titleText: Text(

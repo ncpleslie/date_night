@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget {
   CustomAppBar(
-      {@required this.name, this.icon, this.transparent = true, this.scrollable = false, this.isSliver = false});
+      {required this.name, this.icon, this.transparent = true, this.scrollable = false, this.isSliver = false});
 
   /// The icon to display.
-  Widget icon;
+  late Widget? icon;
 
   /// The text to display.
   final String name;
@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget {
         centerTitle: true,
         elevation: Theme.of(context).appBarTheme.elevation,
         backgroundColor: Colors.transparent,
-        actions: icon != null ? <Widget>[icon] : null,
+        actions: <Widget>[icon!],
         toolbarHeight: 22,
       );
     }
@@ -45,6 +45,6 @@ class CustomAppBar extends StatelessWidget {
         elevation: Theme.of(context).appBarTheme.elevation,
         backgroundColor: this.transparent ? Colors.transparent : Theme.of(context).appBarTheme.color,
         toolbarOpacity: 0.7,
-        actions: icon != null ? <Widget>[icon] : null);
+        actions: <Widget>[icon!]);
   }
 }

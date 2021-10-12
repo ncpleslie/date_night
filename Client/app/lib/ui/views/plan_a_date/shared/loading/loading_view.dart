@@ -19,7 +19,7 @@ class _LoadingViewState extends State<LoadingView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoadingViewModel>.reactive(
       viewModelBuilder: () => LoadingViewModel(),
-      builder: (BuildContext context, LoadingViewModel model, Widget child) => SafeArea(
+      builder: (BuildContext context, LoadingViewModel model, Widget? child) => SafeArea(
         bottom: true,
         top: true,
         child: Scaffold(

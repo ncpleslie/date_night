@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 /// Dialog box for adding new date ideas on the Add Date page.
 class CustomDialog extends StatelessWidget {
   CustomDialog(this.context,
-      {this.controller, this.title, this.content, this.dialogButtons});
+      {required this.controller, required this.title, this.content, required this.dialogButtons});
 
   final BuildContext context;
 
   /// The main model
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String title;
-  final Widget content;
+  final Widget? content;
   final List<CustomDialogButton> dialogButtons;
 
   @override
@@ -42,7 +42,7 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget getContent() {
+  Widget? getContent() {
     return controller != null
         ? TextField(
             textCapitalization: TextCapitalization.sentences,
@@ -59,16 +59,12 @@ class CustomDialog extends StatelessWidget {
 
 class RoomCodeDialog extends CustomDialog {
   RoomCodeDialog(BuildContext context,
-      {this.controller,
-      this.title,
-      this.content,
-      this.dialogButtons,
-      this.onTap})
-      : super(context,
-            controller: controller,
-            title: title,
-            content: content,
-            dialogButtons: dialogButtons);
+      {required this.controller,
+      required this.title,
+      required this.content,
+      required this.dialogButtons,
+      required this.onTap})
+      : super(context, controller: controller, title: title, content: content, dialogButtons: dialogButtons);
 
   final TextEditingController controller;
   final Function onTap;
@@ -97,7 +93,7 @@ class RoomCodeDialog extends CustomDialog {
           ),
         ),
       ),
-      onTap: onTap,
+      onTap: () => onTap,
     );
   }
 }

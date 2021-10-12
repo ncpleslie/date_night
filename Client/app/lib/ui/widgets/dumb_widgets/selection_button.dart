@@ -8,10 +8,10 @@ import 'package:flutter/cupertino.dart';
 /// should no longer use this button.
 class SelectionButton extends StatelessWidget {
   const SelectionButton(
-      {@required this.context,
-      @required this.text,
-      @required this.disabled,
-      @required this.onTap});
+      {required this.context,
+      required this.text,
+      required this.disabled,
+      required this.onTap});
 
   /// BuildContext of the parent Widget
   final BuildContext context;
@@ -30,10 +30,10 @@ class SelectionButton extends StatelessWidget {
     return Expanded(
       child: Material(
         textStyle: TextStyle(
-            color: Theme.of(context).primaryTextTheme.headline6.color),
+            color: Theme.of(context).primaryTextTheme.headline6!.color),
         color: disabled ? Colors.red : Colors.greenAccent[700],
         child: InkWell(
-          onTap: disabled ? null : onTap,
+          onTap: disabled ? null : () => onTap,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

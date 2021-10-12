@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:date_night/app/locator.dart';
-import 'package:date_night/app/router.gr.dart';
+import 'package:date_night/app/router.router.dart';
 import 'package:date_night/config/about.dart';
 import 'package:date_night/config/globals.dart';
 import 'package:date_night/enums/dialog_type.dart';
@@ -16,13 +16,13 @@ class SettingsViewModel extends FutureViewModel {
   final UserService _userService = locator<UserService>();
   final DialogService _dialogService = locator<DialogService>();
 
-  AboutModel _about;
+  late AboutModel _about;
   AboutModel get about => _about;
 
   bool _isLightMode = true;
   bool get isLightMode => _isLightMode;
 
-  bool _isPublic;
+  late bool _isPublic;
   bool get isPublic => _isPublic;
 
   Future<void> setIsPublic(bool value) async {

@@ -14,7 +14,7 @@ class RealtimeDBService {
     return FirebaseFirestore.instance.collection(firebaseKey).doc(roomId).snapshots();
   }
 
-  Future<void> updateRoomById(String roomId, Object updatePayload) async {
+  Future<void> updateRoomById(String roomId, Map<String, Object> updatePayload) async {
     // TODO: Make model
     await FirebaseFirestore.instance.collection(firebaseKey).doc(roomId).update(updatePayload);
   }
@@ -37,8 +37,10 @@ class RealtimeDBService {
 
     Stream<DocumentSnapshot> document = getRoomSnapshotById(roomId);
     document.listen((querySnapshot) {
-      if (querySnapshot.data()['contributors'] != null) {
-        var contributors = querySnapshot.data()['contributors'];
+      Map<String, Object> snapshotData = querySnapshot.data() as Map<String, Object>;
+
+      if (snapshotData['contributors'] != null) {
+        List<Object> contributors = snapshotData['contributors'] as List<Object>;
         completer.complete(contributors);
       }
     });

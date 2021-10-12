@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 /// A custom floating action button element.
 // ignore: must_be_immutable
 class CustomFAB extends StatelessWidget {
-  CustomFAB({@required this.tag, @required this.icon, @required this.onTap, this.disabled}) {
-    disabled = disabled == null ? false : disabled;
+  CustomFAB({required this.tag, required this.icon, required this.onTap, this.disabled = false}) {
   }
 
   /// Icon to be displayed.
@@ -29,15 +28,15 @@ class CustomFAB extends StatelessWidget {
           backgroundColor: disabled
               ? Theme.of(context)
                   .floatingActionButtonTheme
-                  .backgroundColor
+                  .backgroundColor!
                   .withOpacity(0.2)
-              : Theme.of(context).floatingActionButtonTheme.backgroundColor.withOpacity(1),
+              : Theme.of(context).floatingActionButtonTheme.backgroundColor!.withOpacity(1),
           elevation: Theme.of(context).floatingActionButtonTheme.elevation,
           child: Icon(
             icon,
             size: Theme.of(context).iconTheme.size,
           ),
-          onPressed: disabled ? null : onTap,
+          onPressed: disabled ? null : () => onTap,
         ),
         const SizedBox(
           height: 40.0,

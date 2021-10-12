@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
 class GetARoom {
-  GetARoom({@required this.roomId});
+  GetARoom({required this.roomId});
 
   final String roomId;
 

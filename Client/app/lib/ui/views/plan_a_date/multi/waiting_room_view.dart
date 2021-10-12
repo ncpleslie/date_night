@@ -16,7 +16,7 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
     return ViewModelBuilder<PlanADateMultiViewModel>.reactive(
       viewModelBuilder: () => PlanADateMultiViewModel(),
       onModelReady: (PlanADateMultiViewModel vm) async => init(vm),
-      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget child) {
+      builder: (BuildContext context, PlanADateMultiViewModel vm, Widget? child) {
         return WillPopScope(
           onWillPop: vm.onPop,
           child: SafeArea(
@@ -25,9 +25,9 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
             child: Scaffold(
               extendBodyBehindAppBar: true,
               appBar: CustomAppBar(
-                name: vm.roomId,
+                name: vm.roomId!,
                 transparent: true,
-              ).build(context),
+              ).build(context) as PreferredSizeWidget,
               body: PageBackground(
                 child: Container(
                   alignment: Alignment.center,
@@ -61,7 +61,7 @@ class _WaitingRoomViewState extends State<WaitingRoomView> {
         ),
         ElevatedButton(
           style: ButtonStyle(
-              shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape),
+              shape: MaterialStateProperty.all<OutlinedBorder>(Theme.of(context).cardTheme.shape as OutlinedBorder),
               padding:
                   MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0)),
               backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),

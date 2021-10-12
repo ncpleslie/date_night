@@ -7,7 +7,7 @@ import 'package:date_night/ui/widgets/dumb_widgets/shimmer_dates_around_listview
 import 'package:date_night/ui/widgets/smart_widgets/dates_around_card/dates_around_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
+// import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:stacked/stacked.dart';
 
@@ -18,7 +18,7 @@ import 'dates_around_viewmodel.dart';
 /// This screen will pull these ideas from the DB and display
 /// them in a list of cards.
 class DatesAroundView extends StatefulWidget {
-  DatesAroundView({Key key}) : super(key: key);
+  DatesAroundView({Key? key}) : super(key: key);
 
   @override
   _DatesAroundViewState createState() => _DatesAroundViewState();
@@ -35,7 +35,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
     return ViewModelBuilder<DatesAroundViewModel>.reactive(
       onModelReady: (model) => onModelReady(model),
       viewModelBuilder: () => DatesAroundViewModel(),
-      builder: (BuildContext context, DatesAroundViewModel model, Widget child) {
+      builder: (BuildContext context, DatesAroundViewModel model, Widget? child) {
         return Scaffold(
           extendBodyBehindAppBar: true,
           body: PageBackground(
@@ -52,7 +52,7 @@ class _DatesAroundViewState extends State<DatesAroundView> {
                         header: WaterDropHeader(
                           waterDropColor: Theme.of(context).primaryColor,
                         ),
-                        footer: CustomFooter(builder: (BuildContext context, LoadStatus status) {
+                        footer: CustomFooter(builder: (BuildContext context, LoadStatus? status) {
                           return _loadingState(status, model);
                         }),
                         controller: refreshController,
@@ -102,30 +102,27 @@ class _DatesAroundViewState extends State<DatesAroundView> {
   }
 
   /// The states the "Pull to refresh" Widget can have.
-  Widget _loadingState(LoadStatus status, DatesAroundViewModel model) {
+  Widget _loadingState(LoadStatus? status, DatesAroundViewModel model) {
     switch (status) {
       case LoadStatus.loading:
         return ShimmerDatesAroundListView();
-        break;
 
       case LoadStatus.failed:
         return _padding(const Text('Oops. Something went wrong.'));
-        break;
 
       case LoadStatus.canLoading:
         model.loadMore();
         return _padding(Text(
-          EmojiParser().emojify(':ghost:'),
+          // EmojiParser().emojify(':ghost:'),
+          "",
           style: const TextStyle(fontSize: 20.0),
         ));
-        break;
 
       default:
         return _padding(Text(
           '',
           style: Theme.of(context).primaryTextTheme.subtitle1,
         ));
-        break;
     }
   }
 

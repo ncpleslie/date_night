@@ -11,11 +11,11 @@ class About {
 
 class AboutModel {
   AboutModel(
-      {this.appName,
-      this.packageName,
-      this.version,
-      this.buildNumber,
-      this.appLegalese});
+      {required this.appName,
+      required this.packageName,
+      required this.version,
+      required this.buildNumber,
+      required this.appLegalese});
   final String appName;
   final String packageName;
   final String version;
